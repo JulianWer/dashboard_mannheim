@@ -1,59 +1,57 @@
 import * as d3 from "d3";
-import {LegacyRef, SetStateAction, useEffect, useRef, useState} from "react";
 
 export default function ScatterplotIris() {
-  const margin = { top: 10, right: 30, bottom: 30, left: 60 };
-  const width = 460 - margin.left - margin.right;
-  const height = 400 - margin.top - margin.bottom;
+// set the dimensions and margins of the graph
+const margin = {top: 30, right: 30, bottom: 70, left: 60},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
-  const [data, setData] = useState([]);
+// append the svg object to the body of the page
+const svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-  useEffect(() => {
-    d3.csv(
-        "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv"
-    )
-        .then((irisData) => {
-          setData(irisData as unknown as SetStateAction<never[]>);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-  }, []);
+// Parse the Data
+//d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv").then ( function(data) {
 
-  const gx = useRef();
-  const gy = useRef();
-  const x = d3.scaleLinear().domain([3, 9]).range([0, width]);
+  // sort data
+  //data.sort(function(b, a) {
+  //  return a.Value - b.Value;
+  //});
 
-  const y = d3.scaleLinear().domain([0, 9]).range([height, 0]);
+  // X axis
+  const x = d3.scaleBand()
+    .range([ 0, width ])
+    //.domain(data.map(d => d.Country))
+    .padding(0.2);
+  svg.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  useEffect(() => void d3.select(gx.current).call(d3.axisBottom(x)), [gx, x]);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  useEffect(() => void d3.select(gy.current).call(d3.axisLeft(y)), [gy, y]);
-  return (
-    <>
-      <svg width={width} height={height}>
-        <g
-          ref={gx as unknown as LegacyRef<SVGGElement> | undefined}
-          transform={`translate(0,${height - margin.right})`}
-        />
-        <g
-          ref={gy as unknown as LegacyRef<SVGGElement> | undefined}
-          transform={`translate(${margin.left},0)`}
-        />
-        <g fill="white" stroke="currentColor" strokeWidth="1.5">
-          {data.map((d, i) => (
-            <circle
-              key={i}
-              cx={x(d.Sepal_Length)}
-              cy={y(d.Petal_Length)}
-              r="2.5"
-            />
-          ))}
-        </g>
-      </svg>
-    </>
-  );
+  // Add Y axis
+  const y = d3.scaleLinear()
+    .domain([0, 13000])
+    .range([ height, 0]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+  // Bars
+  //svg.selectAll("mybar")
+  //  .data(data)
+  //  .enter()
+  //  .append("rect")
+  //    .attr("x", d => x(d.Country))
+  //    .attr("y", d => y(d.Value))
+  //    .attr("width", x.bandwidth())
+  //    .attr("height", d => height - y(d.Value))
+  //    .attr("fill", "#69b3a2")
+
 }
+
+
