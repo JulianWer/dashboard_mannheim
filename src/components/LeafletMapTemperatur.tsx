@@ -3,66 +3,24 @@ import "leaflet/dist/leaflet.css";
 import {LatLngTuple} from "leaflet";
 import classes from "./styles/LeafletMap.module.css";
 import metadata from "../metadata.json";
+import DataHandler from "../utils/DataHandler.tsx"
 import * as d3 from 'd3';
 
-const minTemperaturesForAllStations = await getStationData()
+const temperaturesForAllStations = await DataHandler()
 
-const minTemperaturesForAllStationsHelper = Object.values(minTemperaturesForAllStations).map(value => parseFloat(value as string));
+const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations).map(value => parseFloat(value as string));
 
 const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green","yellow","red"]));
 
 const scale = d3.scaleSequential()
-    .domain([d3.min(minTemperaturesForAllStationsHelper), d3.max(minTemperaturesForAllStationsHelper)])
+    .domain([d3.min(temperaturesForAllStationsHelper), d3.max(temperaturesForAllStationsHelper)])
     .interpolator(customInterpolator);
 
-
-console.log(minTemperaturesForAllStations)
-
-
-
-function getStationData() {
-    return d3.csv("/public/data.csv").then(function(data) {
-        // Filtern der Daten nach dem gewünschten Tag
-        const filteredData = data.filter(d => {
-        // Überprüfung, ob der Zeitstempel das erwartete Format hat (YYYY-MM-DDTHH:MM:SSZ)
-        if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(d.timestamps)) {
-            // Parsen des Zeitstempels
-            const timestamp = new Date(d.timestamps);
-            const desiredDate = "2024-04-07";
-            const desiredBeginning = new Date(desiredDate + "T03:30:00Z");
-            const desiredEnd = new Date(desiredDate + "T04:30:00Z");
-            return timestamp.toISOString().slice(0, 10) === desiredDate && timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();
-        }
-    });
-    
-    // Gruppieren der Daten nach Messstationen
-    const stationData = {};
-    filteredData.forEach(d => {
-        const stationName = `${d.Messnetz}-${d.StationsID}-${d.StationsIDErgänzung}`;
-        if (!stationData[stationName]) {
-            stationData[stationName] = [];
-        }
-        stationData[stationName].push(parseFloat(d.temperature)); 
-    });
-    
-    // Bestimmen der durchschnittlichen Temperatur jeder Station von 3:30 bis 4:30
-    const averageTemperatures = {};
-    Object.keys(stationData).forEach(station => {
-        const validTemperatures = stationData[station].filter(temperature => temperature !== -999);
-        const sumTemperatures = validTemperatures.reduce((sum, temperature) => sum + temperature, 0);
-        const averageTemperature = sumTemperatures / validTemperatures.length;
-    averageTemperatures[station] = averageTemperature;
-    });
-    
-    return averageTemperatures;
-    
-    });
-
-}
+console.log(temperaturesForAllStations)
 
 function getColor(messnetzNr : string, stationsId : string, stationsIdErgänzung : string) {
     const stationName = `${messnetzNr}-${stationsId}-${stationsIdErgänzung}`;
-    const temperatureValue = minTemperaturesForAllStations[stationName]
+    const temperatureValue = temperaturesForAllStations[stationName]
     return scale(temperatureValue)
 }
 
