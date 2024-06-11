@@ -2,234 +2,234 @@
     "stations" : [
         {
             "name" : "T-016",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "001",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.496318,
             "longitude" : 8.475067
         },
         {
             "name" : "T-020",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "004",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.500255,
             "longitude" : 8.488139
         },
         {
             "name" : "T-023",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "006",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.497052,
             "longitude" : 8.472246
         },
         {
             "name" : "T-024",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "007",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.498672,
             "longitude" : 8.484276
         },
         {
             "name" : "T-025",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "008",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.497988,
             "longitude" : 8.464963
         },
         {
             "name" : "T-026",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "009",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.499061,
             "longitude" : 8.475401
         },
         {
             "name" : "T-027",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "010",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.499154,
             "longitude" : 8.481064
         },
         {
             "name" : "T-029",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "011",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.50673,
             "longitude" : 8.475691
         },
         {
             "name" : "T-030",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "012",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.498461,
             "longitude" : 8.486057
         },
         {
             "name" : "T-031",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "013",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.49765,
             "longitude" : 8.474827
         },
         {
             "name" : "T-033",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "015",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.501791,
             "longitude" : 8.476447
         },
         {
             "name" : "T-032",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "014",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.496764,
             "longitude" : 8.474376
         },
         {
             "name" : "T-034",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "016",
-            "stationsIdErgänzung" : "2/1",
-            "latitude" : 49.4965,            
-            "longitude" : 8.47394      
+            "stationsIdSupplement" : "2/1",
+            "latitude" : 49.4965,
+            "longitude" : 8.47394
         },
         {
             "name" : "T-036",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "017",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.502803,
             "longitude" : 8.471641
         },
         {
             "name" : "T-038",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "019",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.504188,
             "longitude" : 8.474861
         },
         {
             "name" : "T-039",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "020",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.50516,
             "longitude" : 8.468663
         },
         {
             "name" : "T-040",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "021",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.505417,
             "longitude" : 8.473025
         }
         ,
         {
             "name" : "T-043",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "023",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.504888,
             "longitude" : 8.477162
         },
         {
             "name" : "T-044",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "024",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.497562,
             "longitude" : 8.466461
         },
         {
             "name" : "T-046",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "026",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.50242,
             "longitude" : 8.474209
         },
         {
             "name" : "T-045",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "025",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.499917,
             "longitude" : 8.485551
         },
         {
             "name" : "T-047",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "027",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.499921,
             "longitude" : 8.484381
         },
         {
             "name" : "T-051",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "029",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.50082,
             "longitude" : 8.484689
         },
         {
             "name" : "T-048",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "028",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.499382,
             "longitude" : 8.463888
         },
         {
             "name" : "T-052",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "030",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.499363,
             "longitude" : 8.478609
         },
         {
             "name" : "T-057",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "032",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.505756,
             "longitude" : 8.474756
         },
         {
             "name" : "T-058",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "033",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.501145,
             "longitude" : 8.481736
         },
         {
             "name" : "T-059",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "034",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.495825,
             "longitude" : 8.471889
         },
         {
             "name" : "T-060",
-            "messnetzNr" : "01/01",
+            "networkNumber" : "01/01",
             "stationsId" : "035",
-            "stationsIdErgänzung" : "2/1",
+            "stationsIdSupplement" : "2/1",
             "latitude" : 49.501537,
             "longitude" : 8.478834
         }
