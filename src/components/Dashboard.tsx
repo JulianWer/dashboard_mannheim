@@ -2,6 +2,7 @@ import LeafletMapTemperature from "./LeafletMapTemperature.tsx";
 import BarChart from "./BarChart.tsx";
 import {useState} from "react";
 import "leaflet/dist/leaflet.css";
+import ExtraInfoCard from "./ExtraInfoCard.tsx";
 
 
 export interface IStation {
@@ -15,16 +16,18 @@ export interface IStation {
     averageTemperature?: number
 }
 
-export default function Dashboard () {
+export default function Dashboard() {
 
- const [selectedStation, setSelectedStation] = useState<IStation | undefined>(undefined);
- console.log("=>(Dashboard.tsx:21) selectedStation", selectedStation);
+    const [selectedStation, setSelectedStation] = useState<IStation | undefined>(undefined);
 
 
     return (
-        <div style={{width:"100%",display:"flex"}}>
-        <LeafletMapTemperature selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
-        <BarChart selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
+        <div style={{width: "100%", display: "flex", gap: "1rem"}}>
+            <LeafletMapTemperature selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
+            <div>
+                <BarChart selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
+                <ExtraInfoCard selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
+            </div>
         </div>
     )
 }
