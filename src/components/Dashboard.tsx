@@ -1,7 +1,8 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import LeafletMapTemperature from "./LeafletMapTemperature.tsx";
 import "leaflet/dist/leaflet.css";
 import BarChart from "./BarChart.tsx";
+import ExtraInfoCard from "./ExtraInfoCard.tsx";
 
 
 export interface IStation {
@@ -16,23 +17,76 @@ export interface IStation {
 }
 
 const initialStations: IStation[] = [
-    { name: "T-032", networkNumber: "01/01", stationsId: "014", stationsIdSupplement: "2/1", latitude: 49.496764, longitude: 8.474376 },
-    { name: "T-031", networkNumber: "01/01", stationsId: "013", stationsIdSupplement: "2/1", latitude: 49.49765, longitude: 8.474827 },
-    { name: "T-026", networkNumber: "01/01", stationsId: "009", stationsIdSupplement: "2/1", latitude: 49.499061, longitude: 8.475401 },
-    { name: "T-033", networkNumber: "01/01", stationsId: "015", stationsIdSupplement: "2/1", latitude: 49.501791, longitude: 8.476447 },
-    { name: "T-043", networkNumber: "01/01", stationsId: "023", stationsIdSupplement: "2/1", latitude: 49.504888, longitude: 8.477162 },
+    {
+        name: "T-032",
+        networkNumber: "01/01",
+        stationsId: "014",
+        stationsIdSupplement: "2/1",
+        latitude: 49.496764,
+        longitude: 8.474376
+    },
+    {
+        name: "T-031",
+        networkNumber: "01/01",
+        stationsId: "013",
+        stationsIdSupplement: "2/1",
+        latitude: 49.49765,
+        longitude: 8.474827
+    },
+    {
+        name: "T-026",
+        networkNumber: "01/01",
+        stationsId: "009",
+        stationsIdSupplement: "2/1",
+        latitude: 49.499061,
+        longitude: 8.475401
+    },
+    {
+        name: "T-033",
+        networkNumber: "01/01",
+        stationsId: "015",
+        stationsIdSupplement: "2/1",
+        latitude: 49.501791,
+        longitude: 8.476447
+    },
+    {
+        name: "T-043",
+        networkNumber: "01/01",
+        stationsId: "023",
+        stationsIdSupplement: "2/1",
+        latitude: 49.504888,
+        longitude: 8.477162
+    },
 ];
 
 export default function Dashboard() {
-    const [selectedStations, setSelectedStations] = useState<IStation[]>(initialStations);
+    const [isInGuidedMode, setIsInGuidedMode] = useState<boolean>(false);
+    const [selectedStations, setSelectedStations] = useState<IStation[]>([]);
+    useEffect(() => {
+            if (isInGuidedMode) {
+                setSelectedStations(initialStations);
+            } else {
+                setSelectedStations([]);
+            }
+
+        }
+        , [isInGuidedMode]);
 
     return (
-        <div style={{ width: "100%", display: "flex", gap: "1rem" }}>
-            <LeafletMapTemperature selectedStations={selectedStations} setSelectedStations={setSelectedStations} />            
-                {/* Weitere Komponenten können hier hinzugefügt werden */}
+        <div style={{width: "100%", display: "flex", gap: "1rem"}}>
             <div>
-                <BarChart selectedStations={selectedStations} setSelectedStation={setSelectedStations}/>
+                <button type="button" onClick={() => setIsInGuidedMode(false)}>Explore</button>
+                <button type="button" onClick={() => setIsInGuidedMode(true)}>Guide</button>
+                <LeafletMapTemperature selectedStations={selectedStations}
+                                       setSelectedStations={setSelectedStations} isInGuidedMode={isInGuidedMode}/>
             </div>
+            <div>
+                <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
+                <ExtraInfoCard
+                    selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
+                    isInGuidedMode={isInGuidedMode}/>
+            </div>
+
         </div>
     );
 }
