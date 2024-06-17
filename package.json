@@ -20,11 +20,13 @@
     "default-import": "^1.1.5",
     "http-proxy-middleware": "^3.0.0",
     "leaflet": "^1.9.4",
+    "leaflet-lasso": "^2.2.13",
     "osmtogeojson": "^3.0.0-beta.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-google-streetview": "^0.0.9",
     "react-leaflet": "^4.2.1",
+    "react-leaflet-draw": "^0.20.4",
     "topojson": "^3.0.2",
     "topojson-client": "3.1.0",
     "xmldom": "^0.6.0"

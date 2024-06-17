@@ -3,7 +3,7 @@ import {IStation} from "./Dashboard.tsx";
 
 interface IExtraInfoCard {
     selectedStation: IStation | undefined;
-    setSelectedStation: React.Dispatch<React.SetStateAction<IStation | undefined>>;
+    isInGuidedMode: boolean;
 }
 
 export default function ExtraInfoCard(props: IExtraInfoCard) {
