@@ -1,8 +1,9 @@
 import * as d3 from "d3";
 import {IStation} from "../components/Dashboard.tsx";
 import metadata from "../metadata.json";
+import {StationData} from "../components/Dashboard.tsx";
 
-export function getStationData(desiredDate: string, desiredStartTime: string = "00:00", desiredEndTime: string = "23:59") {
+export function getStationData(desiredDate: string, desiredStartTime: string = "00:00", desiredEndTime: string = "23:59"): Promise<StationData> {
     return d3.csv("/data.csv").then((data) => {
         // Filtern der Daten nach dem gewünschten Tag
         const filteredData = data.filter(d => {
@@ -12,7 +13,7 @@ export function getStationData(desiredDate: string, desiredStartTime: string = "
                 const timestamp = new Date(d.timestamps);
                 // const desiredDate = "2024-04-07";
                 const desiredBeginning = new Date(desiredDate + "T" + desiredStartTime + ":00Z");
-                const desiredEnd = new Date(desiredDate + "T" + desiredEndTime + ":00Z");
+                const desiredEnd = new Date(desiredDate + "T" + desiredEndTime + ":59Z");
                 return timestamp.toISOString().slice(0, 10) === desiredDate && timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();
             }
         });
@@ -28,9 +29,9 @@ export function getStationData(desiredDate: string, desiredStartTime: string = "
         });
 
         // group data by station
-        const stationData = {};
+        const stationData: StationData = {};
         filteredData.forEach((d) => {
-            const stationName = `${d.Messnetz}-${d.StationsID}-${d.StationsIDErgänzung}`;
+            const stationName: string = `${d.Messnetz}-${d.StationsID}-${d.StationsIDErgänzung}`;
             if (!stationData[stationName]) {
                 stationData[stationName] = getStationDefaultData(d, metadataLookup, stationName);
             }
