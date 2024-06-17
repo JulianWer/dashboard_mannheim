@@ -3,6 +3,7 @@ import BarChart from "./BarChart.tsx";
 import {useState} from "react";
 import "leaflet/dist/leaflet.css";
 import ExtraInfoCard from "./ExtraInfoCard.tsx";
+import LineChart from "./LineChart.tsx";
 
 
 export interface IStation {
@@ -14,8 +15,11 @@ export interface IStation {
     stationsIdSupplement: string,
     temperatures?: Array<number>,
     averageTemperature?: number,
-    temperaturesWithTimestamp?: {timestamp: Date, temperature: number}[]
+    temperaturesWithTimestamp?: TimeTemp[]
 }
+
+export type StationData = Record<string, IStation>;
+export type TimeTemp = {timestamp: Date, temperature: number}
 
 export default function Dashboard() {
 
@@ -28,6 +32,7 @@ export default function Dashboard() {
             <div>
                 <BarChart selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
                 <ExtraInfoCard selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
+                <LineChart />
             </div>
         </div>
     )
