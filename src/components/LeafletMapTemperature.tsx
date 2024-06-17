@@ -63,16 +63,20 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
             station.stationsId === selectedStation.stationsId &&
             station.stationsIdSupplement === selectedStation.stationsIdSupplement
         );
+        if (selectedStations.length === 0) {
+            setSelectedStations([station]);
+        } else {
 
-        if (event.metaKey || event.ctrlKey) {
-            if (isAlreadySelected) {
-                setSelectedStations(selectedStations.filter(selectedStation =>
-                    !(selectedStation.networkNumber === station.networkNumber &&
-                        selectedStation.stationsId === station.stationsId &&
-                        selectedStation.stationsIdSupplement === station.stationsIdSupplement)
-                ));
-            } else {
-                setSelectedStations((prev) => [...prev, station]);
+            if (event.metaKey || event.ctrlKey) {
+                if (isAlreadySelected) {
+                    setSelectedStations(selectedStations.filter(selectedStation =>
+                        !(selectedStation.networkNumber === station.networkNumber &&
+                            selectedStation.stationsId === station.stationsId &&
+                            selectedStation.stationsIdSupplement === station.stationsIdSupplement)
+                    ));
+                } else {
+                    setSelectedStations((prev) => [...prev, station]);
+                }
             }
         }
     };
