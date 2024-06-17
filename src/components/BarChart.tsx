@@ -9,7 +9,7 @@ interface IBarchart {
     setSelectedStation: React.Dispatch<React.SetStateAction<IStation | undefined>>;
 }
 
-const dataFromStations = await getStationData()
+const dataFromStations = await getStationData("2024-04-07", "03:30", "04:30")
 
 function Barchart(props: IBarchart) {
     const {selectedStation, setSelectedStation} = props;

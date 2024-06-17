@@ -12,8 +12,9 @@ export interface IStation {
     name: string,
     stationsId: string,
     stationsIdSupplement: string,
-    temperatures?: Array<number>;
-    averageTemperature?: number
+    temperatures?: Array<number>,
+    averageTemperature?: number,
+    temperaturesWithTimestamp?: {timestamp: Date, temperature: number}[]
 }
 
 export default function Dashboard() {

@@ -2,22 +2,20 @@ import * as d3 from "d3";
 import {IStation} from "../components/Dashboard.tsx";
 import metadata from "../metadata.json";
 
-
-export function getStationData() {
-    return d3.csv("/public/data.csv").then((data) => {
+export function getStationData(desiredDate: string, desiredStartTime: string="00:00", desiredEndTime: string="23:59") {
+    return d3.csv("/data.csv").then((data) => {
         // Filtern der Daten nach dem gewünschten Tag
         const filteredData = data.filter(d => {
             // Überprüfung, ob der Zeitstempel das erwartete Format hat (YYYY-MM-DDTHH:MM:SSZ)
             if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(d.timestamps)) {
                 // Parsen des Zeitstempels
                 const timestamp = new Date(d.timestamps);
-                const desiredDate = "2024-04-07";
-                const desiredBeginning = new Date(desiredDate + "T03:30:00Z");
-                const desiredEnd = new Date(desiredDate + "T04:30:00Z");
+                // const desiredDate = "2024-04-07";
+                const desiredBeginning = new Date(desiredDate + "T" + desiredStartTime + ":00Z");
+                const desiredEnd = new Date(desiredDate + "T" + desiredEndTime + ":00Z");
                 return timestamp.toISOString().slice(0, 10) === desiredDate && timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();
             }
         });
-
 
         const metadataLookup = {};
         metadata.stations.forEach(station => {
@@ -34,19 +32,11 @@ export function getStationData() {
         filteredData.forEach((d) => {
             const stationName = `${d.Messnetz}-${d.StationsID}-${d.StationsIDErgänzung}`;
             if (!stationData[stationName]) {
-                stationData[stationName] = {
-                    latitude: parseFloat(metadataLookup[stationName].latitude),
-                    longitude: parseFloat(metadataLookup[stationName].longitude),
-                    networkNumber: d.Messnetz,
-                    name: metadataLookup[stationName].name,
-                    stationsId: d.StationsID,
-                    stationsIdSupplement: d.StationsIDErgänzung,
-                    temperatures: [],
-                    averageTemperature: 0
-                } as IStation
+                stationData[stationName] = getStationDefaultData(d, metadataLookup, stationName);
             }
             stationData[stationName].temperatures.push(parseFloat(d.temperature));
             stationData[stationName].averageTemperature = getAverageTemperature(stationData[stationName].temperatures);
+            stationData[stationName].temperaturesWithTimestamp.push({timestamp: new Date(d.timestamps), temperature: parseFloat(d.temperature as string)});
         });
 
 
@@ -59,4 +49,18 @@ export function getStationData() {
 
         return stationData;
     });
+}
+
+function getStationDefaultData(data, metadataLookup, stationName): IStation {
+    return {
+        latitude: parseFloat(metadataLookup[stationName].latitude),
+        longitude: parseFloat(metadataLookup[stationName].longitude),
+        networkNumber: data.Messnetz,
+        name: metadataLookup[stationName].name,
+        stationsId: data.StationsID,
+        stationsIdSupplement: data.StationsIDErgänzung,
+        temperatures: [],
+        averageTemperature: 0,
+        temperaturesWithTimestamp: []
+    } as IStation;
 }
