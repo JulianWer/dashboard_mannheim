@@ -1,24 +1,23 @@
-import {Circle, MapContainer, TileLayer, Tooltip} from 'react-leaflet'
+import { Circle, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
-import {LatLngTuple} from "leaflet";
+import { LatLngTuple } from "leaflet";
 import classes from "./styles/LeafletMap.module.css";
-import {getStationData} from "../utils/DataHandler.ts"
+import { getStationData } from "../utils/DataHandler.ts";
 import * as d3 from 'd3';
-import {IStation} from "./Dashboard.tsx";
+import { IStation } from "./Dashboard.tsx";
 
-const temperaturesForAllStations = await getStationData()
+const temperaturesForAllStations = await getStationData();
 
-
-interface ILeafletMapTemperatur {
-    selectedStation: IStation | undefined;
-    setSelectedStation: React.Dispatch<React.SetStateAction<IStation | undefined>>;
+interface ILeafletMapTemperature {
+    selectedStations: IStation[];
+    setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
 }
 
-export default function LeafletMapTemperature(props: ILeafletMapTemperatur) {
+export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
 
-    const {selectedStation, setSelectedStation} = props;
+    const { selectedStations } = props;
 
-    const coordinates: LatLngTuple = [49.499061, 8.475401]
+    const coordinates: LatLngTuple = [49.499061, 8.475401];
 
     const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations as IStation).map(value => parseFloat(value.averageTemperature));
 
@@ -36,31 +35,41 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperatur) {
 
     function getColor(networkNumber: string, stationsId: string, stationsIdSupplement: string) {
         const stationName = `${networkNumber}-${stationsId}-${stationsIdSupplement}`;
-        const temperatureValue = temperaturesForAllStations[stationName]
-        const baseColor = scale(temperatureValue.averageTemperature)
+        const temperatureValue = temperaturesForAllStations[stationName];
+        const baseColor = scale(temperatureValue.averageTemperature);
 
-        if (selectedStation) {
-            const {networkNumber, stationsId, stationsIdSupplement} = selectedStation;
-            const selectedName = `${networkNumber}-${stationsId}-${stationsIdSupplement}`;
+        const isSelected = selectedStations.some(station =>
+            station.networkNumber === networkNumber &&
+            station.stationsId === stationsId &&
+            station.stationsIdSupplement === stationsIdSupplement
+        );
 
-            if (selectedName === stationName) {
-                return baseColor;
-            } else {
-                const {r, g, b} = d3.color(baseColor).rgb();
-                return `rgba(${r},${g},${b},0.4)`;
-            }
-        } else {
+        if (isSelected) {
             return baseColor;
+        } else {
+            const { r, g, b } = d3.color(baseColor).rgb();
+            return `rgba(${r},${g},${b},0.3)`;
+        }
+    }
+    function getBorderColor(networkNumber: string, stationsId: string, stationsIdSupplement: string) {
+        const baseColor = "black"
+
+        const isSelected = selectedStations.some(station =>
+            station.networkNumber === networkNumber &&
+            station.stationsId === stationsId &&
+            station.stationsIdSupplement === stationsIdSupplement
+        );
+
+        if (isSelected) {
+            return baseColor;
+        } else {
+            const { r, g, b } = d3.color(baseColor).rgb();
+            return `rgba(${r},${g},${b},0.3)`;
         }
     }
 
-
-    const handleCircleClick = (station: IStation) => {
-        setSelectedStation(station)
-    };
-
     return (
-        <div style={{height: "90vh", width: "100vh", display: "flex", justifyContent: "flex-start"}}>
+        <div style={{ height: "90vh", width: "100vh", display: "flex", justifyContent: "flex-start" }}>
             <MapContainer
                 center={coordinates}
                 zoom={15}
@@ -77,29 +86,29 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperatur) {
                                 key={i}
                                 center={[d.data.latitude, d.data.longitude]}
                                 pathOptions={{
-                                    color: getColor(d.data.networkNumber, d.data.stationsId, d.data.stationsIdSupplement),
-                                    fillOpacity: 1
+                                    color: getBorderColor(d.data.networkNumber, d.data.stationsId, d.data.stationsIdSupplement),
+                                    fillColor: getColor(d.data.networkNumber, d.data.stationsId, d.data.stationsIdSupplement),
+                                    fillOpacity: 1,
+                                    weight: 0.8
+                                    
                                 }}
                                 radius={20}
                                 eventHandlers={{
-                                    click: () => handleCircleClick(d.data),
                                 }}
                             >
                                 <Tooltip>
                                     <div>
-                                        Name: {d.data.name}<br/>
-                                        Coordinates:<br/>
-                                        latitude: {d.data.latitude}<br/>
+                                        Name: {d.data.name}<br />
+                                        Coordinates:<br />
+                                        latitude: {d.data.latitude}<br />
                                         longitude: {d.data.longitude}
                                     </div>
                                 </Tooltip>
                             </Circle>
-                        ))
-                        }
+                        ))}
                     </g>
                 </svg>
             </MapContainer>
         </div>
     );
-
 }

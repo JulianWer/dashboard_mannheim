@@ -1,18 +1,18 @@
 import * as d3 from "d3";
-import {LegacyRef, useEffect, useRef} from "react";
-import {getStationData} from "../utils/DataHandler.ts"
-import {IStation} from "./Dashboard.tsx";
+import { LegacyRef, useEffect, useRef } from "react";
+import { getStationData } from "../utils/DataHandler.ts"
+import { IStation } from "./Dashboard.tsx";
 
 
 interface IBarchart {
-    selectedStation: IStation | undefined
-    setSelectedStation: React.Dispatch<React.SetStateAction<IStation | undefined>>;
+    selectedStations: IStation[] | undefined
+    setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
 }
 
 const dataFromStations = await getStationData()
 
 function Barchart(props: IBarchart) {
-    const {selectedStation, setSelectedStation} = props;
+    const { selectedStations } = props;
 
     const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value.averageTemperature);
     const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green", "yellow", "red"]));
@@ -22,17 +22,41 @@ function Barchart(props: IBarchart) {
         .interpolator(customInterpolator);
 
     const getColor = (stationName: string, temperature: number): string => {
-        // Ensure that scale and selectedStation are properly defined in the surrounding scope
+        // Ensure that scale is properly defined in the surrounding scope
         const baseColor = scale(temperature);
 
-        if (selectedStation) {
-            const {networkNumber, stationsId, stationsIdSupplement} = selectedStation;
-            const selectedName = `${networkNumber}-${stationsId}-${stationsIdSupplement}`;
-            if (selectedName === stationName) {
+        if (selectedStations && selectedStations.length > 0) {
+            const isSelected = selectedStations.some(station => {
+                const selectedName = `${station.networkNumber}-${station.stationsId}-${station.stationsIdSupplement}`;
+                return selectedName === stationName;
+            });
+
+            if (isSelected) {
                 return baseColor;
             } else {
-                const {r, g, b} = d3.color(baseColor).rgb();
-                return `rgba(${r},${g},${b},0.4)`;
+                const { r, g, b } = d3.color(baseColor).rgb();
+                return `rgba(${r},${g},${b},0.25)`;
+            }
+        } else {
+            return baseColor;
+        }
+    };
+
+    const getBorderColor = (stationName: string): string => {
+        // Ensure that scale is properly defined in the surrounding scope
+        const baseColor = "black";
+
+        if (selectedStations && selectedStations.length > 0) {
+            const isSelected = selectedStations.some(station => {
+                const selectedName = `${station.networkNumber}-${station.stationsId}-${station.stationsIdSupplement}`;
+                return selectedName === stationName;
+            });
+
+            if (isSelected) {
+                return baseColor;
+            } else {
+                const { r, g, b } = d3.color(baseColor).rgb();
+                return `rgba(${r},${g},${b},0.25)`;
             }
         } else {
             return baseColor;
@@ -40,7 +64,7 @@ function Barchart(props: IBarchart) {
     };
 
 
-    const margin = {top: 30, right: 30, bottom: 70, left: 60}
+    const margin = { top: 30, right: 30, bottom: 70, left: 60 }
     const width = 460 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     // Parse the Data
@@ -83,7 +107,7 @@ function Barchart(props: IBarchart) {
         <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
             <g transform={`translate(${margin.left},${margin.top})`}>
                 {/* x-Achsen-Beschriftung */}
-                <g ref={gx as unknown as LegacyRef<SVGGElement> | undefined} transform={`translate(0, ${height})`}/>
+                <g ref={gx as unknown as LegacyRef<SVGGElement> | undefined} transform={`translate(0, ${height})`} />
                 <text
                     x={width / 2}
                     y={height + margin.top + 20}
@@ -95,7 +119,7 @@ function Barchart(props: IBarchart) {
                 </text>
 
                 {/* y-Achsen-Beschriftung */}
-                <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined}/>
+                <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined} />
                 <text
                     x={-margin.left - 70}
                     y={-margin.top + 5}
@@ -107,7 +131,7 @@ function Barchart(props: IBarchart) {
                     Temperature in °C
                 </text>
 
-                <g fill="white" stroke="currentColor" strokeWidth="1.5">
+                <g fill="white" stroke="currentColor" strokeWidth="1">
                     {sortedTemperaturesArray.map((d, i) => (
                         <rect
                             key={i}
@@ -116,8 +140,8 @@ function Barchart(props: IBarchart) {
                             width={x.bandwidth()}
                             height={height - y(d.data.averageTemperature)}
                             fill={getColor(d.stationName, d.data.averageTemperature)}
+                            color={getBorderColor(d.stationName)}
                             data-station={d.data.name}
-                            onClick={() => setSelectedStation(d.data)}
                         />
                     ))}
                 </g>
