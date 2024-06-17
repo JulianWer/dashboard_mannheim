@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import {IStation} from "../components/Dashboard.tsx";
 import metadata from "../metadata.json";
 
-export function getStationData(desiredDate: string, desiredStartTime: string="00:00", desiredEndTime: string="23:59") {
+export function getStationData(desiredDate: string, desiredStartTime: string = "00:00", desiredEndTime: string = "23:59") {
     return d3.csv("/data.csv").then((data) => {
         // Filtern der Daten nach dem gewünschten Tag
         const filteredData = data.filter(d => {
@@ -36,7 +36,10 @@ export function getStationData(desiredDate: string, desiredStartTime: string="00
             }
             stationData[stationName].temperatures.push(parseFloat(d.temperature));
             stationData[stationName].averageTemperature = getAverageTemperature(stationData[stationName].temperatures);
-            stationData[stationName].temperaturesWithTimestamp.push({timestamp: new Date(d.timestamps), temperature: parseFloat(d.temperature as string)});
+            stationData[stationName].temperaturesWithTimestamp.push({
+                timestamp: new Date(d.timestamps),
+                temperature: parseFloat(d.temperature as string)
+            });
         });
 
 
