@@ -4,11 +4,11 @@ import * as d3 from "d3";
 import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
 
 // Stations ID : 015 for testing
-
-const data: StationData = await getStationData("2024-04-07");
+const day: string = "2024-04-07"
+const data: StationData = await getStationData(day);
 const dataForOneStation: IStation[] = Object.values(data).filter((station: IStation): boolean => station.stationsId === "015");
-let temperatures: number[] = dataForOneStation[0].temperatures;
-temperatures = temperatures.filter((temp) => temp !== -999.0)
+// let temperatures: number[] = dataForOneStation[0].temperatures;
+// temperatures = temperatures.filter((temp) => temp !== -999.0)
 let temperaturesWithTimestamp: TimeTemp[] = dataForOneStation[0].temperaturesWithTimestamp;
 temperaturesWithTimestamp = temperaturesWithTimestamp.filter((temp) => temp.temperature !== -999.0)
 
@@ -22,12 +22,13 @@ export default function LineChart() {
 
     const xTimeScale = d3
         .scaleTime()
-        .domain([new Date("2024-04-07T00:00:00Z"), new Date("2024-04-07T23:59:59Z")])
+        .domain([new Date(day + "T00:00:00+02:00"), new Date(day + "T23:59:59+02:00")])
         .range([0, width]);
 
     const yScale = d3
         .scaleLinear()
-        .domain(d3.extent(temperatures) as [number, number])
+        // .domain(d3.extent(temperatures) as [number, number])
+        .domain([0, 40])
         .range([height, 0]);
 
     useEffect(() => {
@@ -66,8 +67,8 @@ export default function LineChart() {
                 >
                     Temperature in °C
                 </text>
+                <path fill="none" stroke="steelblue" strokeWidth="1.5" d={drawLine(temperaturesWithTimestamp)}/>
             </g>
-            <path fill="none" stroke="steelblue" strokeWidth="1.5" d={drawLine(temperaturesWithTimestamp)}/>
         </svg>
     );
 }

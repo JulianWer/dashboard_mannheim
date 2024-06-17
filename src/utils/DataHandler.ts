@@ -3,6 +3,12 @@ import {IStation} from "../components/Dashboard.tsx";
 import metadata from "../metadata.json";
 import {StationData} from "../components/Dashboard.tsx";
 
+function isSameDate(date1, date2) {
+    return date1.getFullYear() === date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate();
+}
+
 export function getStationData(desiredDate: string, desiredStartTime: string = "00:00", desiredEndTime: string = "23:59"): Promise<StationData> {
     return d3.csv("/data.csv").then((data) => {
         // Filtern der Daten nach dem gewünschten Tag
@@ -12,9 +18,9 @@ export function getStationData(desiredDate: string, desiredStartTime: string = "
                 // Parsen des Zeitstempels
                 const timestamp = new Date(d.timestamps);
                 // const desiredDate = "2024-04-07";
-                const desiredBeginning = new Date(desiredDate + "T" + desiredStartTime + ":00Z");
-                const desiredEnd = new Date(desiredDate + "T" + desiredEndTime + ":59Z");
-                return timestamp.toISOString().slice(0, 10) === desiredDate && timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();
+                const desiredBeginning = new Date(desiredDate + "T" + desiredStartTime + ":00+02:00");
+                const desiredEnd = new Date(desiredDate + "T" + desiredEndTime + ":59+02:00");
+                return isSameDate(timestamp, new Date(desiredDate)) && timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();
             }
         });
 
