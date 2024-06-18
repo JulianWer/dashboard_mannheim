@@ -82,7 +82,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
     };
 
     return (
-        <div style={{height: "90vh", width: "100vh", position: "relative"}}>
+        <div style={{height: "95vh", width: "100vh", position: "relative"}}>
             {selectedStations.length !== 0 && !isInGuidedMode && (
                 <button
                     onClick={() => {
