@@ -5,31 +5,49 @@ import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
 
 interface ILineChart {
     date: string,
-    selectedStations: IStation[]
+    selectedStations: IStation[],
+    setSelectedStation: React.Dispatch<React.SetStateAction<IStation | undefined>>;
 }
 
 export default function LineChart(props: ILineChart) {
-    const {date, selectedStations} = props;
+    const {date, selectedStations, setSelectedStation} = props;
     const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
+    const [selectedStationsInChart, setSelectedStationsInChart] = useState<IStation[]>([]);
     const selectedStationsIds: string[] = selectedStations.map((station: IStation): string => station.stationsId);
 
     const fetchData = useCallback(async () => {
         const data: StationData = await getStationData(date);
-        const dataForSelectedStations: IStation[] = Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId));
-        // let temperatures: number[] = dataForOneStation[0].temperatures;
-        // temperatures = temperatures.filter((temp) => temp !== -999.0);
-        // let temperaturesWithTimestamp: TimeTemp[] = dataForSelectedStations[0].temperaturesWithTimestamp;
+        const dataForSelectedStations: IStation[] = selectedStations?.length === 0 ?
+            Object.values(data) :
+            Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId));
         const cleanedDataForSelectedStations: IStation[] = dataForSelectedStations.map((station: IStation): IStation => {
             station.temperaturesWithTimestamp = station.temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0)
             return station;
         });
-        // temperaturesWithTimestamp = temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0);
         setSelectedStationsData(cleanedDataForSelectedStations);
-    },[date, selectedStationsIds]);
+    }, [date, selectedStations.length, selectedStationsIds]);
 
     useEffect(() => {
         fetchData();
-    }, [fetchData])
+    }, [fetchData]);
+
+    const getColor = (stationID: string): string => {
+        const baseColor: string = "steelblue";
+        if (selectedStationsInChart?.length > 0) {
+            const isSelected: boolean = selectedStationsInChart.some((station: IStation): boolean => station.stationsId === stationID);
+
+            if (isSelected) {
+                // return baseColor;
+                return "red";
+            } else {
+                // const {r, g, b} = d3.color(baseColor).rgb();
+                // return `rgba(${r},${g},${b},0.25)`;
+                return baseColor;
+            }
+        } else {
+            return baseColor;
+        }
+    };
 
 
     const margin = {top: 10, right: 30, bottom: 30, left: 60};
@@ -91,7 +109,17 @@ export default function LineChart(props: ILineChart) {
                     Temperature in °C
                 </text>
                 {selectedStationsData.map((station: IStation, index: number) => (
-                    <path key={index} fill="none" stroke="steelblue" strokeWidth="1.5" d={drawLine(station.temperaturesWithTimestamp)}/>
+                    <path key={index} fill="none" stroke={getColor(station.stationsId)} strokeWidth="1.5"
+                          d={drawLine(station.temperaturesWithTimestamp)} onClick={() => {
+                        setSelectedStation(station);
+                        const isAlreadySelectedInChart: boolean = selectedStationsInChart.some((stationSelected: IStation): boolean => stationSelected.stationsId === station.stationsId);
+                        if (!isAlreadySelectedInChart) {
+                            selectedStationsInChart.push(station);
+                            setSelectedStationsInChart(selectedStationsInChart);
+                        } else {
+                            setSelectedStationsInChart([]);
+                        }
+                    } /* would pass average for the whole day -> what do we want to show in info card? */}/>
                 ))}
 
             </g>

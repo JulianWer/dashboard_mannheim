@@ -75,7 +75,7 @@ export default function Dashboard() {
             <div>
                 <BarChart selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
                 <ExtraInfoCard selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
-                <LineChart date="2024-04-07" selectedStations={initialStations} />
+                <LineChart date="2024-04-07" selectedStations={initialStations} setSelectedStation={setSelectedStation} />
             </div>
         </div>
     )
