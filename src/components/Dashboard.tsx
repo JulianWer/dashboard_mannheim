@@ -32,7 +32,7 @@ export default function Dashboard() {
             <div>
                 <BarChart selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
                 <ExtraInfoCard selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
-                <LineChart />
+                <LineChart date="2024-04-07" />
             </div>
         </div>
     )

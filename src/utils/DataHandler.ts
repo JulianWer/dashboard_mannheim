@@ -3,13 +3,7 @@ import {IStation} from "../components/Dashboard.tsx";
 import metadata from "../metadata.json";
 import {StationData} from "../components/Dashboard.tsx";
 
-function isSameDate(date1, date2) {
-    return date1.getFullYear() === date2.getFullYear() &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getDate() === date2.getDate();
-}
-
-export function getStationData(desiredDate: string, desiredStartTime: string = "00:00", desiredEndTime: string = "23:59"): Promise<StationData> {
+export function getStationData(desiredDate: string, desiredEndTime: string = "12:00:00", hoursUntilEnd: number = 24): Promise<StationData> {
     return d3.csv("/data.csv").then((data) => {
         // Filtern der Daten nach dem gewünschten Tag
         const filteredData = data.filter(d => {
@@ -17,10 +11,12 @@ export function getStationData(desiredDate: string, desiredStartTime: string = "
             if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(d.timestamps)) {
                 // Parsen des Zeitstempels
                 const timestamp = new Date(d.timestamps);
-                // const desiredDate = "2024-04-07";
-                const desiredBeginning = new Date(desiredDate + "T" + desiredStartTime + ":00+02:00");
-                const desiredEnd = new Date(desiredDate + "T" + desiredEndTime + ":59+02:00");
-                return isSameDate(timestamp, new Date(desiredDate)) && timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();
+
+                // Hardcoded time zone
+                const desiredEnd: Date = new Date(desiredDate + "T" + desiredEndTime + "+02:00");
+                const desiredBeginning: Date = new Date(desiredDate + "T" + desiredEndTime + "+02:00");
+                desiredBeginning.setHours(desiredBeginning.getHours() - hoursUntilEnd); // Set start date that might be the day before desired date
+                return timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();
             }
         });
 
