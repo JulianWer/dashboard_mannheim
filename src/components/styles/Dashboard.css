@@ -1,8 +1,0 @@
-.diagram-view {
-    display: flex;
-    flex-direction: column; /* Stack the items vertically */
-    align-items: center; /* Center align items horizontally */
-}
-.container {
-    width: 100%; /* Set the width of each bar chart container */
-}

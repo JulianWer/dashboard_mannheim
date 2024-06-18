@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import BarChart from "./BarChart.tsx";
 import ExtraInfoCard from "./ExtraInfoCard.tsx";
 import LineChart from "./LineChart.tsx";
-import "./styles/Dashboard.css"
+import classes from "./styles/Dashboard.module.css"
 
 
 export interface IStation {
@@ -20,7 +20,7 @@ export interface IStation {
 }
 
 export type StationData = Record<string, IStation>;
-export type TimeTemp = {timestamp: Date, temperature: number}
+export type TimeTemp = { timestamp: Date, temperature: number }
 
 const initialStations: IStation[] = [
     {
@@ -81,17 +81,21 @@ export default function Dashboard() {
     return (
         <div style={{width: "100%", display: "flex", gap: "1rem"}}>
             <div>
-                <button type="button" onClick={() => setIsInGuidedMode(false)}>Explore</button>
-                <button type="button" onClick={() => setIsInGuidedMode(true)}>Guide</button>
+                <button type="button" onClick={() => setIsInGuidedMode(false)}
+                        className={!isInGuidedMode ? classes.buttonSelected : classes.buttons}>Explore
+                </button>
+                <button type="button" onClick={() => setIsInGuidedMode(true)}
+                        className={isInGuidedMode ? classes.buttonSelected : classes.buttons}>Guide
+                </button>
                 <LeafletMapTemperature selectedStations={selectedStations}
                                        setSelectedStations={setSelectedStations} isInGuidedMode={isInGuidedMode}/>
             </div>
-            <div className="diagram-view">
+            <div className={classes.diagramView}>
                 <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
                 <LineChart date="2024-04-07"
                            displayedStations={isInGuidedMode ? initialStations : []}
                            selectedStations={selectedStations}
-                           setSelectedStations={setSelectedStations} />
+                           setSelectedStations={setSelectedStations}/>
                 <ExtraInfoCard
                     selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                     isInGuidedMode={isInGuidedMode}/>
