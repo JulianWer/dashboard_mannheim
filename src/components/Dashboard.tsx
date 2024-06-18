@@ -3,6 +3,7 @@ import LeafletMapTemperature from "./LeafletMapTemperature.tsx";
 import "leaflet/dist/leaflet.css";
 import BarChart from "./BarChart.tsx";
 import ExtraInfoCard from "./ExtraInfoCard.tsx";
+import LineChart from "./LineChart.tsx";
 import "./styles/Dashboard.css"
 
 
@@ -13,9 +14,13 @@ export interface IStation {
     name: string,
     stationsId: string,
     stationsIdSupplement: string,
-    temperatures?: Array<number>;
-    averageTemperature?: number
+    temperatures?: Array<number>,
+    averageTemperature?: number,
+    temperaturesWithTimestamp?: TimeTemp[]
 }
+
+export type StationData = Record<string, IStation>;
+export type TimeTemp = {timestamp: Date, temperature: number}
 
 const initialStations: IStation[] = [
     {
@@ -83,7 +88,10 @@ export default function Dashboard() {
             </div>
             <div className="diagram-view">
                 <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
-                <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
+                <LineChart date="2024-04-07"
+                           displayedStations={isInGuidedMode ? initialStations : []}
+                           selectedStations={selectedStations}
+                           setSelectedStations={setSelectedStations} />
                 <ExtraInfoCard
                     selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                     isInGuidedMode={isInGuidedMode}/>
