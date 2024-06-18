@@ -4,22 +4,28 @@ import * as d3 from "d3";
 import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
 
 interface ILineChart {
-    date: string
+    date: string,
+    selectedStations: IStation[]
 }
 
 export default function LineChart(props: ILineChart) {
-    const {date} = props;
-    const [temperaturesWithTimestampOneStation, setTemperaturesWithTimestampOneStation] = useState<TimeTemp[]>([]);
+    const {date, selectedStations} = props;
+    const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
+    const selectedStationsIds: string[] = selectedStations.map((station: IStation): string => station.stationsId);
 
     const fetchData = useCallback(async () => {
         const data: StationData = await getStationData(date);
-        const dataForOneStation: IStation[] = Object.values(data).filter((station: IStation): boolean => station.stationsId === "015");
+        const dataForSelectedStations: IStation[] = Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId));
         // let temperatures: number[] = dataForOneStation[0].temperatures;
         // temperatures = temperatures.filter((temp) => temp !== -999.0);
-        let temperaturesWithTimestamp: TimeTemp[] = dataForOneStation[0].temperaturesWithTimestamp;
-        temperaturesWithTimestamp = temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0);
-        setTemperaturesWithTimestampOneStation(temperaturesWithTimestamp);
-    }, [date]);
+        // let temperaturesWithTimestamp: TimeTemp[] = dataForSelectedStations[0].temperaturesWithTimestamp;
+        const cleanedDataForSelectedStations: IStation[] = dataForSelectedStations.map((station: IStation): IStation => {
+            station.temperaturesWithTimestamp = station.temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0)
+            return station;
+        });
+        // temperaturesWithTimestamp = temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0);
+        setSelectedStationsData(cleanedDataForSelectedStations);
+    },[date, selectedStationsIds]);
 
     useEffect(() => {
         fetchData();
@@ -84,7 +90,10 @@ export default function LineChart(props: ILineChart) {
                 >
                     Temperature in °C
                 </text>
-                <path fill="none" stroke="steelblue" strokeWidth="1.5" d={drawLine(temperaturesWithTimestampOneStation)}/>
+                {selectedStationsData.map((station: IStation, index: number) => (
+                    <path key={index} fill="none" stroke="steelblue" strokeWidth="1.5" d={drawLine(station.temperaturesWithTimestamp)}/>
+                ))}
+
             </g>
         </svg>
     );
