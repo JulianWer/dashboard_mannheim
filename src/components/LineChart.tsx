@@ -1,18 +1,31 @@
 import {getStationData} from "../utils/DataHandler.ts";
-import {LegacyRef, useEffect, useRef} from "react";
+import {LegacyRef, useCallback, useEffect, useRef, useState} from "react";
 import * as d3 from "d3";
 import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
 
-// Stations ID : 015 for testing
-const day: string = "2024-04-07"
-const data: StationData = await getStationData(day);
-const dataForOneStation: IStation[] = Object.values(data).filter((station: IStation): boolean => station.stationsId === "015");
-// let temperatures: number[] = dataForOneStation[0].temperatures;
-// temperatures = temperatures.filter((temp) => temp !== -999.0)
-let temperaturesWithTimestamp: TimeTemp[] = dataForOneStation[0].temperaturesWithTimestamp;
-temperaturesWithTimestamp = temperaturesWithTimestamp.filter((temp) => temp.temperature !== -999.0)
+interface ILineChart {
+    date: string
+}
 
-export default function LineChart() {
+export default function LineChart(props: ILineChart) {
+    const {date} = props;
+    const [temperaturesWithTimestampOneStation, setTemperaturesWithTimestampOneStation] = useState<TimeTemp[]>([]);
+
+    const fetchData = useCallback(async () => {
+        const data: StationData = await getStationData(date);
+        const dataForOneStation: IStation[] = Object.values(data).filter((station: IStation): boolean => station.stationsId === "015");
+        // let temperatures: number[] = dataForOneStation[0].temperatures;
+        // temperatures = temperatures.filter((temp) => temp !== -999.0);
+        let temperaturesWithTimestamp: TimeTemp[] = dataForOneStation[0].temperaturesWithTimestamp;
+        temperaturesWithTimestamp = temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0);
+        setTemperaturesWithTimestampOneStation(temperaturesWithTimestamp);
+    }, [date]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData])
+
+
     const margin = {top: 10, right: 30, bottom: 30, left: 60};
     const width: number = 460 - margin.left - margin.right;
     const height: number = 400 - margin.top - margin.bottom;
@@ -20,9 +33,13 @@ export default function LineChart() {
     const x = useRef<SVGSVGElement>();
     const y = useRef<SVGSVGElement>();
 
+    const scaleStartDate: Date = new Date(date + "T00:00:00+02:00");
+    scaleStartDate.setHours(scaleStartDate.getHours() - 12);
+    const scaleEndDate: Date = new Date(date + "T12:00:00+02:00");
+
     const xTimeScale = d3
         .scaleTime()
-        .domain([new Date(day + "T00:00:00+02:00"), new Date(day + "T23:59:59+02:00")])
+        .domain([scaleStartDate, scaleEndDate])
         .range([0, width]);
 
     const yScale = d3
@@ -67,7 +84,7 @@ export default function LineChart() {
                 >
                     Temperature in °C
                 </text>
-                <path fill="none" stroke="steelblue" strokeWidth="1.5" d={drawLine(temperaturesWithTimestamp)}/>
+                <path fill="none" stroke="steelblue" strokeWidth="1.5" d={drawLine(temperaturesWithTimestampOneStation)}/>
             </g>
         </svg>
     );
