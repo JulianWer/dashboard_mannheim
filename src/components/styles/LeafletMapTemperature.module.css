@@ -1,0 +1,16 @@
+.circleButton {
+    outline: none;
+    border: none; /* If a border is present and causing issues */
+}
+
+.circleButton:focus {
+    outline: none;
+    border: none; /* Again, if needed */
+}
+
+.mapContainer {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+
+}
