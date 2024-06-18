@@ -90,7 +90,10 @@ export default function Dashboard() {
                 <ExtraInfoCard
                     selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                     isInGuidedMode={isInGuidedMode}/>
-                <LineChart date="2024-04-07" selectedStations={initialStations} />
+                <LineChart date="2024-04-07"
+                           displayedStations={isInGuidedMode ? initialStations : []}
+                           selectedStations={selectedStations}
+                           setSelectedStations={setSelectedStations} />
             </div>
 
         </div>

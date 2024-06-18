@@ -4,20 +4,20 @@ import * as d3 from "d3";
 import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
 
 interface ILineChart {
-    date: string,
-    selectedStations: IStation[],
-    setSelectedStation: React.Dispatch<React.SetStateAction<IStation | undefined>>;
+    date: string;
+    displayedStations: IStation[];
+    selectedStations: IStation[];
+    setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
 }
 
 export default function LineChart(props: ILineChart) {
-    const {date, selectedStations, setSelectedStation} = props;
+    const {date, displayedStations, selectedStations, setSelectedStations} = props;
     const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
-    const [selectedStationsInChart, setSelectedStationsInChart] = useState<IStation[]>([]);
-    const selectedStationsIds: string[] = selectedStations.map((station: IStation): string => station.stationsId);
+    const selectedStationsIds: string[] = displayedStations.map((station: IStation): string => station.stationsId);
 
     const fetchData = useCallback(async () => {
         const data: StationData = await getStationData(date);
-        const dataForSelectedStations: IStation[] = selectedStations?.length === 0 ?
+        const dataForSelectedStations: IStation[] = displayedStations?.length === 0 ?
             Object.values(data) :
             Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId));
         const cleanedDataForSelectedStations: IStation[] = dataForSelectedStations.map((station: IStation): IStation => {
@@ -25,7 +25,7 @@ export default function LineChart(props: ILineChart) {
             return station;
         });
         setSelectedStationsData(cleanedDataForSelectedStations);
-    }, [date, selectedStations.length, selectedStationsIds]);
+    }, [date, displayedStations.length, selectedStationsIds]);
 
     useEffect(() => {
         fetchData();
@@ -33,19 +33,34 @@ export default function LineChart(props: ILineChart) {
 
     const getColor = (stationID: string): string => {
         const baseColor: string = "steelblue";
-        if (selectedStationsInChart?.length > 0) {
-            const isSelected: boolean = selectedStationsInChart.some((station: IStation): boolean => station.stationsId === stationID);
+        if (selectedStations?.length > 0) {
+            const isSelected: boolean = selectedStations.some((station: IStation): boolean => station.stationsId === stationID);
 
             if (isSelected) {
-                // return baseColor;
-                return "red";
+                return baseColor;
             } else {
                 // const {r, g, b} = d3.color(baseColor).rgb();
                 // return `rgba(${r},${g},${b},0.25)`;
-                return baseColor;
+                return "rgba(100, 100, 100, 0.25)"
             }
         } else {
             return baseColor;
+        }
+    };
+
+    const handleClick = (event: React.MouseEvent<SVGPathElement, MouseEvent>, clickedStation: IStation): void => {
+        const isAlreadySelected: boolean = selectedStations?.some((station: IStation): boolean => station.stationsId === clickedStation.stationsId);
+
+        if (selectedStations?.length === 0) {
+            setSelectedStations([clickedStation]);
+        } else {
+            if (event.metaKey || event.ctrlKey) {
+                if (isAlreadySelected) {
+                    setSelectedStations(selectedStations.filter((station: IStation): boolean => !(station.stationsId === clickedStation.stationsId)));
+                } else {
+                    setSelectedStations((prev: IStation[]): IStation[] => [...prev, clickedStation]);
+                }
+            }
         }
     };
 
@@ -109,17 +124,12 @@ export default function LineChart(props: ILineChart) {
                     Temperature in °C
                 </text>
                 {selectedStationsData.map((station: IStation, index: number) => (
-                    <path key={index} fill="none" stroke={getColor(station.stationsId)} strokeWidth="1.5"
-                          d={drawLine(station.temperaturesWithTimestamp)} onClick={() => {
-                        setSelectedStation(station);
-                        const isAlreadySelectedInChart: boolean = selectedStationsInChart.some((stationSelected: IStation): boolean => stationSelected.stationsId === station.stationsId);
-                        if (!isAlreadySelectedInChart) {
-                            selectedStationsInChart.push(station);
-                            setSelectedStationsInChart(selectedStationsInChart);
-                        } else {
-                            setSelectedStationsInChart([]);
-                        }
-                    } /* would pass average for the whole day -> what do we want to show in info card? */}/>
+                    <path key={index}
+                          fill="none"
+                          stroke={getColor(station.stationsId)}
+                          strokeWidth="1.5"
+                          d={drawLine(station.temperaturesWithTimestamp)}
+                          onClick={(event: React.MouseEvent<SVGPathElement, MouseEvent>) => handleClick(event, station)}/>
                 ))}
 
             </g>
