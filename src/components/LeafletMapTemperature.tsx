@@ -6,7 +6,7 @@ import {getStationData} from "../utils/DataHandler.ts";
 import * as d3 from 'd3';
 import {IStation} from "./Dashboard.tsx";
 
-const temperaturesForAllStations = await getStationData("2024-04-07", "04:30", 1)
+const temperaturesForAllStations = await getStationData("2024-04-07", "06:30", 1)
 
 interface ILeafletMapTemperature {
     selectedStations: IStation[];
