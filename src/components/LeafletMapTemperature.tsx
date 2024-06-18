@@ -136,9 +136,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                                 <Tooltip>
                                     <div>
                                         Name: {d.data.name}<br/>
-                                        Coordinates:<br/>
-                                        latitude: {d.data.latitude}<br/>
-                                        longitude: {d.data.longitude}
+                                        Temperatur: {d.data.averageTemperature.toFixed(2)}°C
                                     </div>
                                 </Tooltip>
                             </Circle>

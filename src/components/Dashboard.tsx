@@ -3,6 +3,7 @@ import LeafletMapTemperature from "./LeafletMapTemperature.tsx";
 import "leaflet/dist/leaflet.css";
 import BarChart from "./BarChart.tsx";
 import ExtraInfoCard from "./ExtraInfoCard.tsx";
+import "./styles/Dashboard.css"
 
 
 export interface IStation {
@@ -80,7 +81,8 @@ export default function Dashboard() {
                 <LeafletMapTemperature selectedStations={selectedStations}
                                        setSelectedStations={setSelectedStations} isInGuidedMode={isInGuidedMode}/>
             </div>
-            <div>
+            <div className="diagram-view">
+                <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
                 <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
                 <ExtraInfoCard
                     selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
