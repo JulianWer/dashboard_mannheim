@@ -32,7 +32,7 @@ export default function LineChart(props: ILineChart) {
     }, [fetchData]);
 
     const getColor = (stationID: string): string => {
-        const baseColor: string = "steelblue";
+        const baseColor: string = "black";
         if (selectedStations?.length > 0) {
             const isSelected: boolean = selectedStations.some((station: IStation): boolean => station.stationsId === stationID);
 
@@ -41,7 +41,7 @@ export default function LineChart(props: ILineChart) {
             } else {
                 // const {r, g, b} = d3.color(baseColor).rgb();
                 // return `rgba(${r},${g},${b},0.25)`;
-                return "rgba(100, 100, 100, 0.25)"
+                return "rgba(100, 100, 100, 0.10)"
             }
         } else {
             return baseColor;
@@ -65,9 +65,11 @@ export default function LineChart(props: ILineChart) {
     };
 
 
-    const margin = {top: 10, right: 30, bottom: 30, left: 60};
-    const width: number = 460 - margin.left - margin.right;
-    const height: number = 400 - margin.top - margin.bottom;
+    const margin = { top: 20, right: 0, bottom: 70, left: 35 }
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerHeight || 0);
+    const height = (35 * vh) / 100 - margin.top - margin.bottom;
+    const width = (20 * vw) / 100 - margin.left - margin.right;
 
     const x = useRef<SVGSVGElement>();
     const y = useRef<SVGSVGElement>();
@@ -84,7 +86,7 @@ export default function LineChart(props: ILineChart) {
     const yScale = d3
         .scaleLinear()
         // .domain(d3.extent(temperatures) as [number, number])
-        .domain([0, 40])
+        .domain([10, 30])
         .range([height, 0]);
 
     useEffect(() => {
