@@ -1,8 +1,10 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import LeafletMapTemperature from "./LeafletMapTemperature.tsx";
 import "leaflet/dist/leaflet.css";
 import BarChart from "./BarChart.tsx";
 import ExtraInfoCard from "./ExtraInfoCard.tsx";
+import {getStationData} from "../utils/DataHandler.ts";
+import {DatePicker} from "./DatePicker.tsx";
 
 
 export interface IStation {
@@ -62,6 +64,18 @@ const initialStations: IStation[] = [
 export default function Dashboard() {
     const [isInGuidedMode, setIsInGuidedMode] = useState<boolean>(false);
     const [selectedStations, setSelectedStations] = useState<IStation[]>([]);
+    const [temperaturesForAllStations, setTemperaturesForAllStations] = useState<{ [key: string]: IStation }>({});
+    const [selectedDate, setSelectedDate] = useState<string>("2024-04-07");
+
+    const fetchData = useCallback(async () => {
+        const data = await getStationData(selectedDate);
+        setTemperaturesForAllStations(data);
+    }, [selectedDate])
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
     useEffect(() => {
             if (isInGuidedMode) {
                 setSelectedStations(initialStations);
@@ -78,10 +92,13 @@ export default function Dashboard() {
                 <button type="button" onClick={() => setIsInGuidedMode(false)}>Explore</button>
                 <button type="button" onClick={() => setIsInGuidedMode(true)}>Guide</button>
                 <LeafletMapTemperature selectedStations={selectedStations}
-                                       setSelectedStations={setSelectedStations} isInGuidedMode={isInGuidedMode}/>
+                                       setSelectedStations={setSelectedStations} isInGuidedMode={isInGuidedMode}
+                                       temperaturesForAllStations={temperaturesForAllStations}/>
             </div>
-            <div>
-                <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
+            <div style={{display: 'flex', flexDirection: 'column', padding: '10px', gap: '10px'}}>
+                <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
+                <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}
+                          dataFromStations={temperaturesForAllStations}/>
                 <ExtraInfoCard
                     selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                     isInGuidedMode={isInGuidedMode}/>

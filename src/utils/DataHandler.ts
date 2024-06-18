@@ -3,7 +3,7 @@ import {IStation} from "../components/Dashboard.tsx";
 import metadata from "../metadata.json";
 
 
-export function getStationData() {
+export function getStationData(date?: string) {
     return d3.csv("/public/data.csv").then((data) => {
         // Filtern der Daten nach dem gewünschten Tag
         const filteredData = data.filter(d => {
@@ -11,7 +11,7 @@ export function getStationData() {
             if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(d.timestamps)) {
                 // Parsen des Zeitstempels
                 const timestamp = new Date(d.timestamps);
-                const desiredDate = "2024-04-07";
+                const desiredDate = date ?? "2024-04-07";
                 const desiredBeginning = new Date(desiredDate + "T03:30:00Z");
                 const desiredEnd = new Date(desiredDate + "T04:30:00Z");
                 return timestamp.toISOString().slice(0, 10) === desiredDate && timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();

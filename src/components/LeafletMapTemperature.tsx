@@ -2,13 +2,12 @@ import {Circle, MapContainer, TileLayer, Tooltip} from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import {LatLngTuple} from "leaflet";
 import classes from "./styles/LeafletMapTemperature.module.css";
-import {getStationData} from "../utils/DataHandler.ts";
 import * as d3 from 'd3';
 import {IStation} from "./Dashboard.tsx";
 
-const temperaturesForAllStations = await getStationData();
 
 interface ILeafletMapTemperature {
+    temperaturesForAllStations: { [key: string]: IStation };
     selectedStations: IStation[];
     setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
     isInGuidedMode: boolean;
@@ -16,11 +15,12 @@ interface ILeafletMapTemperature {
 
 export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
 
-    const {selectedStations, setSelectedStations, isInGuidedMode} = props;
+    const {selectedStations, setSelectedStations, isInGuidedMode, temperaturesForAllStations} = props;
+
 
     const coordinates: LatLngTuple = [49.499061, 8.475401];
 
-    const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations as IStation).map(value => parseFloat(value.averageTemperature));
+    const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations).map((value) => parseFloat(String((value as IStation).averageTemperature)));
 
     const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green", "yellow", "red"]));
 
