@@ -1,7 +1,7 @@
 import * as d3 from "d3";
-import { LegacyRef, useEffect, useRef } from "react";
-import { getStationData } from "../utils/DataHandler.ts"
-import { IStation } from "./Dashboard.tsx";
+import {LegacyRef, useEffect, useRef} from "react";
+import {getStationData} from "../utils/DataHandler.ts"
+import {IStation} from "./Dashboard.tsx";
 
 
 interface IBarchart {
@@ -12,7 +12,7 @@ interface IBarchart {
 const dataFromStations = await getStationData("2024-04-07", "06:30", 1)
 
 function Barchart(props: IBarchart) {
-    const { selectedStations } = props;
+    const {selectedStations, setSelectedStations} = props;
 
     const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value.averageTemperature);
     const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green", "yellow", "red"]));
@@ -34,7 +34,7 @@ function Barchart(props: IBarchart) {
             if (isSelected) {
                 return baseColor;
             } else {
-                const { r, g, b } = d3.color(baseColor).rgb();
+                const {r, g, b} = d3.color(baseColor).rgb();
                 return `rgba(${r},${g},${b},0.25)`;
             }
         } else {
@@ -55,7 +55,7 @@ function Barchart(props: IBarchart) {
             if (isSelected) {
                 return baseColor;
             } else {
-                const { r, g, b } = d3.color(baseColor).rgb();
+                const {r, g, b} = d3.color(baseColor).rgb();
                 return `rgba(${r},${g},${b},0.25)`;
             }
         } else {
@@ -105,14 +105,40 @@ function Barchart(props: IBarchart) {
     }, [gx, gy, x, y]);
 
 
+    const handleRectClock = (station: IStation, event: MouseEvent) => {
+        const isAlreadySelected = selectedStations.some(selectedStation =>
+            station.networkNumber === selectedStation.networkNumber &&
+            station.stationsId === selectedStation.stationsId &&
+            station.stationsIdSupplement === selectedStation.stationsIdSupplement
+        );
+        if (selectedStations.length === 0) {
+            setSelectedStations([station]);
+        } else {
+
+            if (event.metaKey || event.ctrlKey) {
+                if (isAlreadySelected) {
+                    setSelectedStations(selectedStations.filter(selectedStation =>
+                        !(selectedStation.networkNumber === station.networkNumber &&
+                            selectedStation.stationsId === station.stationsId &&
+                            selectedStation.stationsIdSupplement === station.stationsIdSupplement)
+                    ));
+                } else {
+                    setSelectedStations((prev) => [...prev, station]);
+                }
+            } else {
+                setSelectedStations([station]);
+            }
+        }
+    };
+
     return (
         <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
             <g transform={`translate(${margin.left},${margin.top})`}>
                 {/* x-Achsen-Beschriftung */}
-                <g ref={gx as unknown as LegacyRef<SVGGElement> | undefined} transform={`translate(0, ${height})`} />
+                <g ref={gx as unknown as LegacyRef<SVGGElement> | undefined} transform={`translate(0, ${height})`}/>
                 <text
                     x={width / 2}
-                    y={height + margin.top + 20}
+                    y={height + margin.top + 30}
                     textAnchor="middle"
                     fill="black"
                     fontSize="14px"
@@ -121,10 +147,10 @@ function Barchart(props: IBarchart) {
                 </text>
 
                 {/* y-Achsen-Beschriftung */}
-                <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined} />
+                <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined}/>
                 <text
                     x={-margin.left - 70}
-                    y={-margin.top + 5}
+                    y={-margin.top - 5}
                     textAnchor="middle"
                     transform={`rotate(-90)`}
                     fill="black"
@@ -144,6 +170,7 @@ function Barchart(props: IBarchart) {
                             fill={getColor(d.stationName, d.data.averageTemperature)}
                             color={getBorderColor(d.stationName)}
                             data-station={d.data.name}
+                            onClick={(e) => handleRectClock(d.data, e.nativeEvent)}
                         />
                     ))}
                 </g>

@@ -20,7 +20,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
 
     const coordinates: LatLngTuple = [49.499061, 8.475401];
 
-    const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations as IStation).map(value => parseFloat(value.averageTemperature));
+    const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations).map(value => parseFloat(String((value as IStation).averageTemperature)));
 
     const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green", "yellow", "red"]));
 
@@ -77,12 +77,14 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                 } else {
                     setSelectedStations((prev) => [...prev, station]);
                 }
+            } else {
+                setSelectedStations([station]);
             }
         }
     };
 
     return (
-        <div style={{height: "90vh", width: "100vh", position: "relative"}}>
+        <div style={{height: "95vh", width: "100vh", position: "relative"}}>
             {selectedStations.length !== 0 && !isInGuidedMode && (
                 <button
                     onClick={() => {
@@ -125,7 +127,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                                     weight: 0.8
 
                                 }}
-                                radius={20}
+                                radius={25}
                                 eventHandlers={{
                                     click: (e) => {
                                         !isInGuidedMode ? handleCircleClick(d.data, e.originalEvent) : null;
@@ -136,9 +138,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                                 <Tooltip>
                                     <div>
                                         Name: {d.data.name}<br/>
-                                        Coordinates:<br/>
-                                        latitude: {d.data.latitude}<br/>
-                                        longitude: {d.data.longitude}
+                                        Temperatur: {d.data.averageTemperature.toFixed(2)}°C
                                     </div>
                                 </Tooltip>
                             </Circle>
