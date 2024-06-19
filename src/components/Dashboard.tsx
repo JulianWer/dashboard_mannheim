@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import BarChart from "./BarChart.tsx";
 import ExtraInfoCard from "./ExtraInfoCard.tsx";
 import LineChart from "./LineChart.tsx";
-import classes from "./styles/Dashboard.module.css"
+import {Card} from "@/components/ui/card.tsx";
 
 
 export interface IStation {
@@ -79,28 +79,36 @@ export default function Dashboard() {
         , [isInGuidedMode]);
 
     return (
-        <div style={{width: "100%", display: "flex", gap: "1rem"}}>
+        <div className="flex flex-wrap justify-around p-4">
+            <Card>
+                <LeafletMapTemperature
+                    selectedStations={selectedStations}
+                    setSelectedStations={setSelectedStations}
+                    isInGuidedMode={isInGuidedMode}
+                    setIsInGuidedMode={setIsInGuidedMode}
+                />
+            </Card>
             <div>
-                <button type="button" onClick={() => setIsInGuidedMode(false)}
-                        className={!isInGuidedMode ? classes.buttonSelected : classes.buttons}>Explore
-                </button>
-                <button type="button" onClick={() => setIsInGuidedMode(true)}
-                        className={isInGuidedMode ? classes.buttonSelected : classes.buttons}>Guide
-                </button>
-                <LeafletMapTemperature selectedStations={selectedStations}
-                                       setSelectedStations={setSelectedStations} isInGuidedMode={isInGuidedMode}/>
-            </div>
-            <div className={classes.diagramView}>
-                <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
-                <LineChart date="2024-04-07"
-                           displayedStations={isInGuidedMode ? initialStations : []}
-                           selectedStations={selectedStations}
-                           setSelectedStations={setSelectedStations}/>
+                <Card>
+                    <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
+                </Card>
+
+                <Card>
+                    <LineChart
+                        date="2024-04-07"
+                        displayedStations={isInGuidedMode ? initialStations : []}
+                        selectedStations={selectedStations}
+                        setSelectedStations={setSelectedStations}
+                    />
+                </Card>
+
                 <ExtraInfoCard
                     selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
-                    isInGuidedMode={isInGuidedMode}/>
-            </div>
+                    isInGuidedMode={isInGuidedMode}
+                />
 
+            </div>
         </div>
+
     );
 }
