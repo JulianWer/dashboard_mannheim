@@ -1,6 +1,7 @@
 import {IStation} from "./Dashboard.tsx";
 import "./styles/ExtraInfoCard.css"
-import {Card, CardContent} from "@/components/ui/card.tsx";
+import {Card, CardContent, CardFooter} from "@/components/ui/card.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 interface IExtraInfoCard {
     selectedStation: IStation | undefined;
@@ -61,11 +62,17 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                 }}>Temperatur: {selectedStation.averageTemperature !== undefined ? selectedStation.averageTemperature.toFixed(2) : 'N/A'}°C</p>
                                 <p style={{fontSize: "2.5vh", margin: "5"}}>Breitengrad: {selectedStation.latitude}</p>
                                 <p style={{fontSize: "2.5vh", margin: "5"}}>Längengrad: {selectedStation.longitude}</p>
-                                <a style={{fontSize: "2.5vh", margin: "5"}} href={
-                                    `https://maps.google.com/maps?q=&layer=c&cbll=${selectedStation.latitude},${selectedStation.longitude}&cbp=11,0,0,0,0`}>
-                                    Google street view
-                                </a>{/*create button*/}
+
+
                             </CardContent>
+                            <CardFooter>
+                                <Button
+                                    className={"bg-blue-500 text-white hover:bg-blue-600"}
+                                    onClick={() => window.location.href = `https://maps.google.com/maps?q=&layer=c&cbll=${selectedStation.latitude},${selectedStation.longitude}&cbp=11,0,0,0,0`}
+                                >
+                                    Google Street View
+                                </Button>
+                            </CardFooter>
                         </Card>
                     )}
                 </div>
