@@ -20,7 +20,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
 
     const coordinates: LatLngTuple = [49.499061, 8.475401];
 
-    const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations as IStation).map(value => parseFloat(value.averageTemperature));
+    const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations).map(value => parseFloat(String((value as IStation).averageTemperature)));
 
     const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green", "yellow", "red"]));
 
@@ -77,6 +77,8 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                 } else {
                     setSelectedStations((prev) => [...prev, station]);
                 }
+            } else {
+                setSelectedStations([station]);
             }
         }
     };
@@ -125,7 +127,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                                     weight: 0.8
 
                                 }}
-                                radius={20}
+                                radius={25}
                                 eventHandlers={{
                                     click: (e) => {
                                         !isInGuidedMode ? handleCircleClick(d.data, e.originalEvent) : null;
