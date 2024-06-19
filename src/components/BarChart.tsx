@@ -64,11 +64,11 @@ function Barchart(props: IBarchart) {
     };
 
 
-    const margin = { top: 20, right: 0, bottom: 70, left: 35 }
+    const margin = {top: 20, right: 0, bottom: 70, left: 35}
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerHeight || 0);
     const height = (35 * vh) / 100 - margin.top - margin.bottom;
-    const width = (20 * vw) / 100 - margin.left - margin.right;
+    const width = (30 * vw) / 100 - margin.left - margin.right;
     // Parse the Data
     const temperaturesArray = Object.entries(dataFromStations).map(([stationName, data]) => ({
         stationName,

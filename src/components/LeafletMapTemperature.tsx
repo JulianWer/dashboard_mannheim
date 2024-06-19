@@ -5,6 +5,7 @@ import classes from "./styles/LeafletMapTemperature.module.css";
 import {getStationData} from "../utils/DataHandler.ts";
 import * as d3 from 'd3';
 import {IStation} from "./Dashboard.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 const temperaturesForAllStations = await getStationData("2024-04-07", "06:30", 1)
 
@@ -12,11 +13,12 @@ interface ILeafletMapTemperature {
     selectedStations: IStation[];
     setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
     isInGuidedMode: boolean;
+    setIsInGuidedMode?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
 
-    const {selectedStations, setSelectedStations, isInGuidedMode} = props;
+    const {selectedStations, setSelectedStations, isInGuidedMode, setIsInGuidedMode} = props;
 
     const coordinates: LatLngTuple = [49.499061, 8.475401];
 
@@ -84,26 +86,55 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
     };
 
     return (
-        <div style={{height: "95vh", width: "100vh", position: "relative"}}>
+        <div style={{width: "100vh", position: "relative"}}>
             {selectedStations.length !== 0 && !isInGuidedMode && (
-                <button
+                <Button
                     onClick={() => {
                         setSelectedStations([])
                     }}
+                    className={`bg-red-500 text-white hover:bg-red-600 focus:outline-none`}
                     style={{
                         position: "absolute",
                         top: "10px",
                         right: "10px",
                         zIndex: 1000, // Ensure the button appears above the map
                         padding: "10px",
-                        backgroundColor: "white",
                         border: "1px solid #ccc",
-                        borderRadius: "4px",
                         cursor: "pointer"
                     }}
                 >
                     Reset selection
-                </button>)}
+                </Button>)}
+            <Button
+                className={` ${!isInGuidedMode ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                style={{
+                    position: "absolute",
+                    left: "1rem",
+                    bottom: "10px",
+                    zIndex: 1000,
+                    padding: "10px",
+                    cursor: "pointer"
+                }}
+                type="button"
+                onClick={() => setIsInGuidedMode(false)}
+            >
+                Explore
+            </Button>
+            <Button
+                className={` ${isInGuidedMode ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                style={{
+                    position: "absolute",
+                    left: "6rem",
+                    bottom: "10px",
+                    zIndex: 1000,
+                    padding: "10px",
+                    cursor: "pointer"
+                }}
+                type="button"
+                onClick={() => setIsInGuidedMode(true)}
+            >
+                Guide
+            </Button>
             <MapContainer
                 center={coordinates}
                 zoom={15}
