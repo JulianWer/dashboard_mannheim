@@ -131,6 +131,7 @@ function Barchart(props: IBarchart) {
         }
     };
 
+
     return (
         <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
             <g transform={`translate(${margin.left},${margin.top})`}>
