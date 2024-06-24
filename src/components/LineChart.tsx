@@ -1,18 +1,18 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import * as d3 from "d3";
 import moment, {Moment} from "moment-timezone";
-import {getStationData} from "../utils/DataHandler.ts";
 import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
+import {getStationData} from "@/utils/DataHandler.ts";
 
 interface ILineChart {
     date: string;
     displayedStations: IStation[];
     selectedStations: IStation[];
-    setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
 }
 
 export default function LineChart(props: ILineChart) {
-    const {date, displayedStations, selectedStations, setSelectedStations} = props;
+    const {date, displayedStations, selectedStations} = props;
+    const [data, setData] = useState<StationData>({});
     const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
     const [tempScaleMinMax, setTempScaleMinMax] = useState<number[]>([]);
 
@@ -22,30 +22,36 @@ export default function LineChart(props: ILineChart) {
 
     const fetchData = useCallback(async () => {
         const data: StationData = await getStationData(date);
-        const dataForDisplayedStations = displayedStations.length === 0
-            ? Object.values(data)
-            : Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId));
+        setData(data);
+    }, [date]);
 
-        const cleanedDataForDisplayedStations: IStation[] = dataForDisplayedStations.map((station: IStation): IStation => {
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    const dataForSelectedStations = useMemo(() => displayedStations.length === 0
+        ? Object.values(data)
+        : Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId)), [data, displayedStations, selectedStationsIds]);
+
+    const cleanedDataForSelectedStations = useMemo(() => {
+        return dataForSelectedStations.map((station: IStation): IStation => {
             return {
                 ...station,
                 temperaturesWithTimestamp: station.temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0),
                 temperatures: station.temperatures.filter((temp: number): boolean => temp !== -999.0)
             };
-        });
+        })
+    }, [dataForSelectedStations]);
 
-        const allTemperatures: number[] = cleanedDataForDisplayedStations.map((station: IStation): number[] => station.temperatures).flat();
+    useEffect(() => {
+        const allTemperatures: number[] = cleanedDataForSelectedStations.map((station: IStation): number[] => station.temperatures).flat();
         const scaleMinMax: number[] = d3.extent(allTemperatures);
         scaleMinMax[0] = scaleMinMax[0] - 5;
         scaleMinMax[1] = scaleMinMax[1] + 5;
 
         setTempScaleMinMax(scaleMinMax);
-        setSelectedStationsData(cleanedDataForDisplayedStations);
-    }, [date, selectedStationsIds, displayedStations.length]);
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+        setSelectedStationsData(cleanedDataForSelectedStations);
+    }, [cleanedDataForSelectedStations]);
 
     const getColor = (stationID: string): string => {
         const baseColor: string = "black";
@@ -63,6 +69,7 @@ export default function LineChart(props: ILineChart) {
             return baseColor;
         }
     };
+
 
     const margin = {top: 20, right: 0, bottom: 70, left: 35};
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
