@@ -29,29 +29,29 @@ export default function LineChart(props: ILineChart) {
         fetchData();
     }, [fetchData]);
 
-    const dataForSelectedStations = useMemo(() => displayedStations.length === 0
+    const dataForDisplayedStations = useMemo(() => displayedStations.length === 0
         ? Object.values(data)
         : Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId)), [data, displayedStations, selectedStationsIds]);
 
-    const cleanedDataForSelectedStations = useMemo(() => {
-        return dataForSelectedStations.map((station: IStation): IStation => {
+    const cleanedDataForDisplayedStations = useMemo(() => {
+        return dataForDisplayedStations.map((station: IStation): IStation => {
             return {
                 ...station,
                 temperaturesWithTimestamp: station.temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0),
                 temperatures: station.temperatures.filter((temp: number): boolean => temp !== -999.0)
             };
         })
-    }, [dataForSelectedStations]);
+    }, [dataForDisplayedStations]);
 
     useEffect(() => {
-        const allTemperatures: number[] = cleanedDataForSelectedStations.map((station: IStation): number[] => station.temperatures).flat();
+        const allTemperatures: number[] = cleanedDataForDisplayedStations.map((station: IStation): number[] => station.temperatures).flat();
         const scaleMinMax: number[] = d3.extent(allTemperatures);
-        scaleMinMax[0] = scaleMinMax[0] - 5;
-        scaleMinMax[1] = scaleMinMax[1] + 5;
+        scaleMinMax[0] = scaleMinMax[0] - 3;
+        scaleMinMax[1] = scaleMinMax[1] + 3;
 
         setTempScaleMinMax(scaleMinMax);
-        setSelectedStationsData(cleanedDataForSelectedStations);
-    }, [cleanedDataForSelectedStations]);
+        setSelectedStationsData(cleanedDataForDisplayedStations);
+    }, [cleanedDataForDisplayedStations]);
 
     const getColor = (stationID: string): string => {
         const baseColor: string = "black";
@@ -61,8 +61,6 @@ export default function LineChart(props: ILineChart) {
             if (isSelected) {
                 return baseColor;
             } else {
-                // const {r, g, b} = d3.color(baseColor).rgb();
-                // return `rgba(${r},${g},${b},0.25)`;
                 return "rgba(100, 100, 100, 0.10)"
             }
         } else {
