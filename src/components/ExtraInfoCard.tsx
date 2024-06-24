@@ -21,12 +21,43 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                   overflow: "auto",
                                   width: "28vw",
                               }}>
+
+
                             <CardHeader>
+                                <div className="flex items-center pb-6
+ justify-center space-x-4">
+                                    <Button
+                                        className={` ${!isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                        type="button"
+                                        onClick={() => {
+
+                                        }}
+                                    >
+                                        Data Story 1
+                                    </Button>
+                                    <Button
+                                        className={` ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                        type="button"
+                                        onClick={() => {
+                                        }}
+                                    >
+                                        Data Story 2
+                                    </Button>
+                                    <Button
+                                        className={` ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                        type="button"
+                                        onClick={() => {
+                                        }}
+                                    >
+                                        Data Story 3
+                                    </Button>
+                                </div>
                                 <CardTitle>
                                     Willkommen im Guide-Modus!
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
+
                                 <p style={{fontSize: "1.5vh"}}>Die für dich ausgewählten Stationen
                                     befinden sich alle
                                     auf
