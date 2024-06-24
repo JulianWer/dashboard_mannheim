@@ -25,63 +25,140 @@ export interface IStation {
 export type StationData = Record<string, IStation>;
 export type TimeTemp = { timestamp: Date, temperature: number }
 
-const initialStations: IStation[] = [
-    {
-        name: "T-032",
-        networkNumber: "01/01",
-        stationsId: "014",
-        stationsIdSupplement: "2/1",
-        latitude: 49.496764,
-        longitude: 8.474376
-    },
-    {
-        name: "T-031",
-        networkNumber: "01/01",
-        stationsId: "013",
-        stationsIdSupplement: "2/1",
-        latitude: 49.49765,
-        longitude: 8.474827
-    },
-    {
-        name: "T-026",
-        networkNumber: "01/01",
-        stationsId: "009",
-        stationsIdSupplement: "2/1",
-        latitude: 49.499061,
-        longitude: 8.475401
-    },
-    {
-        name: "T-033",
-        networkNumber: "01/01",
-        stationsId: "015",
-        stationsIdSupplement: "2/1",
-        latitude: 49.501791,
-        longitude: 8.476447
-    },
-    {
-        name: "T-043",
-        networkNumber: "01/01",
-        stationsId: "023",
-        stationsIdSupplement: "2/1",
-        latitude: 49.504888,
-        longitude: 8.477162
-    },
-];
+const initialStations = {
+    dataStoryOne: [
+        {
+            name: "T-032",
+            networkNumber: "01/01",
+            stationsId: "014",
+            stationsIdSupplement: "2/1",
+            latitude: 49.496764,
+            longitude: 8.474376
+        },
+        {
+            name: "T-031",
+            networkNumber: "01/01",
+            stationsId: "013",
+            stationsIdSupplement: "2/1",
+            latitude: 49.49765,
+            longitude: 8.474827
+        },
+        {
+            name: "T-026",
+            networkNumber: "01/01",
+            stationsId: "009",
+            stationsIdSupplement: "2/1",
+            latitude: 49.499061,
+            longitude: 8.475401
+        },
+        {
+            name: "T-033",
+            networkNumber: "01/01",
+            stationsId: "015",
+            stationsIdSupplement: "2/1",
+            latitude: 49.501791,
+            longitude: 8.476447
+        },
+        {
+            name: "T-043",
+            networkNumber: "01/01",
+            stationsId: "023",
+            stationsIdSupplement: "2/1",
+            latitude: 49.504888,
+            longitude: 8.477162
+        },
+    ], dataStory2: [
+        {
+            name: "T-016",
+            networkNumber: "01/01",
+            stationsId: "001",
+            stationsIdSupplement: "2/1",
+            latitude: 49.496318,
+            longitude: 8.475067
+        },
+        {
+            name: "T-032",
+            networkNumber: "01/01",
+            stationsId: "014",
+            stationsIdSupplement: "2/1",
+            latitude: 49.496764,
+            longitude: 8.474376
+        },
+        {
+            name: "T-034",
+            networkNumber: "01/01",
+            stationsId: "016",
+            stationsIdSupplement: "2/1",
+            latitude: 49.4965,
+            longitude: 8.47394
+        },
+        {
+            name: "T-023",
+            networkNumber: "01/01",
+            stationsId: "006",
+            stationsIdSupplement: "2/1",
+            latitude: 49.497052,
+            longitude: 8.472246
+        },
+        {
+            name: "T-051",
+            networkNumber: "01/01",
+            stationsId: "029",
+            stationsIdSupplement: "2/1",
+            latitude: 49.50082,
+            longitude: 8.484689
+        },
+        {
+            name: "T-058",
+            networkNumber: "01/01",
+            stationsId: "033",
+            stationsIdSupplement: "2/1",
+            latitude: 49.501145,
+            longitude: 8.481736
+        },
+        {
+            name: "T-060",
+            networkNumber: "01/01",
+            stationsId: "035",
+            stationsIdSupplement: "2/1",
+            latitude: 49.501537,
+            longitude: 8.478834
+        },
+        {
+            name: "T-033",
+            networkNumber: "01/01",
+            stationsId: "015",
+            stationsIdSupplement: "2/1",
+            latitude: 49.501791,
+            longitude: 8.476447
+        },
+        {
+            name: "T-043",
+            networkNumber: "01/01",
+            stationsId: "023",
+            stationsIdSupplement: "2/1",
+            latitude: 49.504888,
+            longitude: 8.477162
+        },
+    ]
+}
+
 
 export default function Dashboard() {
     const [isInGuidedMode, setIsInGuidedMode] = useState<boolean>(false);
     const [selectedStations, setSelectedStations] = useState<IStation[]>([]);
     const [date, setDate] = useState<string>("2024-04-07");
+    const [selectedDataStory, setSelectedDataStory] = useState<number>(1);
 
     useEffect(() => {
             if (isInGuidedMode) {
-                setSelectedStations(initialStations);
+                selectedDataStory === 1 ? setSelectedStations(initialStations.dataStoryOne) : setSelectedStations(initialStations.dataStory2);
             } else {
                 setSelectedStations([]);
             }
 
         }
-        , [isInGuidedMode]);
+        , [isInGuidedMode, selectedDataStory]);
 
     return (
         <>
@@ -125,6 +202,8 @@ export default function Dashboard() {
                         className="absolute top-20 right-5 transform translate-x-custom md:bottom-8 lg:bottom-12 flex space-x-4 z-1000"
                     >
                         <ExtraInfoCard
+                            selectedDataStory={selectedDataStory}
+                            setSelectedDataStory={setSelectedDataStory}
                             selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                             isInGuidedMode={isInGuidedMode}
                         />
@@ -139,7 +218,7 @@ export default function Dashboard() {
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
                             <LineChart
                                 date={date}
-                                displayedStations={isInGuidedMode ? initialStations : []}
+                                displayedStations={isInGuidedMode ? initialStations.dataStoryOne : []}
                                 selectedStations={selectedStations}
                             />
                         </Card>

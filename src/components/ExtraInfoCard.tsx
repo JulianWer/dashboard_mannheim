@@ -6,10 +6,12 @@ import {Button} from "@/components/ui/button.tsx";
 interface IExtraInfoCard {
     selectedStation: IStation | undefined;
     isInGuidedMode: boolean;
+    selectedDataStory: number
+    setSelectedDataStory: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function ExtraInfoCard(props: IExtraInfoCard) {
-    const {selectedStation, isInGuidedMode} = props;
+    const {selectedStation, isInGuidedMode, setSelectedDataStory, selectedDataStory} = props;
     return (
         <div>
             {selectedStation ? (
@@ -21,32 +23,32 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                   overflow: "auto",
                                   width: "28vw",
                               }}>
-
-
                             <CardHeader>
                                 <div className="flex items-center pb-6
  justify-center space-x-4">
                                     <Button
-                                        className={` ${!isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                        className={` ${selectedDataStory === 1 ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                         type="button"
                                         onClick={() => {
-
+                                            setSelectedDataStory(1)
                                         }}
                                     >
                                         Data Story 1
                                     </Button>
                                     <Button
-                                        className={` ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                        className={` ${selectedDataStory === 2 ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                         type="button"
                                         onClick={() => {
+                                            setSelectedDataStory(2)
                                         }}
                                     >
                                         Data Story 2
                                     </Button>
                                     <Button
-                                        className={` ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                        className={` ${selectedDataStory === 3 ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                         type="button"
                                         onClick={() => {
+                                            setSelectedDataStory(3)
                                         }}
                                     >
                                         Data Story 3
