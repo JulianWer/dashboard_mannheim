@@ -71,6 +71,8 @@ const initialStations: IStation[] = [
 export default function Dashboard() {
     const [isInGuidedMode, setIsInGuidedMode] = useState<boolean>(false);
     const [selectedStations, setSelectedStations] = useState<IStation[]>([]);
+    const [date, setDate] = useState<string>("2024-04-07");
+
     useEffect(() => {
             if (isInGuidedMode) {
                 setSelectedStations(initialStations);
@@ -86,7 +88,7 @@ export default function Dashboard() {
             <div className="absolute w-full h-screen">
                 <div
                     className="relative top-0 left-0 w-full bg-white text-black flex items-center  justify-between p-2 shadow-md z-50">
-                    <DatePicker/>
+                    <DatePicker setSelected={setDate} selected={date}/>
                     <div className="flex items-center space-x-4">
                         <h1 className=" px-4 py-2 text-xl font-bold">Neckarstadt KliMA</h1>
                     </div>
@@ -112,6 +114,7 @@ export default function Dashboard() {
                 </div>
                 <LeafletMapTemperature
                     selectedStations={selectedStations}
+                    date={date}
                     setSelectedStations={setSelectedStations}
                     isInGuidedMode={isInGuidedMode}
                     setIsInGuidedMode={setIsInGuidedMode}
@@ -129,23 +132,19 @@ export default function Dashboard() {
                     <div
                         className="absolute bottom-4 left-1/2 transform -translate-x-1/2 md:bottom-8 lg:bottom-12 flex space-x-4 z-1000">
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
-                            <BarChart selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
+                            <BarChart
+                                date={date}
+                                selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
                         </Card>
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
                             <LineChart
-                                date="2024-04-07"
+                                date={date}
                                 displayedStations={isInGuidedMode ? initialStations : []}
                                 selectedStations={selectedStations}
-                                setSelectedStations={setSelectedStations}
                             />
                         </Card>
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
-                            <LineChart
-                                date="2024-04-07"
-                                displayedStations={isInGuidedMode ? initialStations : []}
-                                selectedStations={selectedStations}
-                                setSelectedStations={setSelectedStations}
-                            />
+
                         </Card>
                     </div>
                 </div>

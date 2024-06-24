@@ -1,18 +1,29 @@
 import * as d3 from "d3";
-import {LegacyRef, useEffect, useRef} from "react";
+import {LegacyRef, useCallback, useEffect, useRef, useState} from "react";
 import {getStationData} from "../utils/DataHandler.ts"
-import {IStation} from "./Dashboard.tsx";
+import {IStation, StationData} from "./Dashboard.tsx";
 
 
 interface IBarchart {
+    date: string;
     selectedStations: IStation[] | undefined
     setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
 }
 
-const dataFromStations = await getStationData("2024-04-07", "06:30", 1)
 
 function Barchart(props: IBarchart) {
-    const {selectedStations, setSelectedStations} = props;
+    const {selectedStations, setSelectedStations, date} = props;
+    const [dataFromStations, setDataFromStations] = useState<StationData>({});
+
+
+    const fetchData = useCallback(async () => {
+        const data: StationData = await getStationData(date, "06:30", 1);
+        setDataFromStations(data);
+    }, [date]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value.averageTemperature);
     const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green", "yellow", "red"]));

@@ -1,18 +1,18 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import * as d3 from "d3";
 import moment, {Moment} from "moment-timezone";
-import {getStationData} from "../utils/DataHandler.ts";
 import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
+import {getStationData} from "@/utils/DataHandler.ts";
 
 interface ILineChart {
     date: string;
     displayedStations: IStation[];
     selectedStations: IStation[];
-    setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
 }
 
 export default function LineChart(props: ILineChart) {
-    const {date, displayedStations, selectedStations, setSelectedStations} = props;
+    const {date, displayedStations, selectedStations} = props;
+    const [data, setData] = useState<StationData>({});
     const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
 
     const selectedStationsIds = useMemo(() => {
@@ -21,23 +21,29 @@ export default function LineChart(props: ILineChart) {
 
     const fetchData = useCallback(async () => {
         const data: StationData = await getStationData(date);
-        const dataForSelectedStations = displayedStations.length === 0
-            ? Object.values(data)
-            : Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId));
-
-        const cleanedDataForSelectedStations = dataForSelectedStations.map((station: IStation): IStation => {
-            return {
-                ...station,
-                temperaturesWithTimestamp: station.temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0),
-            };
-        });
-
-        setSelectedStationsData(cleanedDataForSelectedStations);
-    }, [date, selectedStationsIds, displayedStations.length]);
+        setData(data);
+    }, [date]);
 
     useEffect(() => {
         fetchData();
     }, [fetchData]);
+
+    const dataForSelectedStations = useMemo(() => displayedStations.length === 0
+        ? Object.values(data)
+        : Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId)), [data, displayedStations, selectedStationsIds]);
+
+    const cleanedDataForSelectedStations = useMemo(() => {
+        return dataForSelectedStations.map((station: IStation): IStation => {
+            return {
+                ...station,
+                temperaturesWithTimestamp: station.temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0),
+            };
+        })
+    }, [dataForSelectedStations]);
+
+    useEffect(() => {
+        setSelectedStationsData(cleanedDataForSelectedStations);
+    }, [cleanedDataForSelectedStations]);
 
     const getColor = (stationID: string): string => {
         const baseColor: string = "black";
@@ -56,19 +62,6 @@ export default function LineChart(props: ILineChart) {
         }
     };
 
-    const handleClick = useCallback((event: React.MouseEvent<SVGPathElement, MouseEvent>, clickedStation: IStation): void => {
-        const isAlreadySelected = selectedStations.some((station: IStation): boolean => station.stationsId === clickedStation.stationsId);
-
-        if (selectedStations.length === 0) {
-            setSelectedStations([clickedStation]);
-        } else if (event.metaKey || event.ctrlKey) {
-            if (isAlreadySelected) {
-                setSelectedStations(selectedStations.filter((station: IStation): boolean => !(station.stationsId === clickedStation.stationsId)));
-            } else {
-                setSelectedStations((prev: IStation[]): IStation[] => [...prev, clickedStation]);
-            }
-        }
-    }, [setSelectedStations, selectedStations]);
 
     const margin = {top: 20, right: 0, bottom: 70, left: 35};
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
@@ -113,7 +106,6 @@ export default function LineChart(props: ILineChart) {
                         stroke={getColor(station.stationsId)}
                         strokeWidth="1.5"
                         d={drawLine(station.temperaturesWithTimestamp)}
-                        onClick={(event) => handleClick(event, station)}
                     />
                 ))}
             </g>

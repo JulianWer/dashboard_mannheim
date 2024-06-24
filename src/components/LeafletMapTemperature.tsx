@@ -4,13 +4,14 @@ import {LatLngTuple} from "leaflet";
 import classes from "./styles/LeafletMapTemperature.module.css";
 import {getStationData} from "../utils/DataHandler.ts";
 import * as d3 from 'd3';
-import {IStation} from "./Dashboard.tsx";
+import {IStation, StationData} from "./Dashboard.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {useCallback, useEffect, useState} from "react";
 
-const temperaturesForAllStations = await getStationData("2024-04-07", "06:30", 1)
 
 interface ILeafletMapTemperature {
     selectedStations: IStation[];
+    date: string;
     setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
     isInGuidedMode: boolean;
     setIsInGuidedMode?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,9 +19,22 @@ interface ILeafletMapTemperature {
 
 export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
 
-    const {selectedStations, setSelectedStations, isInGuidedMode} = props;
+    const {selectedStations, setSelectedStations, isInGuidedMode, date} = props;
 
     const coordinates: LatLngTuple = [49.499061 - 0.0007, 8.475401 + 0.011];
+
+
+    const [temperaturesForAllStations, setTemperaturesForAllStations] = useState<StationData>({});
+
+
+    const fetchData = useCallback(async () => {
+        const data: StationData = await getStationData(date, "06:30", 1);
+        setTemperaturesForAllStations(data);
+    }, [date]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const temperaturesForAllStationsHelper = Object.values(temperaturesForAllStations).map(value => parseFloat(String((value as IStation).averageTemperature)));
 
