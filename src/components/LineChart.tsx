@@ -14,6 +14,7 @@ export default function LineChart(props: ILineChart) {
     const {date, displayedStations, selectedStations} = props;
     const [data, setData] = useState<StationData>({});
     const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
+    const [tempScaleMinMax, setTempScaleMinMax] = useState<number[]>([]);
 
     const selectedStationsIds = useMemo(() => {
         return displayedStations.map((station: IStation): string => station.stationsId);
@@ -28,22 +29,29 @@ export default function LineChart(props: ILineChart) {
         fetchData();
     }, [fetchData]);
 
-    const dataForSelectedStations = useMemo(() => displayedStations.length === 0
+    const dataForDisplayedStations = useMemo(() => displayedStations.length === 0
         ? Object.values(data)
         : Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId)), [data, displayedStations, selectedStationsIds]);
 
-    const cleanedDataForSelectedStations = useMemo(() => {
-        return dataForSelectedStations.map((station: IStation): IStation => {
+    const cleanedDataForDisplayedStations = useMemo(() => {
+        return dataForDisplayedStations.map((station: IStation): IStation => {
             return {
                 ...station,
                 temperaturesWithTimestamp: station.temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0),
+                temperatures: station.temperatures.filter((temp: number): boolean => temp !== -999.0)
             };
         })
-    }, [dataForSelectedStations]);
+    }, [dataForDisplayedStations]);
 
     useEffect(() => {
-        setSelectedStationsData(cleanedDataForSelectedStations);
-    }, [cleanedDataForSelectedStations]);
+        const allTemperatures: number[] = cleanedDataForDisplayedStations.map((station: IStation): number[] => station.temperatures).flat();
+        const scaleMinMax: number[] = d3.extent(allTemperatures);
+        scaleMinMax[0] = scaleMinMax[0] - 3;
+        scaleMinMax[1] = scaleMinMax[1] + 3;
+
+        setTempScaleMinMax(scaleMinMax);
+        setSelectedStationsData(cleanedDataForDisplayedStations);
+    }, [cleanedDataForDisplayedStations]);
 
     const getColor = (stationID: string): string => {
         const baseColor: string = "black";
@@ -53,8 +61,6 @@ export default function LineChart(props: ILineChart) {
             if (isSelected) {
                 return baseColor;
             } else {
-                // const {r, g, b} = d3.color(baseColor).rgb();
-                // return `rgba(${r},${g},${b},0.25)`;
                 return "rgba(100, 100, 100, 0.10)"
             }
         } else {
@@ -76,7 +82,7 @@ export default function LineChart(props: ILineChart) {
     const scaleStartDate: Moment = moment(scaleEndDate).subtract(24, "hours");
 
     const xTimeScale = useMemo(() => d3.scaleTime().domain([scaleStartDate.toDate(), scaleEndDate.toDate()]).range([0, width]), [scaleStartDate, scaleEndDate, width]);
-    const yScale = useMemo(() => d3.scaleLinear().domain([10, 30]).range([height, 0]), [height]);
+    const yScale = useMemo(() => d3.scaleLinear().domain(tempScaleMinMax).range([height, 0]), [height, tempScaleMinMax]);
 
     useEffect(() => {
         if (xRef.current) d3.select(xRef.current).call(d3.axisBottom(xTimeScale));
