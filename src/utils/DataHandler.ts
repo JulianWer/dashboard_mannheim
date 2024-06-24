@@ -1,22 +1,21 @@
 import * as d3 from "d3";
+import moment, {Moment} from "moment-timezone";
 import {IStation} from "../components/Dashboard.tsx";
 import metadata from "../metadata.json";
 import {StationData} from "../components/Dashboard.tsx";
 
 export function getStationData(desiredDate: string, desiredEndTime: string = "12:00:00", hoursUntilEnd: number = 24): Promise<StationData> {
+    const desiredEnd: Moment = moment.tz(desiredDate + " " + desiredEndTime, "Europe/Berlin");
+    const desiredBeginning: Moment = moment(desiredEnd).subtract(hoursUntilEnd, "hours");
     return d3.csv("/data.csv").then((data) => {
-        // Filtern der Daten nach dem gewünschten Tag
+        // Filter data if in desired timeframe
         const filteredData = data.filter(d => {
-            // Überprüfung, ob der Zeitstempel das erwartete Format hat (YYYY-MM-DDTHH:MM:SSZ)
+            // Check that timestamp from data has correct format (YYYY-MM-DDTHH:MM:SSZ)
             if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(d.timestamps)) {
-                // Parsen des Zeitstempels
-                const timestamp = new Date(d.timestamps);
+                const timestamp: Moment = moment.tz(d.timestamps, "Europe/Berlin");
 
-                // Hardcoded time zone
-                const desiredEnd: Date = new Date(desiredDate + "T" + desiredEndTime + "+02:00");
-                const desiredBeginning: Date = new Date(desiredDate + "T" + desiredEndTime + "+02:00");
-                desiredBeginning.setHours(desiredBeginning.getHours() - hoursUntilEnd); // Set start date that might be the day before desired date
-                return timestamp.getTime() >= desiredBeginning.getTime() && timestamp.getTime() <= desiredEnd.getTime();
+                // Third parameter is granularity set to undefined checks the whole timestamp, Fourth parameter set to [] return true if timestamp is start or end date
+                return timestamp.isBetween(desiredBeginning, desiredEnd, undefined, "[]");
             }
         });
 
@@ -40,7 +39,7 @@ export function getStationData(desiredDate: string, desiredEndTime: string = "12
             stationData[stationName].temperatures.push(parseFloat(d.temperature));
             stationData[stationName].averageTemperature = getAverageTemperature(stationData[stationName].temperatures);
             stationData[stationName].temperaturesWithTimestamp.push({
-                timestamp: new Date(d.timestamps),
+                timestamp: moment.tz(d.timestamps, "Europe/Berlin").toDate(),
                 temperature: parseFloat(d.temperature as string)
             });
         });
