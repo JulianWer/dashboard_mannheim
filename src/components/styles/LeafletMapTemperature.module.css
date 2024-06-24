@@ -8,9 +8,24 @@
     border: none; /* Again, if needed */
 }
 
+
 .mapContainer {
-    height: 95vh;
+    position: relative; /* Ensure the container is relatively positioned */
+    height: 70vh;
     width: 100%;
     border-radius: 10px;
+    overflow: hidden; /* Prevent pseudo-element from overflowing */
+}
 
+
+.blurGradient {
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30%; /* Passe die Höhe hier nach Bedarf an */
+    background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)); /* Verlauf für den Übergang */
+    z-index: 1000; /* Sicherstellen, dass der Verlauf über der Karte liegt */
+    pointer-events: none; /* Verhindern, dass der Verlauf Benutzeraktionen blockiert */
 }
