@@ -14,6 +14,7 @@ interface ILineChart {
 export default function LineChart(props: ILineChart) {
     const {date, displayedStations, selectedStations, setSelectedStations} = props;
     const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
+    const [tempScaleMinMax, setTempScaleMinMax] = useState<number[]>([]);
 
     const selectedStationsIds = useMemo(() => {
         return displayedStations.map((station: IStation): string => station.stationsId);
@@ -21,18 +22,25 @@ export default function LineChart(props: ILineChart) {
 
     const fetchData = useCallback(async () => {
         const data: StationData = await getStationData(date);
-        const dataForSelectedStations = displayedStations.length === 0
+        const dataForDisplayedStations = displayedStations.length === 0
             ? Object.values(data)
             : Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId));
 
-        const cleanedDataForSelectedStations = dataForSelectedStations.map((station: IStation): IStation => {
+        const cleanedDataForDisplayedStations: IStation[] = dataForDisplayedStations.map((station: IStation): IStation => {
             return {
                 ...station,
                 temperaturesWithTimestamp: station.temperaturesWithTimestamp.filter((temp: TimeTemp): boolean => temp.temperature !== -999.0),
+                temperatures: station.temperatures.filter((temp: number): boolean => temp !== -999.0)
             };
         });
 
-        setSelectedStationsData(cleanedDataForSelectedStations);
+        const allTemperatures: number[] = cleanedDataForDisplayedStations.map((station: IStation): number[] => station.temperatures).flat();
+        const scaleMinMax: number[] = d3.extent(allTemperatures);
+        scaleMinMax[0] = scaleMinMax[0] - 5;
+        scaleMinMax[1] = scaleMinMax[1] + 5;
+
+        setTempScaleMinMax(scaleMinMax);
+        setSelectedStationsData(cleanedDataForDisplayedStations);
     }, [date, selectedStationsIds, displayedStations.length]);
 
     useEffect(() => {
@@ -56,20 +64,6 @@ export default function LineChart(props: ILineChart) {
         }
     };
 
-    const handleClick = useCallback((event: React.MouseEvent<SVGPathElement, MouseEvent>, clickedStation: IStation): void => {
-        const isAlreadySelected = selectedStations.some((station: IStation): boolean => station.stationsId === clickedStation.stationsId);
-
-        if (selectedStations.length === 0) {
-            setSelectedStations([clickedStation]);
-        } else if (event.metaKey || event.ctrlKey) {
-            if (isAlreadySelected) {
-                setSelectedStations(selectedStations.filter((station: IStation): boolean => !(station.stationsId === clickedStation.stationsId)));
-            } else {
-                setSelectedStations((prev: IStation[]): IStation[] => [...prev, clickedStation]);
-            }
-        }
-    }, [setSelectedStations, selectedStations]);
-
     const margin = {top: 20, right: 0, bottom: 70, left: 35};
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
@@ -83,7 +77,7 @@ export default function LineChart(props: ILineChart) {
     const scaleStartDate: Moment = moment(scaleEndDate).subtract(24, "hours");
 
     const xTimeScale = useMemo(() => d3.scaleTime().domain([scaleStartDate.toDate(), scaleEndDate.toDate()]).range([0, width]), [scaleStartDate, scaleEndDate, width]);
-    const yScale = useMemo(() => d3.scaleLinear().domain([10, 30]).range([height, 0]), [height]);
+    const yScale = useMemo(() => d3.scaleLinear().domain(tempScaleMinMax).range([height, 0]), [height, tempScaleMinMax]);
 
     useEffect(() => {
         if (xRef.current) d3.select(xRef.current).call(d3.axisBottom(xTimeScale));
@@ -113,7 +107,6 @@ export default function LineChart(props: ILineChart) {
                         stroke={getColor(station.stationsId)}
                         strokeWidth="1.5"
                         d={drawLine(station.temperaturesWithTimestamp)}
-                        onClick={(event) => handleClick(event, station)}
                     />
                 ))}
             </g>
