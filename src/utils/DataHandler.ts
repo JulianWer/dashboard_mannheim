@@ -4,9 +4,9 @@ import {IStation} from "../components/Dashboard.tsx";
 import metadata from "../metadata.json";
 import {StationData} from "../components/Dashboard.tsx";
 
-export function getStationData(desiredDate: string, desiredEndTime: string = "12:00:00", hoursUntilEnd: number = 24): Promise<StationData> {
+export function getStationData(desiredDate: string, desiredEndTime: string = "12:00:00", hoursStartToEndTime: number = 24): Promise<StationData> {
     const desiredEnd: Moment = moment.tz(desiredDate + " " + desiredEndTime, "Europe/Berlin");
-    const desiredBeginning: Moment = moment(desiredEnd).subtract(hoursUntilEnd, "hours");
+    const desiredBeginning: Moment = moment(desiredEnd).subtract(hoursStartToEndTime, "hours");
     return d3.csv("/data.csv").then((data) => {
         // Filter data if in desired timeframe
         const filteredData = data.filter(d => {

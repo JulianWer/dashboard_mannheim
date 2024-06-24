@@ -81,9 +81,6 @@ export default function LineChart(props: ILineChart) {
 
     const scaleEndDate: Moment = moment.tz(`${date} 12:00:00`, "Europe/Berlin");
     const scaleStartDate: Moment = moment(scaleEndDate).subtract(24, "hours");
-    // const scaleStartDate: Date = new Date(`${date}T00:00:00+02:00`);
-    // scaleStartDate.setHours(scaleStartDate.getHours() - 12);
-
 
     const xTimeScale = useMemo(() => d3.scaleTime().domain([scaleStartDate.toDate(), scaleEndDate.toDate()]).range([0, width]), [scaleStartDate, scaleEndDate, width]);
     const yScale = useMemo(() => d3.scaleLinear().domain([10, 30]).range([height, 0]), [height]);
