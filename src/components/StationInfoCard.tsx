@@ -49,8 +49,10 @@ export default function StationInfoCard(props: IStationInfoCard) {
 
     return (
 
-        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4 w-513"
-        >
+        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4"style={{
+            width: "30vw",
+        }}>
+        
             <CardHeader className="flex justify-center items-center">
                 <CardTitle className="text-4xl font-bold">Station-Info</CardTitle>
             </CardHeader>

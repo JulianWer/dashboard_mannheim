@@ -212,8 +212,7 @@ export default function Dashboard() {
                     <DatePicker setSelected={setDate} selected={date} isInGuidedMode={isInGuidedMode}
                     />
                     <div className="flex items-center space-x-4">
-                        <img src={"/extension_icon.png"} alt="Custom Icon" className={"h-8"} />
-                        <h1 className=" px-4 py-2 text-xl font-bold">Neckarstadt KliMA</h1>
+                        <h1 className=" px-4 text-2xl font-bold">Neckarstadt KliMA</h1>
                     </div>
                     <Legend />
 
