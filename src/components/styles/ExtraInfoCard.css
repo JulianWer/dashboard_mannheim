@@ -4,3 +4,9 @@ body {
     font-family: 'Roboto';
   }
 
+  .justified-text {
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+}

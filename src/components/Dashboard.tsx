@@ -1,12 +1,12 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import LeafletMapTemperature from "./LeafletMapTemperature.tsx";
 import "leaflet/dist/leaflet.css";
 import BarChart from "./BarChart.tsx";
 import ExtraInfoCard from "./ExtraInfoCard.tsx";
 import LineChart from "./LineChart.tsx";
-import {Card} from "@/components/ui/card.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {DatePicker} from "@/components/DatePicker.tsx";
+import { Card } from "@/components/ui/card.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { DatePicker } from "@/components/DatePicker.tsx";
 import Legend from "@/components/Legend.tsx";
 import StationInfoCard from "@/components/StationInfoCard.tsx";
 
@@ -141,9 +141,33 @@ const initialStations = {
             latitude: 49.504888,
             longitude: 8.477162
         },
+    ], dataStory3: [
+        {
+            name : "T-038",
+            networkNumber : "01/01",
+            stationsId : "019",
+            stationsIdSupplement : "2/1",
+            latitude : 49.504188,
+            longitude : 8.474861
+        },
+        {
+            name : "T-057",
+            networkNumber : "01/01",
+            stationsId : "032",
+            stationsIdSupplement : "2/1",
+            latitude : 49.505756,
+            longitude : 8.474756
+        },
+        {
+            name : "T-040",
+            networkNumber : "01/01",
+            stationsId : "021",
+            stationsIdSupplement : "2/1",
+            latitude : 49.505417,
+            longitude : 8.473025
+        },
     ]
 }
-
 
 export default function Dashboard() {
     const [isInGuidedMode, setIsInGuidedMode] = useState<boolean>(false);
@@ -151,21 +175,35 @@ export default function Dashboard() {
     const [date, setDate] = useState<string>("2024-04-07");
     const [selectedDataStory, setSelectedDataStory] = useState<number>(1);
 
-    const handleGuideMode = () => {
+    const handleGuideMode = (storyNumber: number) => {
         setIsInGuidedMode(true);
-        setDate("2024-04-07"); // Set the date to 07.04.2024 when Guide mode is activated
+        if (storyNumber === 1 || storyNumber === 2) {
+            setDate("2024-04-07");
+        } else {
+            setDate("2024-05-05");
+        }
     };
 
+
     useEffect(() => {
-            if (isInGuidedMode) {
-                selectedDataStory === 1 ? setSelectedStations(initialStations.dataStoryOne) : setSelectedStations(initialStations.dataStory2);
-            } else {
-                setSelectedStations([]);
+        if (isInGuidedMode) {
+            if (selectedDataStory === 1) {
+                setSelectedStations(initialStations.dataStoryOne)
+            }
+            else if (selectedDataStory === 2) {
+                setSelectedStations(initialStations.dataStory2)
+            }
+            else {
+                setSelectedStations(initialStations.dataStory3)
             }
 
+        } else {
+            setSelectedStations([]);
         }
+
+    }
         , [isInGuidedMode, selectedDataStory]);
-        
+
     return (
         <>
             <div className="absolute w-full h-screen">
@@ -174,11 +212,10 @@ export default function Dashboard() {
                     <DatePicker setSelected={setDate} selected={date} isInGuidedMode={isInGuidedMode}
                     />
                     <div className="flex items-center space-x-4">
-                        <img src={"/extension_icon.png"} alt="Custom Icon" className={"h-8"}/>
+                        <img src={"/extension_icon.png"} alt="Custom Icon" className={"h-8"} />
                         <h1 className=" px-4 py-2 text-xl font-bold">Neckarstadt KliMA</h1>
                     </div>
-                    <Legend
-                    />
+                    <Legend />
 
                     <div className="flex items-center space-x-4">
                         <Button
@@ -191,7 +228,7 @@ export default function Dashboard() {
                         <Button
                             className={`px-4 py-2 ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                             type="button"
-                            onClick={() => handleGuideMode()}
+                            onClick={() => handleGuideMode(1)}
                         >
                             Guide
                         </Button>
@@ -214,6 +251,7 @@ export default function Dashboard() {
                             selectedDataStory={selectedDataStory}
                             setSelectedDataStory={setSelectedDataStory}
                             isInGuidedMode={isInGuidedMode}
+                            handleGuideMode={handleGuideMode}
                         />
                     </div>
                     <div
@@ -222,7 +260,7 @@ export default function Dashboard() {
                             <BarChart
                                 date={date}
                                 isInGuidedMode={isInGuidedMode}
-                                selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
+                                selectedStations={selectedStations} setSelectedStations={setSelectedStations} />
                         </Card>
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
                             <LineChart
@@ -235,7 +273,7 @@ export default function Dashboard() {
                             date={date}
                             selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                             selectedStations={selectedStations} setSelectedStations={setSelectedStations}
-                            isInGuidedMode={isInGuidedMode}/>
+                            isInGuidedMode={isInGuidedMode} />
                     </div>
                 </div>
             </div>
