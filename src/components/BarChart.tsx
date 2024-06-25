@@ -6,13 +6,14 @@ import {IStation, StationData} from "./Dashboard.tsx";
 
 interface IBarchart {
     date: string;
+    isInGuidedMode: boolean;
     selectedStations: IStation[] | undefined
     setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
 }
 
 
 function Barchart(props: IBarchart) {
-    const {selectedStations, setSelectedStations, date} = props;
+    const {selectedStations, setSelectedStations, date, isInGuidedMode} = props;
     const [dataFromStations, setDataFromStations] = useState<StationData>({});
 
 
@@ -126,18 +127,26 @@ function Barchart(props: IBarchart) {
             setSelectedStations([station]);
         } else {
 
-            if (event.metaKey || event.ctrlKey) {
-                if (isAlreadySelected) {
-                    setSelectedStations(selectedStations.filter(selectedStation =>
-                        !(selectedStation.networkNumber === station.networkNumber &&
-                            selectedStation.stationsId === station.stationsId &&
-                            selectedStation.stationsIdSupplement === station.stationsIdSupplement)
-                    ));
-                } else {
-                    setSelectedStations((prev) => [...prev, station]);
-                }
+            if (isAlreadySelected && selectedStations.length === 1) {
+                setSelectedStations(selectedStations.filter(selectedStation =>
+                    !(selectedStation.networkNumber === station.networkNumber &&
+                        selectedStation.stationsId === station.stationsId &&
+                        selectedStation.stationsIdSupplement === station.stationsIdSupplement)
+                ));
             } else {
-                setSelectedStations([station]);
+                if (event.metaKey || event.ctrlKey) {
+                    if (isAlreadySelected) {
+                        setSelectedStations(selectedStations.filter(selectedStation =>
+                            !(selectedStation.networkNumber === station.networkNumber &&
+                                selectedStation.stationsId === station.stationsId &&
+                                selectedStation.stationsIdSupplement === station.stationsIdSupplement)
+                        ));
+                    } else {
+                        setSelectedStations((prev) => [...prev, station]);
+                    }
+                } else {
+                    setSelectedStations([station]);
+                }
             }
         }
     };
@@ -178,11 +187,12 @@ function Barchart(props: IBarchart) {
                             x={x(d.data.name)}
                             y={y(d.data.averageTemperature)}
                             width={x.bandwidth()}
+                            style={!isInGuidedMode ? {cursor: "pointer"} : {}}
                             height={height - y(d.data.averageTemperature)}
                             fill={getColor(d.stationName, d.data.averageTemperature)}
                             color={getBorderColor(d.stationName)}
                             data-station={d.data.name}
-                            onClick={(e) => handleRectClock(d.data, e.nativeEvent)}
+                            onClick={(e) => !isInGuidedMode ? handleRectClock(d.data, e.nativeEvent) : {}}
                         />
                     ))}
                 </g>

@@ -24,6 +24,9 @@ module.exports = {
                 '1000': '1000',
                 // more custom values
             },
+            width: {
+                "513": "513px",
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",

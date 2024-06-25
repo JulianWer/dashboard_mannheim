@@ -8,6 +8,7 @@ import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {DatePicker} from "@/components/DatePicker.tsx";
 import Legend from "@/components/Legend.tsx";
+import StationInfoCard from "@/components/StationInfoCard.tsx";
 
 
 export interface IStation {
@@ -165,11 +166,14 @@ export default function Dashboard() {
             <div className="absolute w-full h-screen">
                 <div
                     className="relative top-0 left-0 w-full bg-white text-black flex items-center  justify-between p-2 shadow-md z-50">
-                    <DatePicker setSelected={setDate} selected={date}/>
+                    <DatePicker setSelected={setDate} selected={date} isInGuidedMode={isInGuidedMode}
+                    />
                     <div className="flex items-center space-x-4">
+                        <img src={"/extension_icon.png"} alt="Custom Icon" className={"h-8"}/>
                         <h1 className=" px-4 py-2 text-xl font-bold">Neckarstadt KliMA</h1>
                     </div>
-                    <Legend/>
+                    <Legend
+                    />
 
                     <div className="flex items-center space-x-4">
                         <Button
@@ -204,7 +208,6 @@ export default function Dashboard() {
                         <ExtraInfoCard
                             selectedDataStory={selectedDataStory}
                             setSelectedDataStory={setSelectedDataStory}
-                            selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                             isInGuidedMode={isInGuidedMode}
                         />
                     </div>
@@ -213,6 +216,7 @@ export default function Dashboard() {
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
                             <BarChart
                                 date={date}
+                                isInGuidedMode={isInGuidedMode}
                                 selectedStations={selectedStations} setSelectedStations={setSelectedStations}/>
                         </Card>
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
@@ -222,9 +226,11 @@ export default function Dashboard() {
                                 selectedStations={selectedStations}
                             />
                         </Card>
-                        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
-
-                        </Card>
+                        <StationInfoCard
+                            date={date}
+                            selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
+                            selectedStations={selectedStations} setSelectedStations={setSelectedStations}
+                            isInGuidedMode={isInGuidedMode}/>
                     </div>
                 </div>
             </div>
