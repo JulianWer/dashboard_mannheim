@@ -37,7 +37,7 @@ export function DatePicker(porps: IDatePickerProps) {
                     )}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4"/>
-                    {isInGuidedMode ? format("2024-04-07", "LLL dd, y") : date ? format(date, "LLL dd, y") :
+                    {isInGuidedMode ? format("2024-04-07", "dd MM yyyy") : date ? format(date, "dd.MM.yyyy") :
                         <span>Pick a date</span>}
                 </Button>
             </PopoverTrigger>

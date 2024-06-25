@@ -164,7 +164,7 @@ function Barchart(props: IBarchart) {
                     fill="black"
                     fontSize="14px"
                 >
-                    Stations
+                    Stationen
                 </text>
 
                 {/* y-Achsen-Beschriftung */}
@@ -177,7 +177,7 @@ function Barchart(props: IBarchart) {
                     fill="black"
                     fontSize="14px"
                 >
-                    Temperature in °C
+                    Temperatur in °C
                 </text>
 
                 <g fill="white" stroke="currentColor" strokeWidth="1">

@@ -16,7 +16,7 @@ export default function LineChart(props: ILineChart) {
     const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
     const [tempScaleMinMax, setTempScaleMinMax] = useState<number[]>([]);
 
-    const selectedStationsIds = useMemo(() => {
+    const displayedStationsIds = useMemo(() => {
         return displayedStations.map((station: IStation): string => station.stationsId);
     }, [displayedStations]);
 
@@ -31,7 +31,7 @@ export default function LineChart(props: ILineChart) {
 
     const dataForDisplayedStations = useMemo(() => displayedStations.length === 0
         ? Object.values(data)
-        : Object.values(data).filter((station: IStation): boolean => selectedStationsIds.includes(station.stationsId)), [data, displayedStations, selectedStationsIds]);
+        : Object.values(data).filter((station: IStation): boolean => displayedStationsIds.includes(station.stationsId)), [data, displayedStations, displayedStationsIds]);
 
     const cleanedDataForDisplayedStations = useMemo(() => {
         return dataForDisplayedStations.map((station: IStation): IStation => {
@@ -98,12 +98,12 @@ export default function LineChart(props: ILineChart) {
             <g transform={`translate(${margin.left},${margin.top})`}>
                 <g ref={xRef} transform={`translate(0, ${height})`}/>
                 <text x={width / 2} y={height + margin.top + 20} textAnchor="middle" fill="black" fontSize="14px">
-                    Time
+                    Zeit
                 </text>
                 <g ref={yRef}/>
-                <text x={-margin.top - 25} y={-margin.left + 5} textAnchor="middle" transform="rotate(-90)" fill="black"
+                <text x={-margin.left - 70} y={-margin.top - 5} textAnchor="middle" transform="rotate(-90)" fill="black"
                       fontSize="14px">
-                    Temperature in °C
+                    Temperatur in °C
                 </text>
                 {selectedStationsData.map((station, index) => (
                     <path
