@@ -46,7 +46,7 @@ export function DatePicker(porps: IDatePickerProps) {
                     defaultMonth={date}
                     initialFocus
                     disabled={(date) =>
-                        date > new Date("2024-05-21") || date < new Date("2024-02-20")
+                        date > new Date("2024-06-23") || date < new Date("2024-02-20")
                     }
                 />
             </PopoverContent>
