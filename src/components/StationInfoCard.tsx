@@ -98,8 +98,8 @@ export default function StationInfoCard(props: IStationInfoCard) {
                     </Button>)}
                 {selectedStation && selectedStations.length === 1 && (
                     <Button
-                        className={"bg-blue-500 text-white hover:bg-blue-600"}
-                        onClick={() => window.location.href = `https://maps.google.com/maps?q=&layer=c&cbll=${selectedStation.latitude},${selectedStation.longitude}&cbp=11,0,0,0,0`}
+                        className={"bg-[#00ADB5] text-white hover:bg-[#00ADB5]"}
+                        onClick={() => window.open(`https://maps.google.com/maps?q=&layer=c&cbll=${selectedStation.latitude},${selectedStation.longitude}&cbp=11,0,0,0,0`, '_blank')}
                     >
                         Google Street View
                     </Button>)}
