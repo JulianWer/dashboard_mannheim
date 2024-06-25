@@ -151,6 +151,11 @@ export default function Dashboard() {
     const [date, setDate] = useState<string>("2024-04-07");
     const [selectedDataStory, setSelectedDataStory] = useState<number>(1);
 
+    const handleGuideMode = () => {
+        setIsInGuidedMode(true);
+        setDate("2024-04-07"); // Set the date to 07.04.2024 when Guide mode is activated
+    };
+
     useEffect(() => {
             if (isInGuidedMode) {
                 selectedDataStory === 1 ? setSelectedStations(initialStations.dataStoryOne) : setSelectedStations(initialStations.dataStory2);
@@ -160,7 +165,7 @@ export default function Dashboard() {
 
         }
         , [isInGuidedMode, selectedDataStory]);
-
+        
     return (
         <>
             <div className="absolute w-full h-screen">
@@ -186,7 +191,7 @@ export default function Dashboard() {
                         <Button
                             className={`px-4 py-2 ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                             type="button"
-                            onClick={() => setIsInGuidedMode(true)}
+                            onClick={() => handleGuideMode()}
                         >
                             Guide
                         </Button>
