@@ -13,7 +13,7 @@ interface ILineChart {
 export default function LineChart(props: ILineChart) {
     const {date, displayedStations, selectedStations} = props;
     const [data, setData] = useState<StationData>({});
-    const [selectedStationsData, setSelectedStationsData] = useState<IStation[]>([]);
+    const [displayedStationsData, setDisplayedStationsData] = useState<IStation[]>([]);
     const [tempScaleMinMax, setTempScaleMinMax] = useState<number[]>([]);
 
     const displayedStationsIds = useMemo(() => {
@@ -50,7 +50,7 @@ export default function LineChart(props: ILineChart) {
         scaleMinMax[1] = scaleMinMax[1] + 3;
 
         setTempScaleMinMax(scaleMinMax);
-        setSelectedStationsData(cleanedDataForDisplayedStations);
+        setDisplayedStationsData(cleanedDataForDisplayedStations);
     }, [cleanedDataForDisplayedStations]);
 
     const getColor = (stationID: string): string => {
@@ -105,7 +105,7 @@ export default function LineChart(props: ILineChart) {
                       fontSize="14px">
                     Temperatur in °C
                 </text>
-                {selectedStationsData.map((station, index) => (
+                {displayedStationsData.map((station, index) => (
                     <path
                         key={index}
                         fill="none"
