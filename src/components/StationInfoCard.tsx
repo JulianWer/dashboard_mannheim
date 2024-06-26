@@ -12,6 +12,12 @@ interface IStationInfoCard {
     isInGuidedMode: boolean;
 }
 
+type InfoData = {
+    minTemperature: number,
+    maxTemperature: number,
+    temperatureDifference: number
+}
+
 export default function StationInfoCard(props: IStationInfoCard) {
     const {selectedStation, isInGuidedMode, setSelectedStations, selectedStations, date} = props;
     const [dataFromStations, setDataFromStations] = useState<StationData>({});
@@ -26,31 +32,29 @@ export default function StationInfoCard(props: IStationInfoCard) {
         fetchData();
     }, [fetchData]);
 
-    const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value);
+    const temperaturesForAllStationsHelper: IStation[] = Object.values(dataFromStations).map((value: IStation) => value);
 
-    const getMinTemperature = useMemo((): number => {
-        return parseFloat(
-            Math.min(...(selectedStations.length === 0 ? temperaturesForAllStationsHelper : selectedStations).map(station => station.averageTemperature !== undefined ? station.averageTemperature : 0)).toFixed(2)
-        );
+    const getInfoData: InfoData = useMemo((): InfoData => {
+        const selectedStationsIDs: string[] = selectedStations.map((station: IStation): string => station.stationsId);
+        const selectedStationsData: IStation[] = temperaturesForAllStationsHelper.filter((station: IStation): boolean => selectedStationsIDs.includes(station.stationsId));
+        const averageTemperatures: number[] = (selectedStations.length === 0 ? temperaturesForAllStationsHelper : selectedStationsData).map((station: IStation): number => station.averageTemperature || 0);
+
+        const minTemperature: number = parseFloat(Math.min(...averageTemperatures).toFixed(2));
+        const maxTemperature: number = parseFloat(Math.max(...averageTemperatures).toFixed(2));
+        const temperatureDifference: number = parseFloat((maxTemperature - minTemperature).toFixed(2));
+
+        return {
+            minTemperature,
+            maxTemperature,
+            temperatureDifference
+        };
     }, [selectedStations, temperaturesForAllStationsHelper]);
-
-    const getMaxTemperature = useMemo((): number => {
-        return parseFloat(
-            Math.max(...(selectedStations.length === 0 ? temperaturesForAllStationsHelper : selectedStations).map(station => station.averageTemperature !== undefined ? station.averageTemperature : 0)).toFixed(2)
-        );
-    }, [selectedStations, temperaturesForAllStationsHelper]);
-
-    const getTemperatureDifference = useMemo((): number => {
-        return parseFloat(
-            (getMaxTemperature - getMinTemperature).toFixed(2)
-        );
-    }, [getMaxTemperature, getMinTemperature]);
 
 
     return (
 
-        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4"style={{
-            width: "30vw",
+        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4" style={{
+            width: "32vw",
         }}>
         
             <CardHeader className="flex justify-center items-center">
@@ -77,15 +81,15 @@ export default function StationInfoCard(props: IStationInfoCard) {
                         </div>
                         <div className="flex flex-col items-center">
                             <p className="text-xl font-semibold m-0">Temperatur Differenz</p>
-                            <p className="text-3xl font-bold">{getTemperatureDifference}°C</p>
+                            <p className="text-3xl font-bold">{getInfoData.temperatureDifference}°C</p>
                         </div>
                         <div className="flex flex-col items-center">
                             <p className="text-xl font-semibold m-0">Max Temperatur</p>
-                            <p className="text-3xl font-bold">{getMaxTemperature}°C</p>
+                            <p className="text-3xl font-bold">{getInfoData.maxTemperature}°C</p>
                         </div>
                         <div className="flex flex-col items-center">
                             <p className="text-xl font-semibold m-0">Min Temperatur</p>
-                            <p className="text-3xl font-bold">{getMinTemperature}°C</p>
+                            <p className="text-3xl font-bold">{getInfoData.minTemperature}°C</p>
                         </div>
                     </div>)}
 
