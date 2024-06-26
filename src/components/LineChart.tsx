@@ -46,8 +46,8 @@ export default function LineChart(props: ILineChart) {
     useEffect(() => {
         const allTemperatures: number[] = cleanedDataForDisplayedStations.map((station: IStation): number[] => station.temperatures).flat();
         const scaleMinMax: number[] = d3.extent(allTemperatures);
-        scaleMinMax[0] = scaleMinMax[0] - 3;
-        scaleMinMax[1] = scaleMinMax[1] + 3;
+        scaleMinMax[0] = scaleMinMax[0] - 1;
+        scaleMinMax[1] = scaleMinMax[1] + 1;
 
         setTempScaleMinMax(scaleMinMax);
         setDisplayedStationsData(cleanedDataForDisplayedStations);
