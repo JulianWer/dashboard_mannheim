@@ -218,14 +218,14 @@ export default function Dashboard() {
 
                     <div className="flex items-center space-x-4">
                         <Button
-                            className={` px-4 py-2 ${!isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                            className={` px-4 py-2 ${!isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200'} focus:outline-none`}
                             type="button"
                             onClick={() => setIsInGuidedMode(false)}
                         >
                             Explore
                         </Button>
                         <Button
-                            className={`px-4 py-2 ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                            className={`px-4 py-2 ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200'} focus:outline-none`}
                             type="button"
                             onClick={() => handleGuideMode(1)}
                         >
@@ -264,7 +264,7 @@ export default function Dashboard() {
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
                             <LineChart
                                 date={date}
-                                displayedStations={isInGuidedMode ? initialStations.dataStoryOne : []}
+                                displayedStations={isInGuidedMode ? selectedStations : []}
                                 selectedStations={selectedStations}
                             />
                         </Card>
