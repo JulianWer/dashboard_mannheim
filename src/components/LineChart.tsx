@@ -1,8 +1,8 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import moment, {Moment} from "moment-timezone";
-import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
-import {getStationData} from "@/utils/DataHandler.ts";
+import moment, { Moment } from "moment-timezone";
+import { IStation, StationData, TimeTemp } from "./Dashboard.tsx";
+import { getStationData } from "@/utils/DataHandler.ts";
 
 interface ILineChart {
     date: string;
@@ -11,7 +11,7 @@ interface ILineChart {
 }
 
 export default function LineChart(props: ILineChart) {
-    const {date, displayedStations, selectedStations} = props;
+    const { date, displayedStations, selectedStations } = props;
     const [data, setData] = useState<StationData>({});
     const [displayedStationsData, setDisplayedStationsData] = useState<IStation[]>([]);
     const [tempScaleMinMax, setTempScaleMinMax] = useState<number[]>([]);
@@ -69,7 +69,7 @@ export default function LineChart(props: ILineChart) {
     };
 
 
-    const margin = {top: 20, right: 0, bottom: 70, left: 35};
+    const margin = { top: 20, right: 0, bottom: 70, left: 35 };
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     const height = (35 * vh) / 100 - margin.top - margin.bottom;
@@ -85,7 +85,7 @@ export default function LineChart(props: ILineChart) {
     const yScale = useMemo(() => d3.scaleLinear().domain(tempScaleMinMax).range([height, 0]), [height, tempScaleMinMax]);
 
     useEffect(() => {
-        if (xRef.current) d3.select(xRef.current).call(d3.axisBottom(xTimeScale));
+        if (xRef.current) d3.select(xRef.current).call(d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%H:%M")));
         if (yRef.current) d3.select(yRef.current).call(d3.axisLeft(yScale));
     }, [xTimeScale, yScale]);
 
@@ -106,13 +106,16 @@ export default function LineChart(props: ILineChart) {
     return (
         <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
             <g transform={`translate(${margin.left},${margin.top})`}>
-                <g ref={xRef} transform={`translate(0, ${height})`}/>
-                <text x={width / 2} y={height + margin.top + 20} textAnchor="middle" fill="black" fontSize="14px">
-                    Zeit
+                <g ref={xRef} transform={`translate(0, ${height})`} />
+                <text x={width * 0.75} y={height + margin.top + 20} textAnchor="middle" fill="black" fontSize="14px">
+                    {moment(date).format("DD.MM.YYYY")}
                 </text>
-                <g ref={yRef}/>
+                <text x={width * 0.25} y={height + margin.top + 20} textAnchor="middle" fill="black" fontSize="14px">
+                    {moment(date).subtract(1, 'days').format("DD.MM.YYYY")}
+                </text>
+                <g ref={yRef} />
                 <text x={-margin.left - 70} y={-margin.top - 5} textAnchor="middle" transform="rotate(-90)" fill="black"
-                      fontSize="14px">
+                    fontSize="14px">
                     Temperatur in °C
                 </text>
 
