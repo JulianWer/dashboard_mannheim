@@ -93,6 +93,16 @@ export default function LineChart(props: ILineChart) {
         .x((d: TimeTemp) => xTimeScale(d.timestamp))
         .y((d: TimeTemp) => yScale(d.temperature));
 
+    // Calculate the position for the highlighted area
+    const highlightStartTime: Date = moment.tz(`${date} 05:30:00`, "Europe/Berlin").toDate();
+    const highlightEndTime: Date = moment.tz(`${date} 06:30:00`, "Europe/Berlin").toDate();
+    const highlightXStart: number = xTimeScale(highlightStartTime);
+    const highlightXEnd: number = xTimeScale(highlightEndTime);
+
+    // Calculate the position for the midnight line
+    const midnightTime: Date = moment.tz(`${date} 00:00:00`, "Europe/Berlin").toDate();
+    const midnightX: number = xTimeScale(midnightTime);
+
     return (
         <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
             <g transform={`translate(${margin.left},${margin.top})`}>
@@ -105,6 +115,27 @@ export default function LineChart(props: ILineChart) {
                       fontSize="14px">
                     Temperatur in °C
                 </text>
+
+                {/* Highlighted rectangle for 5:30 AM to 6:30 AM */}
+                <rect
+                    x={highlightXStart}
+                    y={0}
+                    width={highlightXEnd - highlightXStart}
+                    height={height}
+                    fill="rgba(255, 165, 0, 0.3)"
+                />
+
+                {/* Dotted line at midnight */}
+                <line
+                    x1={midnightX}
+                    y1={0}
+                    x2={midnightX}
+                    y2={height}
+                    stroke="black"
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
+                />
+
                 {displayedStationsData.map((station, index) => (
                     <path
                         key={index}

@@ -21,10 +21,12 @@ type InfoData = {
 export default function StationInfoCard(props: IStationInfoCard) {
     const {selectedStation, isInGuidedMode, setSelectedStations, selectedStations, date} = props;
     const [dataFromStations, setDataFromStations] = useState<StationData>({});
+    const endTime: string = "06:30";
+    const hoursStartToEndTime: number = 1;
 
 
     const fetchData = useCallback(async () => {
-        const data: StationData = await getStationData(date, "06:30", 1);
+        const data: StationData = await getStationData(date, endTime, hoursStartToEndTime);
         setDataFromStations(data);
     }, [date]);
 
