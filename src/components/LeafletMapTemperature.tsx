@@ -114,7 +114,9 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
     };
 
     const handleEmptySpaceClick = () => {
-        setSelectedStations([]);
+        if (!isInGuidedMode) {
+            setSelectedStations([]);
+        }
     };
 
     return (
