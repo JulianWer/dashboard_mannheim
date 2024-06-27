@@ -186,7 +186,7 @@ function Barchart(props: IBarchart) {
                 <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined}/>
                 <text
                     x={-margin.left + 10}
-                    y={-margin.top + 25}
+                    y={-margin.top + 15}
                     textAnchor="middle"
                     fill="black"
                     fontSize="14px"
