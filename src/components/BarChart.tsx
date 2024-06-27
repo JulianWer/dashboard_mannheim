@@ -76,7 +76,7 @@ function Barchart(props: IBarchart) {
     };
 
 
-    const margin = {top: 20, right: 0, bottom: 70, left: 35}
+    const margin = {top: 20, right: 0, bottom: 70, left: 30}
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerHeight || 0);
     const height = (35 * vh) / 100 - margin.top - margin.bottom;
@@ -185,14 +185,13 @@ function Barchart(props: IBarchart) {
                 {/* y-Achsen-Beschriftung */}
                 <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined}/>
                 <text
-                    x={-margin.left - 70}
-                    y={-margin.top - 5}
+                    x={-margin.left + 10}
+                    y={-margin.top + 25}
                     textAnchor="middle"
-                    transform={`rotate(-90)`}
                     fill="black"
                     fontSize="14px"
                 >
-                    Temperatur in °C
+                    °C
                 </text>
                 <g ref={gridRef} />
 

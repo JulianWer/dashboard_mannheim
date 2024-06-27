@@ -69,7 +69,7 @@ export default function LineChart(props: ILineChart) {
     };
 
 
-    const margin = { top: 20, right: 0, bottom: 70, left: 35 };
+    const margin = { top: 20, right: 0, bottom: 70, left: 30 };
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     const height = (35 * vh) / 100 - margin.top - margin.bottom;
@@ -129,9 +129,13 @@ export default function LineChart(props: ILineChart) {
                 </text>
                 <g ref={yRef} />
                 <g ref={gridRef} />
-                <text x={-margin.left - 70} y={-margin.top - 5} textAnchor="middle" transform="rotate(-90)" fill="black"
+                <text 
+                    x={-margin.left + 10}
+                    y={-margin.top + 25}
+                    textAnchor="middle"
+                    fill="black"
                     fontSize="14px">
-                    Temperatur in °C
+                    °C
                 </text>
 
                 {/* Highlighted rectangle for 5:30 AM to 6:30 AM */}

@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import BarChart from "./BarChart.tsx";
 import ExtraInfoCard from "./ExtraInfoCard.tsx";
 import LineChart from "./LineChart.tsx";
-import { Card } from "@/components/ui/card.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { DatePicker } from "@/components/DatePicker.tsx";
 import Legend from "@/components/Legend.tsx";
@@ -143,28 +143,28 @@ const initialStations = {
         },
     ], dataStory3: [
         {
-            name : "T-038",
-            networkNumber : "01/01",
-            stationsId : "019",
-            stationsIdSupplement : "2/1",
-            latitude : 49.504188,
-            longitude : 8.474861
+            name: "T-038",
+            networkNumber: "01/01",
+            stationsId: "019",
+            stationsIdSupplement: "2/1",
+            latitude: 49.504188,
+            longitude: 8.474861
         },
         {
-            name : "T-057",
-            networkNumber : "01/01",
-            stationsId : "032",
-            stationsIdSupplement : "2/1",
-            latitude : 49.505756,
-            longitude : 8.474756
+            name: "T-057",
+            networkNumber: "01/01",
+            stationsId: "032",
+            stationsIdSupplement: "2/1",
+            latitude: 49.505756,
+            longitude: 8.474756
         },
         {
-            name : "T-040",
-            networkNumber : "01/01",
-            stationsId : "021",
-            stationsIdSupplement : "2/1",
-            latitude : 49.505417,
-            longitude : 8.473025
+            name: "T-040",
+            networkNumber: "01/01",
+            stationsId: "021",
+            stationsIdSupplement: "2/1",
+            latitude: 49.505417,
+            longitude: 8.473025
         },
     ]
 }
@@ -207,7 +207,7 @@ export default function Dashboard() {
     return (
         <>
             <div className="absolute w-full h-screen">
-                <div 
+                <div
                     className="relative top-0 left-0 w-full bg-white text-black flex items-center  justify-between p-2 shadow-md z-50">
                     <DatePicker setSelected={setDate} selected={date} isInGuidedMode={isInGuidedMode}
                     />
@@ -255,20 +255,29 @@ export default function Dashboard() {
                     </div>
                     <div
                         className="absolute bottom-4 left-1/2 transform -translate-x-1/2 md:bottom-8 lg:bottom-12 flex space-x-4 z-1000">
-                        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
-                            <LineChart
-                                date={date}
-                                displayedStations={isInGuidedMode ? selectedStations : []}
-                                selectedStations={selectedStations}
-                            />
+                        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-0">
+                            <CardHeader className="flex justify-center items-center p-0 pt-2">
+                                <CardTitle className="text-base sm:text-lg md:text-m lg:text-l xl:text-xl">Temperaturverlauf um den betrachteten Zeitpunkt herum</CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-6 pb-0 pt-0">
+                                <LineChart
+                                    date={date}
+                                    displayedStations={isInGuidedMode ? selectedStations : []}
+                                    selectedStations={selectedStations} />
+                            </CardContent>
                         </Card>
-                        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
-                            <BarChart
-                                date={date}
-                                isInGuidedMode={isInGuidedMode}
-                                selectedStations={selectedStations} setSelectedStations={setSelectedStations} />
+                        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl ">
+                            <CardHeader className="flex justify-center items-center p-0 pt-2">
+                                <CardTitle className="text-base sm:text-lg md:text-m lg:text-l xl:text-xl">Vergleich der ⌀ Temperatur von 5:30 bis 6:30</CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-6 pb-0 pt-0">
+                                <BarChart
+                                    date={date}
+                                    isInGuidedMode={isInGuidedMode}
+                                    selectedStations={selectedStations} setSelectedStations={setSelectedStations} />
+                            </CardContent>
                         </Card>
-                        <StationInfoCard 
+                        <StationInfoCard
                             date={date}
                             selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                             selectedStations={selectedStations} setSelectedStations={setSelectedStations}
