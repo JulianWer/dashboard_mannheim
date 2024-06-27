@@ -125,6 +125,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                 center={coordinates}
                 zoom={15}
                 className={classes.mapContainer}
+                doubleClickZoom={false}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
