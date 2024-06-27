@@ -207,7 +207,7 @@ export default function Dashboard() {
     return (
         <>
             <div className="absolute w-full h-screen">
-                <div
+                <div 
                     className="relative top-0 left-0 w-full bg-white text-black flex items-center  justify-between p-2 shadow-md z-50">
                     <DatePicker setSelected={setDate} selected={date} isInGuidedMode={isInGuidedMode}
                     />
@@ -218,14 +218,14 @@ export default function Dashboard() {
 
                     <div className="flex items-center space-x-4">
                         <Button
-                            className={` px-4 py-2 ${!isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200'} focus:outline-none`}
+                            className={` px-4 py-2 ${!isInGuidedMode ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200'} focus:outline-none`}
                             type="button"
                             onClick={() => setIsInGuidedMode(false)}
                         >
                             Explore
                         </Button>
                         <Button
-                            className={`px-4 py-2 ${isInGuidedMode ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200'} focus:outline-none`}
+                            className={`px-4 py-2 ${isInGuidedMode ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200'} focus:outline-none`}
                             type="button"
                             onClick={() => handleGuideMode(1)}
                         >
@@ -256,19 +256,19 @@ export default function Dashboard() {
                     <div
                         className="absolute bottom-4 left-1/2 transform -translate-x-1/2 md:bottom-8 lg:bottom-12 flex space-x-4 z-1000">
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
-                            <BarChart
-                                date={date}
-                                isInGuidedMode={isInGuidedMode}
-                                selectedStations={selectedStations} setSelectedStations={setSelectedStations} />
-                        </Card>
-                        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
                             <LineChart
                                 date={date}
                                 displayedStations={isInGuidedMode ? selectedStations : []}
                                 selectedStations={selectedStations}
                             />
                         </Card>
-                        <StationInfoCard
+                        <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4">
+                            <BarChart
+                                date={date}
+                                isInGuidedMode={isInGuidedMode}
+                                selectedStations={selectedStations} setSelectedStations={setSelectedStations} />
+                        </Card>
+                        <StationInfoCard 
                             date={date}
                             selectedStation={selectedStations.length > 0 ? selectedStations[selectedStations.length - 1] : undefined}
                             selectedStations={selectedStations} setSelectedStations={setSelectedStations}

@@ -77,6 +77,7 @@ export default function LineChart(props: ILineChart) {
 
     const xRef = useRef<SVGGElement>(null);
     const yRef = useRef<SVGGElement>(null);
+    const gridRef = useRef<SVGGElement>(null);
 
     const scaleEndDate: Moment = moment.tz(`${date} 12:00:00`, "Europe/Berlin");
     const scaleStartDate: Moment = moment(scaleEndDate).subtract(24, "hours");
@@ -87,7 +88,20 @@ export default function LineChart(props: ILineChart) {
     useEffect(() => {
         if (xRef.current) d3.select(xRef.current).call(d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%H:%M")));
         if (yRef.current) d3.select(yRef.current).call(d3.axisLeft(yScale));
-    }, [xTimeScale, yScale]);
+
+        // Add gridlines
+        if (gridRef.current) {
+            d3.select(gridRef.current)
+                .call(d3.axisLeft(yScale)
+                    .tickSize(-width)
+                    .tickFormat(() => '')
+                )
+                .selectAll("line")
+                .style("stroke", "lightgrey")
+                .style("stroke-width", "0.5");
+        }
+        d3.select(gridRef.current).select(".domain").remove();
+    }, [xTimeScale, yScale, width]);
 
     const drawLine = d3.line<TimeTemp>()
         .x((d: TimeTemp) => xTimeScale(d.timestamp))
@@ -114,6 +128,7 @@ export default function LineChart(props: ILineChart) {
                     {moment(date).subtract(1, 'days').format("DD.MM.YYYY")}
                 </text>
                 <g ref={yRef} />
+                <g ref={gridRef} />
                 <text x={-margin.left - 70} y={-margin.top - 5} textAnchor="middle" transform="rotate(-90)" fill="black"
                     fontSize="14px">
                     Temperatur in °C
@@ -126,6 +141,7 @@ export default function LineChart(props: ILineChart) {
                     width={highlightXEnd - highlightXStart}
                     height={height}
                     fill="rgba(255, 165, 0, 0.3)"
+                    
                 />
 
                 {/* Dotted line at midnight */}

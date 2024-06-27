@@ -15,7 +15,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
         <div>
             <div>
                 {isInGuidedMode ? (
-                    <Card className="bg-[#393E46] text-[#EEEEEE] shadow-gray-400 shadow-lg rounded-3xl p-2 pb-0"
+                    <Card className="bg-white text-[#393E46]  shadow-gray-400 shadow-lg p-2 pb-0"
                           style={{
                               height: "45vh",
                               overflow: "auto",
@@ -24,7 +24,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                         <CardHeader className="p-0">
                             <div className="flex items-center pb-2 pt-2 justify-center space-x-4">
                                 <Button
-                                    className={` ${selectedDataStory === 1 ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                    className={` ${selectedDataStory === 1 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
                                     onClick={() => {
                                         setSelectedDataStory(1)
@@ -34,7 +34,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     Data Story 1
                                 </Button>
                                 <Button
-                                    className={` ${selectedDataStory === 2 ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                    className={` ${selectedDataStory === 2 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
                                     onClick={() => {
                                         setSelectedDataStory(2)
@@ -44,7 +44,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     Data Story 2
                                 </Button>
                                 <Button
-                                    className={` ${selectedDataStory === 3 ? 'bg-[#00ADB5] text-white hover:bg-[#00ADB5]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
+                                    className={` ${selectedDataStory === 3 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
                                     onClick={() => {
                                         setSelectedDataStory(3)
@@ -112,7 +112,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                     </Card>
 
                 ) : (
-                    <Card className="bg-[#393E46] text-[#EEEEEE] shadow-gray-400 shadow-lg rounded-3xl p-2 pb-0"
+                    <Card className="bg-white text-[#393E46] shadow-gray-400 shadow-lg p-2 pb-0"
                           style={{
                               height: "45vh",
                               overflow: "auto",

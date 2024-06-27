@@ -92,6 +92,7 @@ function Barchart(props: IBarchart) {
 
     const gx = useRef();
     const gy = useRef();
+    const gridRef = useRef<SVGGElement>(null);
     // X axis
     const x = d3
         .scaleBand()
@@ -100,7 +101,7 @@ function Barchart(props: IBarchart) {
         .padding(0.2);
 
     // Add Y axis
-    const y = d3.scaleLinear().domain([0, d3.max(sortedTemperaturesArray, d => d.data.averageTemperature) + 1]).range([height, 0]);
+    const y = d3.scaleLinear().domain([d3.min(sortedTemperaturesArray, d => d.data.averageTemperature) - 0.3, d3.max(sortedTemperaturesArray, d => d.data.averageTemperature) + 0.3]).range([height, 0]);
 
 
     useEffect(() => {
@@ -114,7 +115,21 @@ function Barchart(props: IBarchart) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         d3.select(gy.current).call(d3.axisLeft(y))
-    }, [gx, gy, x, y]);
+
+        // Add gridlines
+        if (gridRef.current) {
+            d3.select(gridRef.current)
+                .call(d3.axisLeft(y)
+                    .tickSize(-width)
+                    .tickFormat(() => '')
+                )
+                .selectAll("line")
+                .style("stroke", "lightgrey")
+                .style("stroke-width", "0.5");
+
+        }
+        d3.select(gridRef.current).select(".domain").remove();
+    }, [gx, gy, x, y, width]);
 
 
     const handleRectClock = (station: IStation, event: MouseEvent) => {
@@ -179,6 +194,7 @@ function Barchart(props: IBarchart) {
                 >
                     Temperatur in °C
                 </text>
+                <g ref={gridRef} />
 
                 <g fill="white" stroke="currentColor" strokeWidth="1">
                     {sortedTemperaturesArray.map((d, i) => (
