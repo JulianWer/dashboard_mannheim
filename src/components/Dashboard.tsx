@@ -257,7 +257,7 @@ export default function Dashboard() {
                         className="absolute bottom-4 left-1/2 transform -translate-x-1/2 md:bottom-8 lg:bottom-12 flex space-x-4 z-1000">
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-0">
                             <CardHeader className="flex justify-center items-center p-0 pt-2">
-                                <CardTitle className="text-base sm:text-lg md:text-m lg:text-l xl:text-xl">Temperaturverlauf um den betrachteten Zeitpunkt herum</CardTitle>
+                                <CardTitle className="text-base sm:text-lg md:text-m lg:text-l xl:text-xl">Temperaturverlauf über 24h</CardTitle>
                             </CardHeader>
                             <CardContent className="p-6 pb-0 pt-0">
                                 <LineChart
@@ -268,7 +268,7 @@ export default function Dashboard() {
                         </Card>
                         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl ">
                             <CardHeader className="flex justify-center items-center p-0 pt-2">
-                                <CardTitle className="text-base sm:text-lg md:text-m lg:text-l xl:text-xl">Vergleich der ⌀ Temperatur von 5:30 bis 6:30</CardTitle>
+                                <CardTitle className="text-base sm:text-lg md:text-m lg:text-l xl:text-xl">Durchschnittstemperatur zwischen 5:30 und 6:30</CardTitle>
                             </CardHeader>
                             <CardContent className="p-6 pb-0 pt-0">
                                 <BarChart
