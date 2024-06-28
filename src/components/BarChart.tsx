@@ -1,11 +1,10 @@
 import * as d3 from "d3";
-import {LegacyRef, useCallback, useEffect, useRef, useState} from "react";
-import {getStationData} from "../utils/DataHandler.ts"
+import {LegacyRef, useEffect, useRef} from "react";
 import {IStation, StationData} from "./Dashboard.tsx";
 
 
 interface IBarchart {
-    date: string;
+    dataFromStations: StationData;
     isInGuidedMode: boolean;
     selectedStations: IStation[] | undefined
     setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
@@ -13,18 +12,8 @@ interface IBarchart {
 
 
 function Barchart(props: IBarchart) {
-    const {selectedStations, setSelectedStations, date, isInGuidedMode} = props;
-    const [dataFromStations, setDataFromStations] = useState<StationData>({});
+    const {selectedStations, setSelectedStations, dataFromStations, isInGuidedMode} = props;
 
-
-    const fetchData = useCallback(async () => {
-        const data: StationData = await getStationData(date, "06:30", 1);
-        setDataFromStations(data);
-    }, [date]);
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
 
     const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value.averageTemperature);
     const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green", "yellow", "red"]));
@@ -193,7 +182,7 @@ function Barchart(props: IBarchart) {
                 >
                     °C
                 </text>
-                <g ref={gridRef} />
+                <g ref={gridRef}/>
 
                 <g fill="white" stroke="currentColor" strokeWidth="1">
                     {sortedTemperaturesArray.map((d, i) => (

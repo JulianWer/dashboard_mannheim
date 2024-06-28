@@ -35,8 +35,8 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
     const clickedOnCircle = useRef(false);
 
     const fetchData = useCallback(async () => {
-        const data: StationData = await getStationData(date, "06:30", 1);
-        setTemperaturesForAllStations(data);
+        const {timeFilteredData} = await getStationData(date, "06:30", 1);
+        setTemperaturesForAllStations(timeFilteredData);
     }, [date]);
 
     useEffect(() => {
@@ -158,6 +158,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                                     <div>
                                         Name: {d.data.name}<br/>
                                         Temperatur: {d.data.averageTemperature.toFixed(2)}°C
+                                        
                                     </div>
                                 </Tooltip>
                             </Circle>

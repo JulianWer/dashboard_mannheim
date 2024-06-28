@@ -37,9 +37,7 @@ function filterDataByDate(cachedData: any[], desiredDate: string, desiredEndTime
     return cachedData.filter(d => d.timestamp.isBetween(desiredBeginning, desiredEnd, undefined, "[]"));
 }
 
-export async function getStationData(desiredDate: string, desiredEndTime: string = "12:00:00", hoursStartToEndTime: number = 24): Promise<StationData> {
-    const cachedData = await fetchCsvData();
-    const filteredData = filterDataByDate(cachedData, desiredDate, desiredEndTime, hoursStartToEndTime);
+function optimizeStationData(filteredData: any[]): StationData {
 
     const stationData: StationData = filteredData.reduce((acc, d) => {
         const stationName = `${d.Messnetz}-${d.StationsID}-${d.StationsIDErgänzung}`;
@@ -61,6 +59,21 @@ export async function getStationData(desiredDate: string, desiredEndTime: string
     });
 
     return stationData;
+}
+
+export async function getStationData(desiredDate: string, desiredEndTime: string = "12:00:00", hoursStartToEndTime: number = 24): Promise<{
+    data: StationData,
+    timeFilteredData: StationData
+}> {
+    const cachedData = await fetchCsvData();
+    const filteredData = filterDataByDate(cachedData, desiredDate, desiredEndTime, hoursStartToEndTime);
+    const filteredDataDefault = filterDataByDate(cachedData, desiredDate, "12:00:00", 24);
+
+    const stationData = optimizeStationData(filteredDataDefault);
+    const stationDataWithTime = optimizeStationData(filteredData);
+
+
+    return {data: stationData, timeFilteredData: stationDataWithTime};
 }
 
 function getAverageTemperature(temperatures: number[]): number {

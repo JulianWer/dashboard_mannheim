@@ -1,11 +1,11 @@
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {IStation, StationData} from "@/components/Dashboard.tsx";
-import {useCallback, useEffect, useMemo, useState} from "react";
-import {getStationData} from "@/utils/DataHandler.ts";
+import {useMemo} from "react";
+import Legend from "@/components/Legend.tsx";
 
 interface IStationInfoCard {
-    date: string;
+    dataFromStations: StationData;
     selectedStation: IStation | undefined;
     selectedStations: IStation[] | undefined
     setSelectedStations: React.Dispatch<React.SetStateAction<IStation[]>>;
@@ -19,21 +19,7 @@ type InfoData = {
 }
 
 export default function StationInfoCard(props: IStationInfoCard) {
-    const {selectedStation, isInGuidedMode, setSelectedStations, selectedStations, date} = props;
-    const [dataFromStations, setDataFromStations] = useState<StationData>({});
-    const endTime: string = "06:30";
-    const hoursStartToEndTime: number = 1;
-
-
-    const fetchData = useCallback(async () => {
-        const data: StationData = await getStationData(date, endTime, hoursStartToEndTime);
-        setDataFromStations(data);
-    }, [date]);
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
+    const {selectedStation, isInGuidedMode, setSelectedStations, selectedStations, dataFromStations} = props;
     const temperaturesForAllStationsHelper: IStation[] = Object.values(dataFromStations).map((value: IStation) => value);
 
     const getInfoData: InfoData = useMemo((): InfoData => {
@@ -58,11 +44,13 @@ export default function StationInfoCard(props: IStationInfoCard) {
         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl p-4" style={{
             width: "32vw",
         }}>
-        
+
             <CardHeader className="flex justify-center items-center">
                 <CardTitle className="text-4xl font-bold">Station-Info</CardTitle>
             </CardHeader>
             <CardContent>
+                <Legend dataFromStations={dataFromStations}/>
+
                 {selectedStation && selectedStations.length === 1 && (
                     <div className="flex justify-center items-center space-x-8 p-4">
                         <div className="flex flex-col items-center">
