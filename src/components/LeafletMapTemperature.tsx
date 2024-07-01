@@ -6,6 +6,7 @@ import {getStationData} from "../utils/DataHandler.ts";
 import * as d3 from 'd3';
 import {IStation, StationData} from "./Dashboard.tsx";
 import {useCallback, useEffect, useRef, useState} from "react";
+import {format} from "date-fns";
 
 const MapClickHandler = ({onEmptySpaceClick, clickedOnCircle}) => {
     useMapEvents({
@@ -157,8 +158,9 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                                 <Tooltip>
                                     <div>
                                         Name: {d.data.name}<br/>
-                                        Temperatur: {d.data.averageTemperature.toFixed(2)}°C
-                                        
+                                        Datum: {format(date, "dd.MM.yyyy")}<br/>
+                                        Zeitraum: 05:30 - 06:30 Uhr<br/>
+                                        {'\u2300'} Temperatur: {d.data.averageTemperature.toFixed(2)}°C
                                     </div>
                                 </Tooltip>
                             </Circle>
