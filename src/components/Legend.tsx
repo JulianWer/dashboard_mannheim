@@ -5,10 +5,12 @@ import {IStation, StationData} from "@/components/Dashboard.tsx";
 
 interface ILegend {
     dataFromStations: StationData;
+    minTemperature: number;
+    maxTemperature: number;
 }
 
 const Legend = (props: ILegend) => {
-    const {dataFromStations} = props;
+    const {dataFromStations, minTemperature, maxTemperature} = props;
     const legendRef = useRef(null);
 
     const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value.averageTemperature);
@@ -60,7 +62,31 @@ const Legend = (props: ILegend) => {
         svg.append('g')
             .attr('transform', `translate(0, ${legendHeight - 20})`)
             .call(xAxis);
-    }, [scale]);
+
+        if (minTemperature && maxTemperature) {
+            // Add lines for min and max temperatures
+            const lineColor = 'black';
+            const minTempPos = xScale(minTemperature);
+            const maxTempPos = xScale(maxTemperature);
+
+            svg.append('line')
+                .attr('x1', minTempPos)
+                .attr('x2', minTempPos)
+                .attr('y1', 0)
+                .attr('y2', legendHeight - 20)
+                .attr('stroke', lineColor)
+                .attr('stroke-width', 3);
+
+            svg.append('line')
+                .attr('x1', maxTempPos)
+                .attr('x2', maxTempPos)
+                .attr('y1', 0)
+                .attr('y2', legendHeight - 20)
+                .attr('stroke', lineColor)
+                .attr('stroke-width', 3);
+        }
+
+    }, [scale, minTemperature, maxTemperature]);
 
     return <div style={{height: "30"}} ref={legendRef}></div>;
 };
