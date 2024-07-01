@@ -149,7 +149,6 @@ export default function StationInfoCard(props: IStationInfoCard) {
 
             </CardContent>
             <CardFooter className="flex justify-center items-center gap-2 mt-1">
-            <CardFooter className="flex justify-center items-center gap-2 mt-1">
                 {selectedStations.length !== 0 && !isInGuidedMode && (
                     <Button
                         onClick={() => {
