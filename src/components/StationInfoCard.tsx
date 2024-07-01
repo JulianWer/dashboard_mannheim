@@ -127,7 +127,6 @@ export default function StationInfoCard(props: IStationInfoCard) {
                             <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Anzahl Stationen</p>
                             <p style={{ fontSize: "1.5vh"}}>{selectedStations.length !== 0 ? selectedStations.length : temperaturesForAllStationsHelper.length}</p>
                         </div>
-
                         <div className="flex flex-col items-center">
                             <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>{'\u2300'} Temperatur Differenz</p>
                             <p style={{ fontSize: "1.5vh"}}>{getInfoData.temperatureDifference}°C</p>
@@ -149,6 +148,7 @@ export default function StationInfoCard(props: IStationInfoCard) {
                 </div>
 
             </CardContent>
+            <CardFooter className="flex justify-center items-center gap-2 mt-1">
             <CardFooter className="flex justify-center items-center gap-2 mt-1">
                 {selectedStations.length !== 0 && !isInGuidedMode && (
                     <Button
