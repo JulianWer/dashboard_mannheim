@@ -13,11 +13,18 @@ import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
 interface IDatePickerProps {
     setSelected: React.Dispatch<React.SetStateAction<string>>;
     selected: string;
+    isInGuidedMode: boolean;
 }
 
-export function DatePicker(porps: IDatePickerProps) {
-    const {setSelected, selected} = porps
-    const [date, setDate] = React.useState<Date>(selected ? new Date(selected) : new Date())
+export function DatePicker(props: IDatePickerProps) {
+    const {setSelected, selected, isInGuidedMode} = props
+    const [date, setDate] = React.useState<Date>(selected ? new Date(selected) : new Date());
+
+    useEffect(() => {
+        if (selected) {
+            setDate(new Date(selected));
+        }
+    }, [selected]);
 
     useEffect(() => {
         if (!date) return
@@ -28,6 +35,7 @@ export function DatePicker(porps: IDatePickerProps) {
         <Popover>
             <PopoverTrigger asChild>
                 <Button
+                    disabled={isInGuidedMode}
                     variant={"outline"}
                     className={cn(
                         "w-[280px] justify-start text-left font-normal",
@@ -35,7 +43,8 @@ export function DatePicker(porps: IDatePickerProps) {
                     )}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4"/>
-                    {date ? format(date, "LLL dd, y") : <span>Pick a date</span>}
+                    {date ? format(date, "dd.MM.yyyy") :
+                        <span>Pick a date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-1000">
@@ -46,7 +55,7 @@ export function DatePicker(porps: IDatePickerProps) {
                     defaultMonth={date}
                     initialFocus
                     disabled={(date) =>
-                        date > new Date("2024-06-23") || date < new Date("2024-02-20")
+                        date > new Date("2024-06-29") || date < new Date("2024-02-20")
                     }
                 />
             </PopoverContent>

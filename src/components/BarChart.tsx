@@ -1,29 +1,19 @@
 import * as d3 from "d3";
-import {LegacyRef, useCallback, useEffect, useRef, useState} from "react";
-import {getStationData} from "../utils/DataHandler.ts"
+import {LegacyRef, useEffect, useRef} from "react";
 import {IStation, StationData} from "./Dashboard.tsx";
 
 
 interface IBarchart {
-    date: string;
+    dataFromStations: StationData;
+    isInGuidedMode: boolean;
     selectedStations: IStation[] | undefined
     setSelectedStations: React.Dispatch<React.SetStateAction<IStation[] | undefined>>;
 }
 
 
 function Barchart(props: IBarchart) {
-    const {selectedStations, setSelectedStations, date} = props;
-    const [dataFromStations, setDataFromStations] = useState<StationData>({});
+    const {selectedStations, setSelectedStations, dataFromStations, isInGuidedMode} = props;
 
-
-    const fetchData = useCallback(async () => {
-        const data: StationData = await getStationData(date, "06:30", 1);
-        setDataFromStations(data);
-    }, [date]);
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
 
     const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value.averageTemperature);
     const customInterpolator = d3.scaleSequential(d3.interpolateRgbBasis(["green", "yellow", "red"]));
@@ -75,7 +65,7 @@ function Barchart(props: IBarchart) {
     };
 
 
-    const margin = {top: 20, right: 0, bottom: 70, left: 35}
+    const margin = {top: 20, right: 0, bottom: 70, left: 30}
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerHeight || 0);
     const height = (35 * vh) / 100 - margin.top - margin.bottom;
@@ -91,6 +81,7 @@ function Barchart(props: IBarchart) {
 
     const gx = useRef();
     const gy = useRef();
+    const gridRef = useRef<SVGGElement>(null);
     // X axis
     const x = d3
         .scaleBand()
@@ -99,7 +90,7 @@ function Barchart(props: IBarchart) {
         .padding(0.2);
 
     // Add Y axis
-    const y = d3.scaleLinear().domain([0, d3.max(sortedTemperaturesArray, d => d.data.averageTemperature) + 1]).range([height, 0]);
+    const y = d3.scaleLinear().domain([d3.min(sortedTemperaturesArray, d => d.data.averageTemperature) - 0.3, d3.max(sortedTemperaturesArray, d => d.data.averageTemperature) + 0.3]).range([height, 0]);
 
 
     useEffect(() => {
@@ -113,7 +104,21 @@ function Barchart(props: IBarchart) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         d3.select(gy.current).call(d3.axisLeft(y))
-    }, [gx, gy, x, y]);
+
+        // Add gridlines
+        if (gridRef.current) {
+            d3.select(gridRef.current)
+                .call(d3.axisLeft(y)
+                    .tickSize(-width)
+                    .tickFormat(() => '')
+                )
+                .selectAll("line")
+                .style("stroke", "lightgrey")
+                .style("stroke-width", "0.5");
+
+        }
+        d3.select(gridRef.current).select(".domain").remove();
+    }, [gx, gy, x, y, width]);
 
 
     const handleRectClock = (station: IStation, event: MouseEvent) => {
@@ -126,18 +131,26 @@ function Barchart(props: IBarchart) {
             setSelectedStations([station]);
         } else {
 
-            if (event.metaKey || event.ctrlKey) {
-                if (isAlreadySelected) {
-                    setSelectedStations(selectedStations.filter(selectedStation =>
-                        !(selectedStation.networkNumber === station.networkNumber &&
-                            selectedStation.stationsId === station.stationsId &&
-                            selectedStation.stationsIdSupplement === station.stationsIdSupplement)
-                    ));
-                } else {
-                    setSelectedStations((prev) => [...prev, station]);
-                }
+            if (isAlreadySelected && selectedStations.length === 1) {
+                setSelectedStations(selectedStations.filter(selectedStation =>
+                    !(selectedStation.networkNumber === station.networkNumber &&
+                        selectedStation.stationsId === station.stationsId &&
+                        selectedStation.stationsIdSupplement === station.stationsIdSupplement)
+                ));
             } else {
-                setSelectedStations([station]);
+                if (event.metaKey || event.ctrlKey) {
+                    if (isAlreadySelected) {
+                        setSelectedStations(selectedStations.filter(selectedStation =>
+                            !(selectedStation.networkNumber === station.networkNumber &&
+                                selectedStation.stationsId === station.stationsId &&
+                                selectedStation.stationsIdSupplement === station.stationsIdSupplement)
+                        ));
+                    } else {
+                        setSelectedStations((prev) => [...prev, station]);
+                    }
+                } else {
+                    setSelectedStations([station]);
+                }
             }
         }
     };
@@ -155,21 +168,21 @@ function Barchart(props: IBarchart) {
                     fill="black"
                     fontSize="14px"
                 >
-                    Stations
+                    Stationen
                 </text>
 
                 {/* y-Achsen-Beschriftung */}
                 <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined}/>
                 <text
-                    x={-margin.left - 70}
-                    y={-margin.top - 5}
+                    x={-margin.left + 10}
+                    y={-margin.top + 15}
                     textAnchor="middle"
-                    transform={`rotate(-90)`}
                     fill="black"
                     fontSize="14px"
                 >
-                    Temperature in °C
+                    °C
                 </text>
+                <g ref={gridRef}/>
 
                 <g fill="white" stroke="currentColor" strokeWidth="1">
                     {sortedTemperaturesArray.map((d, i) => (
@@ -178,11 +191,12 @@ function Barchart(props: IBarchart) {
                             x={x(d.data.name)}
                             y={y(d.data.averageTemperature)}
                             width={x.bandwidth()}
+                            style={!isInGuidedMode ? {cursor: "pointer"} : {}}
                             height={height - y(d.data.averageTemperature)}
                             fill={getColor(d.stationName, d.data.averageTemperature)}
                             color={getBorderColor(d.stationName)}
                             data-station={d.data.name}
-                            onClick={(e) => handleRectClock(d.data, e.nativeEvent)}
+                            onClick={(e) => !isInGuidedMode ? handleRectClock(d.data, e.nativeEvent) : {}}
                         />
                     ))}
                 </g>

@@ -1,11 +1,14 @@
 import {useEffect, useRef} from 'react';
 import * as d3 from 'd3';
-import {IStation} from "@/components/Dashboard.tsx";
-import {getStationData} from "@/utils/DataHandler.ts";
+import {IStation, StationData} from "@/components/Dashboard.tsx";
 
-const dataFromStations = await getStationData("2024-04-07", "06:30", 1)
 
-const Legend = () => {
+interface ILegend {
+    dataFromStations: StationData;
+}
+
+const Legend = (props: ILegend) => {
+    const {dataFromStations} = props;
     const legendRef = useRef(null);
 
     const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value.averageTemperature);

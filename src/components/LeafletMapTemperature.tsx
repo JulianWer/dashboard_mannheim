@@ -1,13 +1,23 @@
-import {Circle, MapContainer, TileLayer, Tooltip} from 'react-leaflet';
+import {Circle, MapContainer, TileLayer, Tooltip, useMapEvents} from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import {LatLngTuple} from "leaflet";
 import classes from "./styles/LeafletMapTemperature.module.css";
 import {getStationData} from "../utils/DataHandler.ts";
 import * as d3 from 'd3';
 import {IStation, StationData} from "./Dashboard.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 
+const MapClickHandler = ({onEmptySpaceClick, clickedOnCircle}) => {
+    useMapEvents({
+        click: (event) => {
+            if (!clickedOnCircle.current) {
+                onEmptySpaceClick(event);
+            }
+            clickedOnCircle.current = false; // Reset after handling click
+        },
+    });
+    return null;
+};
 
 interface ILeafletMapTemperature {
     selectedStations: IStation[];
@@ -18,18 +28,15 @@ interface ILeafletMapTemperature {
 }
 
 export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
-
     const {selectedStations, setSelectedStations, isInGuidedMode, date} = props;
 
     const coordinates: LatLngTuple = [49.499061 - 0.0007, 8.475401 + 0.011];
-
-
     const [temperaturesForAllStations, setTemperaturesForAllStations] = useState<StationData>({});
-
+    const clickedOnCircle = useRef(false);
 
     const fetchData = useCallback(async () => {
-        const data: StationData = await getStationData(date, "06:30", 1);
-        setTemperaturesForAllStations(data);
+        const {timeFilteredData} = await getStationData(date, "06:30", 1);
+        setTemperaturesForAllStations(timeFilteredData);
     }, [date]);
 
     useEffect(() => {
@@ -61,7 +68,7 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
             station.stationsIdSupplement === stationsIdSupplement
         );
         if (selectedStations.length === 0) {
-            return baseColor
+            return baseColor;
         } else {
             if (isSelected) {
                 return baseColor;
@@ -72,8 +79,8 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
         }
     }
 
-
     const handleCircleClick = (station: IStation, event: MouseEvent) => {
+        clickedOnCircle.current = true; // Indicate that a circle was clicked
         const isAlreadySelected = selectedStations.some(selectedStation =>
             station.networkNumber === selectedStation.networkNumber &&
             station.stationsId === selectedStation.stationsId &&
@@ -82,52 +89,51 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
         if (selectedStations.length === 0) {
             setSelectedStations([station]);
         } else {
-
-            if (event.metaKey || event.ctrlKey) {
-                if (isAlreadySelected) {
-                    setSelectedStations(selectedStations.filter(selectedStation =>
-                        !(selectedStation.networkNumber === station.networkNumber &&
-                            selectedStation.stationsId === station.stationsId &&
-                            selectedStation.stationsIdSupplement === station.stationsIdSupplement)
-                    ));
-                } else {
-                    setSelectedStations((prev) => [...prev, station]);
-                }
+            if (isAlreadySelected && selectedStations.length === 1) {
+                setSelectedStations(selectedStations.filter(selectedStation =>
+                    !(selectedStation.networkNumber === station.networkNumber &&
+                        selectedStation.stationsId === station.stationsId &&
+                        selectedStation.stationsIdSupplement === station.stationsIdSupplement)
+                ));
             } else {
-                setSelectedStations([station]);
+                if (event.metaKey || event.ctrlKey) {
+                    if (isAlreadySelected) {
+                        setSelectedStations(selectedStations.filter(selectedStation =>
+                            !(selectedStation.networkNumber === station.networkNumber &&
+                                selectedStation.stationsId === station.stationsId &&
+                                selectedStation.stationsIdSupplement === station.stationsIdSupplement)
+                        ));
+                    } else {
+                        setSelectedStations(prev => [...prev, station]);
+                    }
+                } else {
+                    setSelectedStations([station]);
+                }
             }
+        }
+    };
+
+    const handleEmptySpaceClick = () => {
+        if (!isInGuidedMode) {
+            setSelectedStations([]);
         }
     };
 
     return (
         <div className="relative w-full">
-            {selectedStations.length !== 0 && !isInGuidedMode && (
-                <Button
-                    onClick={() => {
-                        setSelectedStations([])
-                    }}
-                    className={`bg-red-500 text-white hover:bg-red-600 focus:outline-none`}
-                    style={{
-                        position: "absolute",
-                        top: "10px",
-                        right: "10px",
-                        zIndex: 1000, // Ensure the button appears above the map
-                        padding: "10px",
-                        border: "1px solid #ccc",
-                        cursor: "pointer"
-                    }}
-                >
-                    Reset selection
-                </Button>)}
             <MapContainer
                 center={coordinates}
                 zoom={15}
                 className={classes.mapContainer}
+                doubleClickZoom={false}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                 />
+
+                <MapClickHandler onEmptySpaceClick={handleEmptySpaceClick} clickedOnCircle={clickedOnCircle}/>
+
                 <svg>
                     <g fill="white" stroke="currentColor" strokeWidth="0">
                         {temperaturesArray.map((d, i) => (
@@ -140,20 +146,19 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
                                     fillColor: getColor(d.data.networkNumber, d.data.stationsId, d.data.stationsIdSupplement),
                                     fillOpacity: 1,
                                     weight: 0.8
-
                                 }}
                                 radius={25}
                                 eventHandlers={{
-                                    click: (e) => {
+                                    click: e => {
                                         !isInGuidedMode ? handleCircleClick(d.data, e.originalEvent) : null;
                                     }
-
                                 }}
                             >
                                 <Tooltip>
                                     <div>
                                         Name: {d.data.name}<br/>
                                         Temperatur: {d.data.averageTemperature.toFixed(2)}°C
+                                        
                                     </div>
                                 </Tooltip>
                             </Circle>
@@ -163,8 +168,6 @@ export default function LeafletMapTemperature(props: ILeafletMapTemperature) {
             </MapContainer>
 
             <div className={classes.blurGradient}></div>
-
         </div>
-
     );
 }
