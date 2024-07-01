@@ -34,7 +34,9 @@ function filterDataByDate(cachedData: any[], desiredDate: string, desiredEndTime
     const desiredEnd: Moment = moment.tz(desiredDate + " " + desiredEndTime, "Europe/Berlin");
     const desiredBeginning: Moment = moment(desiredEnd).subtract(hoursStartToEndTime, "hours");
 
-    return cachedData.filter(d => d.timestamp.isBetween(desiredBeginning, desiredEnd, undefined, "[]"));
+    const specialStationFilterDate: Moment = moment.tz("2024-03-12 00:00:00", "Europe/Berlin");
+
+    return cachedData.filter(d => d.timestamp.isBetween(desiredBeginning, desiredEnd, undefined, "[]") && (d.StationsID === "029" ? !d.timestamp.isBefore(specialStationFilterDate) : true));
 }
 
 function optimizeStationData(filteredData: any[]): StationData {
