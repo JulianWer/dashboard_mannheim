@@ -64,25 +64,28 @@ export default function StationInfoCard(props: IStationInfoCard) {
                     <div className="grid grid-cols-2 gap-8">
                         <div className="flex flex-col items-center">
                             <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Datum</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-semibold">{moment(date).format("DD.MM.YYYY")}</p>
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{moment(date).format("DD.MM.YYYY")}</p>
                         </div>
                         <div className="flex flex-col items-center">
                             <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Zeitraum</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-semibold">{time}</p>
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{time}</p>
                         </div>
+
                         <div className="flex flex-col items-center">
                             <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Anzahl Stationen</p>
                             <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{temperaturesForAllStationsHelper.length}</p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">{'\u2300'} Temperatur
+                                Differenz</p>
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{getInfoData.temperatureDifference}°C</p>
                         </div>
 
                         <div className="flex flex-col items-center">
                             <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Min {'\u2300'} Temperatur</p>
                             <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{getInfoData.minTemperature}°C</p>
                         </div>
-                        <div className="flex flex-col items-center">
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">{'\u2300'} Temperatur Differenz</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{getInfoData.temperatureDifference}°C</p>
-                        </div>
+
                         <div className="flex flex-col items-center">
                             <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Max {'\u2300'} Temperatur</p>
                             <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{getInfoData.maxTemperature}°C</p>
@@ -90,44 +93,40 @@ export default function StationInfoCard(props: IStationInfoCard) {
                     </div>
                 )}
                 {selectedStation && selectedStations.length === 1 && (
-                    <div className="flex flex-col justify-center items-center space-y-4">
-                        <div className="flex justify-center items-center space-x-24">
-                            <div className="flex flex-col items-center">
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Datum</p>
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-semibold">{moment(date).format("DD.MM.YYYY")}</p>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Zeitraum</p>
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-semibold">{time}</p>
-                            </div>
+                    <div className="grid grid-cols-2 gap-8 gap-x-20">
+                        <div className="flex flex-col items-center">
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Datum</p>
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{moment(date).format("DD.MM.YYYY")}</p>
                         </div>
-                        <div className="flex justify-center items-center space-x-24">
-                            <div className="flex flex-col items-center">
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Name</p>
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{selectedStation.name}</p>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">{'\u2300'} Temperatur</p>
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{selectedStation.averageTemperature !== undefined ? selectedStation.averageTemperature.toFixed(2) : 'N/A'}°C</p>
-                            </div>
+                        <div className="flex flex-col items-center">
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Zeitraum</p>
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{time}</p>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Name</p>
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{selectedStation.name}</p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">{'\u2300'} Temperatur</p>
+                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{selectedStation.averageTemperature !== undefined ? selectedStation.averageTemperature.toFixed(2) : 'N/A'}°C</p>
                         </div>
                     </div>
                 )}
                 {selectedStations && selectedStations.length > 1 && (
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 gap-2 gap-x-16">
                         <div className="flex flex-col items-center">
                             <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Datum</p>
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-semibold">{moment(date).format("DD.MM.YYYY")}</p>
+                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{moment(date).format("DD.MM.YYYY")}</p>
                         </div>
                         <div className="flex flex-col items-center">
                             <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Zeitraum</p>
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-semibold">{time}</p>
+                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{time}</p>
                         </div>
                         <div className="flex flex-col items-center">
                             <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Anzahl Stationen</p>
                             <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{selectedStations.length !== 0 ? selectedStations.length : temperaturesForAllStationsHelper.length}</p>
                         </div>
-
                         <div className="flex flex-col items-center">
                             <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Min {'\u2300'} Temperatur</p>
                             <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{getInfoData.minTemperature}°C</p>
@@ -137,19 +136,20 @@ export default function StationInfoCard(props: IStationInfoCard) {
                             <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{getInfoData.maxTemperature}°C</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">{'\u2300'} Temperatur Differenz</p>
+                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">{'\u2300'} Temperatur
+                                Differenz</p>
                             <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{getInfoData.temperatureDifference}°C</p>
                         </div>
                     </div>)}
 
-                <div className={selectedStations.length === 0 ? ("mt-1") : ("mt-4")}>
+                <div className="mt-1">
                     <Legend dataFromStations={dataFromStations}
                             minTemperature={selectedStations.length > 1 ? getInfoData.minTemperature : undefined}
                             maxTemperature={selectedStations.length > 1 ? getInfoData.maxTemperature : undefined}/>
                 </div>
 
             </CardContent>
-            <CardFooter className="flex justify-center items-center gap-2">
+            <CardFooter className="flex justify-center items-center gap-2 mt-1">
                 {selectedStations.length !== 0 && !isInGuidedMode && (
                     <Button
                         onClick={() => {
