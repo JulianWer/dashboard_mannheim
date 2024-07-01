@@ -1,6 +1,6 @@
 import * as d3 from "d3";
-import {LegacyRef, useEffect, useRef} from "react";
-import {IStation, StationData} from "./Dashboard.tsx";
+import { LegacyRef, useEffect, useRef } from "react";
+import { IStation, StationData } from "./Dashboard.tsx";
 
 
 interface IBarchart {
@@ -12,7 +12,7 @@ interface IBarchart {
 
 
 function Barchart(props: IBarchart) {
-    const {selectedStations, setSelectedStations, dataFromStations, isInGuidedMode} = props;
+    const { selectedStations, setSelectedStations, dataFromStations, isInGuidedMode } = props;
 
 
     const temperaturesForAllStationsHelper = Object.values(dataFromStations).map((value: IStation) => value.averageTemperature);
@@ -35,7 +35,7 @@ function Barchart(props: IBarchart) {
             if (isSelected) {
                 return baseColor;
             } else {
-                const {r, g, b} = d3.color(baseColor).rgb();
+                const { r, g, b } = d3.color(baseColor).rgb();
                 return `rgba(${r},${g},${b},0.25)`;
             }
         } else {
@@ -56,7 +56,7 @@ function Barchart(props: IBarchart) {
             if (isSelected) {
                 return baseColor;
             } else {
-                const {r, g, b} = d3.color(baseColor).rgb();
+                const { r, g, b } = d3.color(baseColor).rgb();
                 return `rgba(${r},${g},${b},0.25)`;
             }
         } else {
@@ -65,11 +65,11 @@ function Barchart(props: IBarchart) {
     };
 
 
-    const margin = {top: 20, right: 0, bottom: 70, left: 30}
+    const margin = { top: 1.3, right: 0, bottom: 5, left: 2 }
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerHeight || 0);
-    const height = (35 * vh) / 100 - margin.top - margin.bottom;
-    const width = (30 * vw) / 100 - margin.left - margin.right;
+    const height = (34 * vh) / 100 - (margin.top * vh) / 100 - (margin.bottom * vh) / 100;
+    const width = (30 * vw) / 100 - (margin.left * vw) / 100 - (margin.right * vw) / 100;
     // Parse the Data
     const temperaturesArray = Object.entries(dataFromStations).map(([stationName, data]) => ({
         stationName,
@@ -100,10 +100,12 @@ function Barchart(props: IBarchart) {
             .attr("transform", "rotate(-90)")
             .attr("dy", "-0.5em")
             .attr("dx", "-1em")
-            .style("text-anchor", "end");
+            .style("text-anchor", "end")
+            .style("font-size", "0.8vh");
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
-        d3.select(gy.current).call(d3.axisLeft(y))
+        d3.select(gy.current).call(d3.axisLeft(y)).selectAll("text")
+            .style("font-size", "0.8vh");
 
         // Add gridlines
         if (gridRef.current) {
@@ -114,7 +116,7 @@ function Barchart(props: IBarchart) {
                 )
                 .selectAll("line")
                 .style("stroke", "lightgrey")
-                .style("stroke-width", "0.5");
+                .style("stroke-width", "0.05vh");
 
         }
         d3.select(gridRef.current).select(".domain").remove();
@@ -157,32 +159,32 @@ function Barchart(props: IBarchart) {
 
 
     return (
-        <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
-            <g transform={`translate(${margin.left},${margin.top})`}>
+        <svg width={width + (margin.left * vw) / 100 + (margin.right * vw) / 100} height={height + (margin.top * vh) / 100 + (margin.bottom * vh) / 100}>
+            <g transform={`translate(${(margin.left * vw) / 100},${(margin.top * vh) / 100})`}>
                 {/* x-Achsen-Beschriftung */}
-                <g ref={gx as unknown as LegacyRef<SVGGElement> | undefined} transform={`translate(0, ${height})`}/>
+                <g ref={gx as unknown as LegacyRef<SVGGElement> | undefined} transform={`translate(0, ${height})`} />
                 <text
                     x={width / 2}
-                    y={height + margin.top + 30}
+                    y={height + (margin.top * vh) / 100 + (2.8 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
-                    fontSize="14px"
+                    fontSize="1.2vh"
                 >
                     Stationen
                 </text>
 
                 {/* y-Achsen-Beschriftung */}
-                <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined}/>
+                <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined} />
                 <text
-                    x={-margin.left + 10}
-                    y={-margin.top + 15}
+                    x={-(margin.left * vw) / 100 + (1 * vw) / 100}
+                    y={-(margin.top * vh) / 100 + (1.2 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
-                    fontSize="14px"
+                    fontSize="1vh"
                 >
                     °C
                 </text>
-                <g ref={gridRef}/>
+                <g ref={gridRef} />
 
                 <g fill="white" stroke="currentColor" strokeWidth="1">
                     {sortedTemperaturesArray.map((d, i) => (
@@ -191,7 +193,7 @@ function Barchart(props: IBarchart) {
                             x={x(d.data.name)}
                             y={y(d.data.averageTemperature)}
                             width={x.bandwidth()}
-                            style={!isInGuidedMode ? {cursor: "pointer"} : {}}
+                            style={!isInGuidedMode ? { cursor: "pointer" } : {}}
                             height={height - y(d.data.averageTemperature)}
                             fill={getColor(d.stationName, d.data.averageTemperature)}
                             color={getBorderColor(d.stationName)}

@@ -54,102 +54,102 @@ export default function StationInfoCard(props: IStationInfoCard) {
 
         <Card className="bg-white shadow-gray-400 shadow-lg rounded-3xl" style={{
             width: "32vw",
+            height: "38vh",
+
         }}>
 
-            <CardHeader className="flex justify-center items-center pt-2">
-                <CardTitle className="text-base sm:text-sm lg:text-lg xl:text-xl">Station-Info</CardTitle>
+            <CardHeader className="flex justify-center items-center pt-2" style={{ paddingTop: "2vh", paddingBottom: "0.5vh" }}>
+                <CardTitle className="text-base" style={{ fontSize: "1.8vh" }}>Station-Info</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col justify-center items-center gap-4 mt-4 mb-4">
+            <CardContent className="flex flex-col justify-center items-center" style={{ paddingTop: "2vh"}}>
                 {selectedStations && selectedStations.length === 0 && (
-                    <div className="grid grid-cols-2 gap-8">
+                    <div className="grid grid-cols-2" style={{ gridGap: "3vh 4vw"}}>
                         <div className="flex flex-col items-center">
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Datum</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-semibold">{moment(date).format("DD.MM.YYYY")}</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Datum</p>
+                            <p style={{ fontSize: "1.5vh"}}>{moment(date).format("DD.MM.YYYY")}</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Zeitraum</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-semibold">{time}</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Zeitraum</p>
+                            <p style={{ fontSize: "1.5vh"}}>{time}</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Anzahl Stationen</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{temperaturesForAllStationsHelper.length}</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Anzahl Stationen</p>
+                            <p style={{ fontSize: "1.5vh"}}>{temperaturesForAllStationsHelper.length}</p>
                         </div>
 
                         <div className="flex flex-col items-center">
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Min {'\u2300'} Temperatur</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{getInfoData.minTemperature}°C</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>{'\u2300'} Temperatur Differenz</p>
+                            <p style={{ fontSize: "1.5vh"}}>{getInfoData.temperatureDifference}°C</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">{'\u2300'} Temperatur Differenz</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{getInfoData.temperatureDifference}°C</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Min {'\u2300'} Temperatur</p>
+                            <p style={{ fontSize: "1.5vh"}}>{getInfoData.minTemperature}°C</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Max {'\u2300'} Temperatur</p>
-                            <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{getInfoData.maxTemperature}°C</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Max {'\u2300'} Temperatur</p>
+                            <p style={{ fontSize: "1.5vh"}}>{getInfoData.maxTemperature}°C</p>
                         </div>
                     </div>
                 )}
                 {selectedStation && selectedStations.length === 1 && (
                     <div className="flex flex-col justify-center items-center space-y-4">
-                        <div className="flex justify-center items-center space-x-24">
+                        <div className="grid grid-cols-2" style={{ gridGap: "3vh 4vw"}}>
                             <div className="flex flex-col items-center">
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Datum</p>
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-semibold">{moment(date).format("DD.MM.YYYY")}</p>
+                                <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Datum</p>
+                                <p style={{ fontSize: "1.5vh"}}>{moment(date).format("DD.MM.YYYY")}</p>
                             </div>
                             <div className="flex flex-col items-center">
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Zeitraum</p>
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-semibold">{time}</p>
-                            </div>
-                        </div>
-                        <div className="flex justify-center items-center space-x-24">
-                            <div className="flex flex-col items-center">
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">Name</p>
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{selectedStation.name}</p>
+                                <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Zeitraum</p>
+                                <p style={{ fontSize: "1.5vh"}}>{time}</p>
                             </div>
                             <div className="flex flex-col items-center">
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl m-0">{'\u2300'} Temperatur</p>
-                                <p className="text-base sm:text-sm lg:text-lg xl:text-xl font-bold">{selectedStation.averageTemperature !== undefined ? selectedStation.averageTemperature.toFixed(2) : 'N/A'}°C</p>
+                                <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Name</p>
+                                <p style={{ fontSize: "1.5vh"}}>{selectedStation.name}</p>
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>{'\u2300'} Temperatur</p>
+                                <p style={{ fontSize: "1.5vh"}}>{selectedStation.averageTemperature !== undefined ? selectedStation.averageTemperature.toFixed(2) : 'N/A'}°C</p>
                             </div>
                         </div>
                     </div>
                 )}
                 {selectedStations && selectedStations.length > 1 && (
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2" style={{ gridGap: "3vh 4vw"}}>
                         <div className="flex flex-col items-center">
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Datum</p>
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-semibold">{moment(date).format("DD.MM.YYYY")}</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Datum</p>
+                            <p style={{ fontSize: "1.5vh"}}>{moment(date).format("DD.MM.YYYY")}</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Zeitraum</p>
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-semibold">{time}</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Zeitraum</p>
+                            <p style={{ fontSize: "1.5vh"}}>{time}</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Anzahl Stationen</p>
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{selectedStations.length !== 0 ? selectedStations.length : temperaturesForAllStationsHelper.length}</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Anzahl Stationen</p>
+                            <p style={{ fontSize: "1.5vh"}}>{selectedStations.length !== 0 ? selectedStations.length : temperaturesForAllStationsHelper.length}</p>
                         </div>
 
                         <div className="flex flex-col items-center">
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Min {'\u2300'} Temperatur</p>
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{getInfoData.minTemperature}°C</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>{'\u2300'} Temperatur Differenz</p>
+                            <p style={{ fontSize: "1.5vh"}}>{getInfoData.temperatureDifference}°C</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">Max {'\u2300'} Temperatur</p>
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{getInfoData.maxTemperature}°C</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Min {'\u2300'} Temperatur</p>
+                            <p style={{ fontSize: "1.5vh"}}>{getInfoData.minTemperature}°C</p>
                         </div>
                         <div className="flex flex-col items-center">
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg m-0">{'\u2300'} Temperatur Differenz</p>
-                            <p className="text-sm sm:text-xs lg:text-base xl:text-lg font-bold">{getInfoData.temperatureDifference}°C</p>
+                            <p style={{ fontSize: "1.6vh", fontWeight: "bold" }}>Max {'\u2300'} Temperatur</p>
+                            <p style={{ fontSize: "1.5vh"}}>{getInfoData.maxTemperature}°C</p>
                         </div>
                     </div>)}
 
-                <div className={selectedStations.length === 0 ? ("mt-1") : ("mt-4")}>
+                <div style={{ paddingTop: "2vh"}}>
                     <Legend dataFromStations={dataFromStations}
                             minTemperature={selectedStations.length > 1 ? getInfoData.minTemperature : undefined}
                             maxTemperature={selectedStations.length > 1 ? getInfoData.maxTemperature : undefined}/>
                 </div>
 
             </CardContent>
-            <CardFooter className="flex justify-center items-center gap-2">
+            <CardFooter className="flex justify-center items-center gap-2 mt-1">
                 {selectedStations.length !== 0 && !isInGuidedMode && (
                     <Button
                         onClick={() => {
