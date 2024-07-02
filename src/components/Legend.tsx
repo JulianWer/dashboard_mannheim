@@ -79,7 +79,7 @@ const Legend = (props: ILegend) => {
                 .attr('x1', minTempPos)
                 .attr('x2', minTempPos)
                 .attr('y1', 0)
-                .attr('y2', legendHeight - 20)
+                .attr('y2', legendHeight - (1.3 * vh) / 100)
                 .attr('stroke', lineColor)
                 .attr('stroke-width', 3);
 
@@ -87,7 +87,7 @@ const Legend = (props: ILegend) => {
                 .attr('x1', maxTempPos)
                 .attr('x2', maxTempPos)
                 .attr('y1', 0)
-                .attr('y2', legendHeight - 20)
+                .attr('y2', legendHeight - (1.3 * vh) / 100)
                 .attr('stroke', lineColor)
                 .attr('stroke-width', 3);
         }

@@ -61,7 +61,7 @@ export default function StationInfoCard(props: IStationInfoCard) {
             <CardHeader className="flex justify-center items-center pt-2" style={{ paddingTop: "2vh", paddingBottom: "0.5vh" }}>
                 <CardTitle className="text-base" style={{ fontSize: "1.8vh" }}>Station-Info</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col justify-center items-center" style={{ paddingTop: "2vh"}}>
+            <CardContent className="flex flex-col justify-center items-center" style={{ padding: "2vh 0 0 0"}}>
                 {selectedStations && selectedStations.length === 0 && (
                     <div className="grid grid-cols-2" style={{ gridGap: "3vh 4vw"}}>
                         <div className="flex flex-col items-center">
