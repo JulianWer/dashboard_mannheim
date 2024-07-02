@@ -170,15 +170,11 @@ export default function Dashboard() {
                                 width: "32vw",
                                 height: "38vh",
                             }}>
-                                <CardHeader className="flex justify-center items-center p-0 pt-2" style={{ paddingTop: "1.5vh", paddingBottom: "0" }}>
+                                <CardHeader className="flex justify-center items-center" style={{ padding: "1vh 0 0 0"}}>
                                     <CardTitle className="text-base" style={{ fontSize: "1.7vh" }}>Temperaturverlauf
                                         über 24h</CardTitle>
                                 </CardHeader>
-                                <CardContent style={{
-                                    paddingLeft: "1vw",
-                                    paddingRight: "1vw",
-                                    paddingBottom: "0"
-                                }}>
+                                <CardContent style={{padding: "0 1vw 0 1vw"}}>
                                     <LineChart
                                         data={data.data}
                                         date={date}
@@ -190,15 +186,11 @@ export default function Dashboard() {
                                 width: "32vw",
                                 height: "38vh",
                             }}>
-                                <CardHeader className="flex justify-center items-center" style={{ paddingTop: "1.5vh", paddingBottom: "0" }}>
+                                <CardHeader className="flex justify-center items-center" style={{ padding: "1vh 0 0 0"}}>
                                     <CardTitle className="text-base" style={{ fontSize: "1.7vh" }}>Durchschnittstemperatur
                                         zwischen 5:30 und 6:30</CardTitle>
                                 </CardHeader>
-                                <CardContent style={{
-                                    paddingLeft: "1vw",
-                                    paddingRight: "1vw",
-                                    paddingBottom: "0"
-                                }}>
+                                <CardContent style={{padding: "0 1vw 0 1vw"}}>
                                     <BarChart
                                         dataFromStations={data.timeFilteredData}
                                         isInGuidedMode={isInGuidedMode}

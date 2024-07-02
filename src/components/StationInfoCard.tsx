@@ -58,7 +58,7 @@ export default function StationInfoCard(props: IStationInfoCard) {
 
         }}>
 
-            <CardHeader className="flex justify-center items-center pt-2" style={{ paddingTop: "1.5vh", paddingBottom: "0" }}>
+            <CardHeader className="flex justify-center items-center" style={{ padding: "1vh 0 0 0"}}>
                 <CardTitle className="text-base" style={{ fontSize: "1.8vh" }}>Station-Info</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col justify-center items-center" style={{ padding: "2vh 0 0 0" }}>
@@ -154,7 +154,6 @@ export default function StationInfoCard(props: IStationInfoCard) {
                         style={{ fontSize: "1.6vh", width: "9vw", height: "3vh" }}
                         className="bg-red-500 text-white hover:bg-red-600 focus:outline-none"
                         type="button"
-                        variant={"outline"}
                         onClick={() => {
                             setSelectedStations([]);
                         }}
@@ -167,7 +166,6 @@ export default function StationInfoCard(props: IStationInfoCard) {
                         style={{ fontSize: "1.6vh", width: "9vw", height: "3vh" }}
                         className="bg-[#00ADB5] text-white hover:bg-[#00ADB5]"
                         type="button"
-                        variant={"outline"}
                         onClick={() => window.open(`https://maps.google.com/maps?q=&layer=c&cbll=${selectedStation.latitude},${selectedStation.longitude}&cbp=11,0,0,0,0`, '_blank')}
                     >
                         Google Street View

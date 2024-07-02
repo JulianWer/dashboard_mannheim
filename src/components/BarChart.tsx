@@ -165,7 +165,7 @@ function Barchart(props: IBarchart) {
                 <g ref={gx as unknown as LegacyRef<SVGGElement> | undefined} transform={`translate(0, ${height})`} />
                 <text
                     x={width / 2}
-                    y={height + (margin.top * vh) / 100 + (2.8 * vh) / 100}
+                    y={height + (margin.top * vh) / 100 + (3 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
                     fontSize="1.2vh"
