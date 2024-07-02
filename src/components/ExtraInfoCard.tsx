@@ -131,19 +131,15 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                             </CardTitle>
                         </CardHeader>
                         <CardContent style={{ padding: "1.5vh 1.5vw 1.5vh 1.5vw" }}>
-                            <p className="justified-text" style={{ fontSize: "1.6vh" }}>Diese Frage soll am Beispiel der Neckarstadt mithilfe von datengestützten Visualisierungen beantwortet werden.
+                            <p className="justified-text" style={{ fontSize: "1.6vh", paddingBottom: "1vh" }}>Diese Frage soll am Beispiel der Neckarstadt mithilfe von datengestützten Visualisierungen beantwortet werden.
                                 Das Liniendiagramm zeigt den Temperaturverlauf über Nacht in einem 24 Stunden Zeitraum, das Balkendiagramm wiederum zeigt für die selben Stationen die Messwerte nach der nächtlichen Abkühlung zwischen 5:30 und 6:30 Uhr.
                             </p>
-                            <br />
-                            <p className="justified-text" style={{ fontSize: "1.6vh" }}>Wähle eine Station aus, um mehr über sie zu erfahren oder mehrere, um diese zu vergleichen.
+                            <p className="justified-text" style={{ fontSize: "1.6vh", paddingBottom: "1vh" }}>Wähle eine Station aus, um mehr über sie zu erfahren oder mehrere, um diese zu vergleichen.
                             </p>
-                            <br />
-                            <p className="justified-text" style={{ fontSize: "1.6vh" }}> Achte gerne auf die Entfernung der Stationen zu Grünflächen bzw. Wohngebieten, fällt dir etwas auf?
+                            <p className="justified-text" style={{ fontSize: "1.6vh", paddingBottom: "1vh" }}> Achte gerne auf die Entfernung der Stationen zu Grünflächen bzw. Wohngebieten, fällt dir etwas auf?
                             </p>
-                            <br />
-                            <p className="justified-text" style={{ fontSize: "1.6vh" }}> Falls du mit deiner offenen Erkundung fertig bist, kannst du dir auch die geführten Data-Stories im Guide-Modus anschauen.
+                            <p className="justified-text" style={{ fontSize: "1.6vh", paddingBottom: "1vh" }}> Falls du mit deiner offenen Erkundung fertig bist, kannst du dir auch die geführten Data-Stories im Guide-Modus anschauen.
                             </p>
-                            <br />
                             <p style={{ fontSize: "1.6vh" }}> Viel Spaß!</p>
                         </CardContent>
                     </Card>
