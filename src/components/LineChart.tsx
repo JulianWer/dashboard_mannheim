@@ -1,7 +1,7 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import moment, {Moment} from "moment-timezone";
-import {IStation, StationData, TimeTemp} from "./Dashboard.tsx";
+import moment, { Moment } from "moment-timezone";
+import { IStation, StationData, TimeTemp } from "./Dashboard.tsx";
 
 interface ILineChart {
     date: string;
@@ -11,7 +11,7 @@ interface ILineChart {
 }
 
 export default function LineChart(props: ILineChart) {
-    const {date, displayedStations, selectedStations, data} = props;
+    const { date, displayedStations, selectedStations, data } = props;
     const [displayedStationsData, setDisplayedStationsData] = useState<IStation[]>([]);
     const [tempScaleMinMax, setTempScaleMinMax] = useState<number[]>([]);
 
@@ -60,11 +60,11 @@ export default function LineChart(props: ILineChart) {
     };
 
 
-    const margin = {top: 20, right: 0, bottom: 70, left: 30};
+    const margin = { top: 1.3, right: 0, bottom: 5, left: 2 };
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    const height = (35 * vh) / 100 - margin.top - margin.bottom;
-    const width = (30 * vw) / 100 - margin.left - margin.right;
+    const height = (32 * vh) / 100 - (margin.top * vh) / 100 - (margin.bottom * vh) / 100;
+    const width = (30 * vw) / 100 - (margin.left * vw) / 100 - (margin.right * vw) / 100;
 
     const xRef = useRef<SVGGElement>(null);
     const yRef = useRef<SVGGElement>(null);
@@ -77,8 +77,18 @@ export default function LineChart(props: ILineChart) {
     const yScale = useMemo(() => d3.scaleLinear().domain(tempScaleMinMax).range([height, 0]), [height, tempScaleMinMax]);
 
     useEffect(() => {
-        if (xRef.current) d3.select(xRef.current).call(d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%H:%M")));
-        if (yRef.current) d3.select(yRef.current).call(d3.axisLeft(yScale));
+        if (xRef.current)
+            d3.select(xRef.current)
+                .call(d3.axisBottom(xTimeScale)
+                    .tickFormat(d3.timeFormat("%H:%M")))
+                .selectAll("text")
+                .style("font-size", "0.8vh");
+
+        if (yRef.current)
+            d3.select(yRef.current)
+                .call(d3.axisLeft(yScale))
+                .selectAll("text")
+                .style("font-size", "0.8vh");
 
         // Add gridlines
         if (gridRef.current) {
@@ -89,7 +99,9 @@ export default function LineChart(props: ILineChart) {
                 )
                 .selectAll("line")
                 .style("stroke", "lightgrey")
-                .style("stroke-width", "0.5");
+                .style("stroke-width", "0.5")
+                .style("stroke-width", "0.05vh");
+
         }
         d3.select(gridRef.current).select(".domain").remove();
     }, [xTimeScale, yScale, width]);
@@ -109,23 +121,32 @@ export default function LineChart(props: ILineChart) {
     const midnightX: number = xTimeScale(midnightTime);
 
     return (
-        <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
-            <g transform={`translate(${margin.left},${margin.top})`}>
-                <g ref={xRef} transform={`translate(0, ${height})`}/>
-                <text x={width * 0.75} y={height + margin.top + 20} textAnchor="middle" fill="black" fontSize="14px">
-                    {moment(date).format("DD.MM.YYYY")}
-                </text>
-                <text x={width * 0.25} y={height + margin.top + 20} textAnchor="middle" fill="black" fontSize="14px">
-                    {moment(date).subtract(1, 'days').format("DD.MM.YYYY")}
-                </text>
-                <g ref={yRef}/>
-                <g ref={gridRef}/>
+        <svg width={width + (margin.left * vw) / 100 + (margin.right * vw) / 100} height={height + (margin.top * vh) / 100 + (margin.bottom * vh) / 100}>
+            <g transform={`translate(${((margin.left - 0.8) * vw) / 100},${(margin.top * vh) / 100})`}>
+                <g ref={xRef} transform={`translate(0, ${height})`} />
                 <text
-                    x={-margin.left + 10}
-                    y={-margin.top + 15}
+                    x={width * 0.75}
+                    y={height + (margin.top * vh) / 100 + (1.7 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
-                    fontSize="14px">
+                    fontSize="1vh">
+                    {moment(date).format("DD.MM.YYYY")}
+                </text>
+                <text x={width * 0.25}
+                    y={height + (margin.top * vh) / 100 + (1.7 * vh) / 100}
+                    textAnchor="middle"
+                    fill="black"
+                    fontSize="1vh">
+                    {moment(date).subtract(1, 'days').format("DD.MM.YYYY")}
+                </text>
+                <g ref={yRef} />
+                <g ref={gridRef} />
+                <text
+                    x={-(margin.left * vw) / 100 + (1 * vw) / 100}
+                    y={-(margin.top * vh) / 100 + (1.2 * vh) / 100}
+                    textAnchor="middle"
+                    fill="black"
+                    fontSize="1vh">
                     °C
                 </text>
 

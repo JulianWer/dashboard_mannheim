@@ -1,14 +1,14 @@
 "use client"
 
 import * as React from "react"
-import {useEffect} from "react"
-import {format} from "date-fns"
-import {Calendar as CalendarIcon} from "lucide-react"
+import { useEffect } from "react"
+import { format } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
 
-import {cn} from "@/lib/utils"
-import {Button} from "@/components/ui/button"
-import {Calendar} from "@/components/ui/calendar"
-import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
 
 interface IDatePickerProps {
     setSelected: React.Dispatch<React.SetStateAction<string>>;
@@ -17,7 +17,7 @@ interface IDatePickerProps {
 }
 
 export function DatePicker(props: IDatePickerProps) {
-    const {setSelected, selected, isInGuidedMode} = props
+    const { setSelected, selected, isInGuidedMode } = props
     const [date, setDate] = React.useState<Date>(selected ? new Date(selected) : new Date());
 
     useEffect(() => {
@@ -35,14 +35,15 @@ export function DatePicker(props: IDatePickerProps) {
         <Popover>
             <PopoverTrigger asChild>
                 <Button
+                    style={{ width: '10vw', height: '3vh', fontSize: '1.3vh' }}
                     disabled={isInGuidedMode}
                     variant={"outline"}
                     className={cn(
-                        "w-[280px] justify-start text-left font-normal",
+                        "w-[5vw] justify-start text-left font-normal",
                         !date && "text-muted-foreground"
                     )}
                 >
-                    <CalendarIcon className="mr-2 h-4 w-4"/>
+                    <CalendarIcon style={{ width: '1.3vw', height: '1.3vh' }} />
                     {date ? format(date, "dd.MM.yyyy") :
                         <span>Pick a date</span>}
                 </Button>
