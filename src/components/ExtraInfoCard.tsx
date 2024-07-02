@@ -25,7 +25,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                         <CardHeader className="p-0">
                             <div className="flex items-center justify-center space-x-4">
                                 <Button
-                                    style={{ fontSize: "1.8vh", width: "8vw", height: "3vh" }}
+                                    style={{ fontSize: "1.6vh", width: "8vw", height: "3vh" }}
                                     className={` ${selectedDataStory === 1 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
                                     variant={"outline"}
@@ -37,7 +37,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     Data Story 1
                                 </Button>
                                 <Button
-                                    style={{ fontSize: "1.8vh", width: "8vw", height: "3vh" }}
+                                    style={{ fontSize: "1.6vh", width: "8vw", height: "3vh" }}
                                     className={` ${selectedDataStory === 2 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
                                     variant={"outline"}
@@ -49,7 +49,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     Data Story 2
                                 </Button>
                                 <Button
-                                    style={{ fontSize: "1.8vh", width: "8vw", height: "3vh" }}
+                                    style={{ fontSize: "1.6vh", width: "8vw", height: "3vh" }}
                                     className={` ${selectedDataStory === 3 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
                                     variant={"outline"}

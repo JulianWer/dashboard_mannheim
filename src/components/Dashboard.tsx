@@ -116,7 +116,7 @@ export default function Dashboard() {
 
                         <div className="flex items-center space-x-4">
                             <Button
-                                style={{ fontSize: "2vh", width: "5vw", height: "3vh" }}
+                                style={{ fontSize: "1.6vh", width: "5vw", height: "3vh" }}
                                 className={` px-4 py-2 ${!isInGuidedMode ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200'} focus:outline-none`}
                                 type="button"
                                 variant={"outline"}
@@ -128,7 +128,7 @@ export default function Dashboard() {
                                 Explore
                             </Button>
                             <Button
-                                style={{ fontSize: "2vh", width: "5vw", height: "3vh" }}
+                                style={{ fontSize: "1.6vh", width: "5vw", height: "3vh" }}
                                 className={`px-4 py-2 ${isInGuidedMode ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200'} focus:outline-none`}
                                 type="button"
                                 variant={"outline"}
@@ -170,7 +170,7 @@ export default function Dashboard() {
                                 width: "32vw",
                                 height: "38vh",
                             }}>
-                                <CardHeader className="flex justify-center items-center p-0 pt-2" style={{ paddingTop: "2vh", paddingBottom: "0" }}>
+                                <CardHeader className="flex justify-center items-center p-0 pt-2" style={{ paddingTop: "1.5vh", paddingBottom: "0" }}>
                                     <CardTitle className="text-base" style={{ fontSize: "1.7vh" }}>Temperaturverlauf
                                         über 24h</CardTitle>
                                 </CardHeader>
@@ -190,7 +190,7 @@ export default function Dashboard() {
                                 width: "32vw",
                                 height: "38vh",
                             }}>
-                                <CardHeader className="flex justify-center items-center" style={{ paddingTop: "2vh", paddingBottom: "0" }}>
+                                <CardHeader className="flex justify-center items-center" style={{ paddingTop: "1.5vh", paddingBottom: "0" }}>
                                     <CardTitle className="text-base" style={{ fontSize: "1.7vh" }}>Durchschnittstemperatur
                                         zwischen 5:30 und 6:30</CardTitle>
                                 </CardHeader>
