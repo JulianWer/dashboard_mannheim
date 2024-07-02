@@ -28,7 +28,6 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     style={{ fontSize: "1.6vh", width: "8vw", height: "3vh" }}
                                     className={` ${selectedDataStory === 1 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
-                                    variant={"outline"}
                                     onClick={() => {
                                         setSelectedDataStory(1)
                                         handleGuideMode(1)
@@ -40,7 +39,6 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     style={{ fontSize: "1.6vh", width: "8vw", height: "3vh" }}
                                     className={` ${selectedDataStory === 2 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
-                                    variant={"outline"}
                                     onClick={() => {
                                         setSelectedDataStory(2)
                                         handleGuideMode(2)
@@ -52,7 +50,6 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     style={{ fontSize: "1.6vh", width: "8vw", height: "3vh" }}
                                     className={` ${selectedDataStory === 3 ? 'bg-[#3572EF] text-white hover:bg-[#3572EF]' : 'bg-white text-black hover:bg-gray-200 text-black'} focus:outline-none`}
                                     type="button"
-                                    variant={"outline"}
                                     onClick={() => {
                                         setSelectedDataStory(3)
                                         handleGuideMode(3)
@@ -67,7 +64,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                         </CardHeader>
                         <CardContent style={{ padding: "1.5vh 0vw 0vh 0vw" }}>
                             {selectedDataStory === 1 && <>
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>Die für dich ausgewählten Stationen
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Die für dich ausgewählten Stationen
                                     befinden sich alle
                                     auf
                                     der Max-Joseph-Straße. Wie dir vielleicht bereits aufgefallen ist, nimmt die
@@ -77,43 +74,34 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     Temperaturunterschied zu diesem Zeitpunkt zwischen der ersten und letzten Station
                                     auf
                                     dieser Straße beträgt ganze 5 Grad. </p>
-                                <br />
-
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>Außerdem interessant ist, dass wir uns
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Außerdem interessant ist, dass wir uns
                                     im Verlauf der
                                     Max-Joseph-Straße immer weiter dem Herzogenriedpark annähern. Dieser Park stellt mit
                                     seiner überdurchschnittlich hohen Begrünung und sehr geringen Versiegelung eine
                                     natürliche Abkühlungszone dar, die sich positiv auf ihre Umgebung auswirkt.</p>
-                                <br />
-
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>Erkunde gerne noch weitere Data-Stories
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Erkunde gerne noch weitere Data-Stories
                                     und die dazu gehörigen Visualisierungen oder kehre in den Explore-Modus zurück.</p></>}
 
                             {selectedDataStory === 2 && <>
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>In dieser Data-Story wird ebenfalls
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>In dieser Data-Story wird ebenfalls
                                     der Morgen des 07.04.2024 betrachtet. Die für dich ausgewählten Stationen wurden anhand
                                     ihres Standorts gruppiert. </p>
-                                <br />
-
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>Die erste Gruppe der Stationen befindet
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Die erste Gruppe der Stationen befindet
                                     sich an der alten Feuerwache. Die vier ausgewählten Stationen befinden sich alle in den Top 6
                                     der heißesten Stationen der Neckarstadt an diesem Morgen.
                                 </p>
-                                <br />
-
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>Auf der anderen Seite wurden die Stationen in der Nähe des Herzogenriedparks
-                                    gruppiert. Diese fünf Stationen wiederum befinden sich alle in den Top 6 der kühlsten Stationen der Neckarstadt. </p></>}
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Auf der anderen Seite wurden die Stationen in der Nähe des Herzogenriedparks
+                                    gruppiert. Diese fünf Stationen wiederum befinden sich alle in den Top 6 der kühlsten Stationen der Neckarstadt.
+                                </p></>}
 
                             {selectedDataStory === 3 && <>
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>Hier könnte ihre Werbung stehen </p>
-                                <br />
-
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>Hier ist halt abnormal, dass die Temperatur von 24 Uhr bis 9 Uhr morgens quasi gleich bleibt. Auch die Werte allgemein sind sehr nahe beieinander und die heißesten Stationen sind beim neuen Messplatz (da war vom 27.04 bis 12.05 die Maimesse. Der betrachtete Tag ist der 05.05 also zu dieser Zeit)
-
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>
+                                    Hier könnte ihre Werbung stehen </p>
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>
+                                    Hier ist halt abnormal, dass die Temperatur von 24 Uhr bis 9 Uhr morgens quasi gleich bleibt. Auch die Werte allgemein sind sehr nahe beieinander und die heißesten Stationen sind beim neuen Messplatz (da war vom 27.04 bis 12.05 die Maimesse. Der betrachtete Tag ist der 05.05 also zu dieser Zeit)
                                 </p>
-                                <br />
-
-                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>Außerdem war es die Nacht von Samstag auf Sonntag wo vermutlich viele Leute dort waren
+                                <p className="justified-text" style={{ fontSize: "1.5vh" }}>
+                                    Außerdem war es die Nacht von Samstag auf Sonntag wo vermutlich viele Leute dort waren
                                 </p></>}
                         </CardContent>
                     </Card>

@@ -63,7 +63,7 @@ export default function LineChart(props: ILineChart) {
     const margin = { top: 1.3, right: 0, bottom: 5, left: 2 };
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    const height = (34 * vh) / 100 - (margin.top * vh) / 100 - (margin.bottom * vh) / 100;
+    const height = (32 * vh) / 100 - (margin.top * vh) / 100 - (margin.bottom * vh) / 100;
     const width = (30 * vw) / 100 - (margin.left * vw) / 100 - (margin.right * vw) / 100;
 
     const xRef = useRef<SVGGElement>(null);
@@ -126,14 +126,14 @@ export default function LineChart(props: ILineChart) {
                 <g ref={xRef} transform={`translate(0, ${height})`} />
                 <text
                     x={width * 0.75}
-                    y={height + (margin.top * vh) / 100 + (1.2 * vh) / 100}
+                    y={height + (margin.top * vh) / 100 + (1.7 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
                     fontSize="1vh">
                     {moment(date).format("DD.MM.YYYY")}
                 </text>
                 <text x={width * 0.25}
-                    y={height + (margin.top * vh) / 100 + (1.2 * vh) / 100}
+                    y={height + (margin.top * vh) / 100 + (1.7 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
                     fontSize="1vh">

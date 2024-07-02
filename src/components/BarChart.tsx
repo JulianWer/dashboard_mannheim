@@ -68,7 +68,7 @@ function Barchart(props: IBarchart) {
     const margin = { top: 1.3, right: 0, bottom: 5, left: 2 }
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerHeight || 0);
-    const height = (34 * vh) / 100 - (margin.top * vh) / 100 - (margin.bottom * vh) / 100;
+    const height = (32 * vh) / 100 - (margin.top * vh) / 100 - (margin.bottom * vh) / 100;
     const width = (30 * vw) / 100 - (margin.left * vw) / 100 - (margin.right * vw) / 100;
     // Parse the Data
     const temperaturesArray = Object.entries(dataFromStations).map(([stationName, data]) => ({
@@ -165,7 +165,7 @@ function Barchart(props: IBarchart) {
                 <g ref={gx as unknown as LegacyRef<SVGGElement> | undefined} transform={`translate(0, ${height})`} />
                 <text
                     x={width / 2}
-                    y={height + (margin.top * vh) / 100 + (3 * vh) / 100}
+                    y={height + (margin.top * vh) / 100 + (3.3 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
                     fontSize="1.2vh"
