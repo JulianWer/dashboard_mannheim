@@ -142,8 +142,8 @@ export default function LineChart(props: ILineChart) {
                 <g ref={yRef} />
                 <g ref={gridRef} />
                 <text
-                    x={-(margin.left * vw) / 100 + (1 * vw) / 100}
-                    y={-(margin.top * vh) / 100 + (1.2 * vh) / 100}
+                    x={-(margin.left * vw) / 100 + (1.1 * vw) / 100}
+                    y={-(margin.top * vh) / 100 + (0.8 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
                     fontSize="1vh">

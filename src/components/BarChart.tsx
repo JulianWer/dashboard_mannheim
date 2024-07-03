@@ -176,8 +176,8 @@ function Barchart(props: IBarchart) {
                 {/* y-Achsen-Beschriftung */}
                 <g ref={gy as unknown as LegacyRef<SVGGElement> | undefined} />
                 <text
-                    x={-(margin.left * vw) / 100 + (1 * vw) / 100}
-                    y={-(margin.top * vh) / 100 + (1.2 * vh) / 100}
+                    x={-(margin.left * vw) / 100 + (1.1 * vw) / 100}
+                    y={-(margin.top * vh) / 100 + (0.8 * vh) / 100}
                     textAnchor="middle"
                     fill="black"
                     fontSize="1vh"

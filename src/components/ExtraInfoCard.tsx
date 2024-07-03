@@ -33,7 +33,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                         handleGuideMode(1)
                                     }}
                                 >
-                                    Data Story 1
+                                    Data-Story 1
                                 </Button>
                                 <Button
                                     style={{ fontSize: "1.6vh", width: "8vw", height: "3vh" }}
@@ -44,7 +44,7 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                         handleGuideMode(2)
                                     }}
                                 >
-                                    Data Story 2
+                                    Data-Story 2
                                 </Button>
                                 <Button
                                     style={{ fontSize: "1.6vh", width: "8vw", height: "3vh" }}
@@ -55,12 +55,18 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                         handleGuideMode(3)
                                     }}
                                 >
-                                    Data Story 3
+                                    Data-Story 3
                                 </Button>
                             </div>
-                            <CardTitle style={{ fontSize: "2vh", padding: "1.5vh 0vw 1vh 0vw" }}>
-                                Willkommen im Guide-Modus!
-                            </CardTitle>
+                            {selectedDataStory === 1 && <CardTitle style={{ fontSize: "2vh", padding: "1.5vh 0vw 1vh 0vw" }}>
+                                Temperaturverlauf entlang der Max-Joseph-Straße
+                            </CardTitle>}
+                            {selectedDataStory === 2 && <CardTitle style={{ fontSize: "2vh", padding: "1.5vh 0vw 1vh 0vw" }}>
+                                Alte Feuerwache versus Herzogenriedpark
+                            </CardTitle>}
+                            {selectedDataStory === 3 && <CardTitle style={{ fontSize: "2vh", padding: "1.5vh 0vw 1vh 0vw" }}>
+                                Mannheimer Maimess und ihre Auswirkungen
+                            </CardTitle>}
                         </CardHeader>
                         <CardContent style={{ padding: "1.5vh 0vw 0vh 0vw" }}>
                             {selectedDataStory === 1 && <>
@@ -83,26 +89,29 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     und die dazu gehörigen Visualisierungen oder kehre in den Explore-Modus zurück.</p></>}
 
                             {selectedDataStory === 2 && <>
-                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>In dieser Data-Story wird ebenfalls
-                                    der Morgen des 07.04.2024 betrachtet. Die für dich ausgewählten Stationen wurden anhand
-                                    ihres Standorts gruppiert. </p>
-                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Die erste Gruppe der Stationen befindet
-                                    sich an der alten Feuerwache. Die vier ausgewählten Stationen befinden sich alle in den Top 6
-                                    der heißesten Stationen der Neckarstadt an diesem Morgen.
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Gruppiert man die Messstationen nach ihrem Standort und stellt die Temperaturwerte an der Alten Feuerwache mit denen am Herzogenriedpark gegenüber, wird schnell ein Muster erkennbar.</p>
+
+                                 <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Die Temperaturen an der alten Feuerwache befinden
+                                    sich alle innerhalb der heißesten sechs Messwerte der Neckarstadt an diesem Morgen.
                                 </p>
-                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Auf der anderen Seite wurden die Stationen in der Nähe des Herzogenriedparks
-                                    gruppiert. Diese fünf Stationen wiederum befinden sich alle in den Top 6 der kühlsten Stationen der Neckarstadt.
-                                </p></>}
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>Auf der anderen Seite liegen die Temperaturwerte in der Nähe des Herzogenriedparks
+                                    alle innerhalb den kühlsten sechs Messwerte der Neckarstadt.
+                                </p>
+                                <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>
+                                    Dieses Muster ist an vielen Tagen zu erkennen. Für diese Data-Story wurde, analog zu Data-Story 1, der Morgen nach dem heißesten, jemals in Mannheim aufgezeichneten, sechsten April ausgewählt.</p>
+                               </>}
 
                             {selectedDataStory === 3 && <>
                                 <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>
-                                    Hier könnte ihre Werbung stehen </p>
+                                    Die letzte Data-Story soll veranschaulichen, dass die Temperatur sehr komplex ist und sich von vielen, teils unerwarteten Faktoren, beeinflussen lässt.
+                                     </p>
                                 <p className="justified-text" style={{ fontSize: "1.5vh", paddingBottom: "1vh" }}>
-                                    Hier ist halt abnormal, dass die Temperatur von 24 Uhr bis 9 Uhr morgens quasi gleich bleibt. Auch die Werte allgemein sind sehr nahe beieinander und die heißesten Stationen sind beim neuen Messplatz (da war vom 27.04 bis 12.05 die Maimesse. Der betrachtete Tag ist der 05.05 also zu dieser Zeit)
+                                    Am betrachteten Sonntagmorgen des 05. Mai liegen die Temperaturwerte ziemlich nahe beieinander. Es ist jedoch auffällig, dass die Temperaturwerte um den Neuen Messplatz unerwartet hoch ausfallen.
+                                    Hier fand vom 27. April bis zum 12. Mai die Mannheimer Maimess statt. Eine Samstagnacht mit vielen Menschen, einer Menge Attraktionen und vielen Ständen.
                                 </p>
                                 <p className="justified-text" style={{ fontSize: "1.5vh" }}>
-                                    Außerdem war es die Nacht von Samstag auf Sonntag wo vermutlich viele Leute dort waren
-                                </p></>}
+                                    Dies impliziert jedoch noch keine Kausalität sondern dient lediglich dazu, zu veranschaulichen, dass es sehr schwer ist die genauen Gründe für den Temperaturverlauf herauszufinden.
+                                    In weiteren GDV-Projekten müsste unsere Forschungsfrage, unter Berücksichtigung anderer Faktoren wie bspw. Niederschlag, Wind oder externe Ereignisse, genauer beläuchet werden</p></>}
                         </CardContent>
                     </Card>
 

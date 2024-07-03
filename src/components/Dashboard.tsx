@@ -172,7 +172,7 @@ export default function Dashboard() {
                             }}>
                                 <CardHeader className="flex justify-center items-center" style={{ padding: "1vh 0 0 0"}}>
                                     <CardTitle className="text-base" style={{ fontSize: "1.7vh" }}>Temperaturverlauf
-                                        über 24h</CardTitle>
+                                        über 24 Stunden</CardTitle>
                                 </CardHeader>
                                 <CardContent style={{padding: "0 1vw 0 1vw"}}>
                                     <LineChart
