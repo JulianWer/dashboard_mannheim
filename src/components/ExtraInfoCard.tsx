@@ -110,8 +110,8 @@ export default function ExtraInfoCard(props: IExtraInfoCard) {
                                     Hier fand vom 27. April bis zum 12. Mai die Mannheimer Maimess statt. Eine Samstagnacht mit vielen Menschen, einer Menge Attraktionen und vielen Ständen.
                                 </p>
                                 <p className="justified-text" style={{ fontSize: "1.5vh" }}>
-                                    Dies impliziert jedoch noch keine Kausalität sondern dient lediglich dazu, zu veranschaulichen, dass es sehr schwer ist die genauen Gründe für den Temperaturverlauf herauszufinden.
-                                    In weiteren GDV-Projekten müsste unsere Forschungsfrage, unter Berücksichtigung anderer Faktoren wie bspw. Niederschlag, Wind oder externe Ereignisse, genauer beläuchet werden</p></>}
+                                    Dies impliziert jedoch noch keine Kausalität, sondern dient lediglich dazu, zu veranschaulichen, dass es sehr schwer ist die genauen Gründe für den Temperaturverlauf herauszufinden.
+                                    In weiteren GDV-Projekten müsste unsere Forschungsfrage, unter Berücksichtigung anderer Faktoren wie bspw. Niederschlag, Wind oder externe Ereignisse, genauer beleuchet werden.</p></>}
                         </CardContent>
                     </Card>
 
